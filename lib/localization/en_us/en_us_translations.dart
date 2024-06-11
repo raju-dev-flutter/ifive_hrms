@@ -1,0 +1,75 @@
+part of '../app_localization.dart';
+
+final Map<String, String> enUs = {
+  // Splash Screen
+  "msg_your_needs_in_just": "Your needs in just one place",
+
+  // Login with Email Id Screen
+  "lbl_log_in": "Log in",
+  "msg_don_t_you_have_an": "Don’t You Have an Account? Register",
+  "msg_don_t_you_have_an2": "Don’t You Have an Account? ",
+
+  // Common String
+  "lbl_about": "About",
+  "lbl_add_new_address": "Add New Address",
+  "lbl_area": "Area",
+  "lbl_city": "City",
+  "lbl_contact_us": "Contact Us",
+  "lbl_country": "Country",
+  "lbl_details": "Details",
+  "lbl_email": "Email",
+  "lbl_email_id": "Email Id",
+  "lbl_explore": "Explore",
+  "lbl_facebook": "Facebook",
+  "lbl_faq": "FAQ",
+  "lbl_first_name": "First name",
+  "lbl_fruits": "Fruits",
+  "lbl_google": "Google",
+  "lbl_grapes": "Grapes",
+  "lbl_grocery": "Grocery",
+  "lbl_home": "Home",
+  "lbl_landmark": "Landmark",
+  "lbl_last_name": "Last name",
+  "lbl_login2": "Login",
+  "lbl_my_addresses": "My Addresses",
+  "lbl_my_cart": "My Cart",
+  "lbl_my_orders": "My orders",
+  "lbl_my_subscription": "My Subscription",
+  "lbl_my_wallet": "My Wallet",
+  "lbl_office": "Office",
+  "lbl_orange": "Orange",
+  "lbl_password": "Password",
+  "lbl_payment": "Payment",
+  "lbl_phone_number": "Phone number",
+  "lbl_pincode": "Pincode",
+  "lbl_privacy_policy2": "Privacy Policy",
+  "lbl_register": "Register",
+  "lbl_save": "Save",
+  "lbl_sg": "SG",
+  "lbl_sg_grocery": "SG Grocery",
+  "lbl_state": "State",
+  "lbl_strawberry": "Strawberry",
+  "lbl_subscribe": "Subscribe",
+  "lbl_vegetables": "Vegetables",
+  "msg_enter_your_email": "Enter Your Email Id",
+  "msg_enter_your_password": "Enter Your Password",
+  "msg_or_continue_with": "Or continue with",
+  "msg_organic_tomatoes": "Organic Tomatoes",
+  "msg_terms_of_services": "Terms of services",
+
+  // App navigation Screen
+  "lbl_about_us": "About Us",
+  "lbl_add_new_address2": "add new address",
+  "lbl_app_navigation": "App Navigation",
+  "lbl_splash": "Splash",
+  "lbl_user": "User",
+  "msg_check_your_app_s":
+      "Check your app's UI from the below demo screens of your app.",
+  "msg_home_screen_container": "Home screen - Container",
+  "msg_login_with_email": "Login with Email Id",
+  "msg_payment_add_new": "Payment-add new address",
+
+  // Network Error String
+  "msg_network_err": "Network Error",
+  "msg_something_went_wrong": "Something Went Wrong!",
+};

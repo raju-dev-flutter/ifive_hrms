@@ -1,0 +1,11 @@
+export 'profile_detail_model.dart';
+export 'competency_level_model.dart';
+export 'education_level_model.dart';
+export 'country_model.dart';
+export 'state_model.dart';
+export 'city_model.dart';
+export 'religion_model.dart';
+export 'mother_tongue_model.dart';
+export 'nationality_model.dart';
+export 'blood_group_model.dart';
+export 'certificate_level_model.dart';
