@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:r_upgrade/r_upgrade.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/config.dart';
@@ -47,10 +48,10 @@ class _RootScreenState extends State<RootScreen> {
   Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
     setState(() => _packageInfo = info);
-    // _requestPermission(Permission.requestInstallPackages);
+    _requestPermission(Permission.requestInstallPackages);
 
-    BlocProvider.of<AppVersionCheckerCubit>(context, listen: false)
-        .appVersion();
+    // BlocProvider.of<AppVersionCheckerCubit>(context, listen: false)
+    //     .appVersion();
   }
 
   void _requestPermission(Permission permission) async {
@@ -278,111 +279,111 @@ class _RootScreenState extends State<RootScreen> {
   }
 }
 
-class AppUpdater extends StatefulWidget {
-  final String label;
-  final AppVersionModel appVersion;
-  final PackageInfo packageInfo;
+// class AppUpdater extends StatefulWidget {
+//   final String label;
+//   final AppVersionModel appVersion;
+//   final PackageInfo packageInfo;
+//
+//   const AppUpdater(
+//       {super.key,
+//       required this.appVersion,
+//       required this.packageInfo,
+//       required this.label});
+//
+//   @override
+//   State<AppUpdater> createState() => _AppUpdaterState();
+// }
+//
+// class _AppUpdaterState extends State<AppUpdater> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return AlertDialog(
+//       backgroundColor: appColor.white,
+//       alignment: Alignment.center,
+//       title: Text(
+//         "Update iFive Hrms?",
+//         style: context.textTheme.bodyMedium
+//             ?.copyWith(fontWeight: FontWeight.w500, color: appColor.gray700),
+//       ),
+//       content: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Dimensions.kVerticalSpaceSmaller,
+//
+//           Text(
+//             'iFive Hrms recommends that you update to the latest version. '
+//             'You can keep using this app while downloading the update.',
+//             style: context.textTheme.labelLarge,
+//           ),
+//           Dimensions.kVerticalSpaceSmall,
+//           RichText(
+//             text: TextSpan(
+//               style: context.textTheme.labelLarge,
+//               children: [
+//                 const TextSpan(text: 'Current you have :'),
+//                 TextSpan(
+//                   text: ' V-${widget.packageInfo.version} ',
+//                   style: context.textTheme.labelLarge
+//                       ?.copyWith(fontWeight: FontWeight.bold),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           // Dimensions.kVerticalSpaceSmall,
+//           RichText(
+//             text: TextSpan(
+//               style: context.textTheme.labelLarge,
+//               children: [
+//                 const TextSpan(text: 'Now available version :'),
+//                 TextSpan(
+//                   text: ' V-${widget.appVersion.version} ',
+//                   style: context.textTheme.labelLarge
+//                       ?.copyWith(fontWeight: FontWeight.bold),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           Dimensions.kVerticalSpaceSmall,
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               TextButton(
+//                 onPressed: packageInstaller,
+//                 child: Text(
+//                   "UPDATE NOW",
+//                   style: context.textTheme.labelLarge?.copyWith(
+//                       fontWeight: FontWeight.w500, color: appColor.success600),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+//
+//   void packageInstaller() async {
+//     try {
+//       String url = "";
+//       if (Platform.isAndroid) {
+//         String packageName = widget.packageInfo.packageName;
+//         url = 'https://play.google.com/store/apps/details?id=$packageName';
+//       } else if (Platform.isIOS) {
+//         String bundleId = widget.packageInfo.packageName;
+//         url = 'https://apps.apple.com/app/id$bundleId';
+//       }
+//       if (await canLaunch(url)) {
+//         await launch(url);
+//       } else {
+//         throw 'Could not launch $url';
+//       }
+//     } on PlatformException {
+//       Logger().e('Error at Platform. Failed to install apk file.');
+//     }
+//   }
+// }
 
-  const AppUpdater(
-      {super.key,
-      required this.appVersion,
-      required this.packageInfo,
-      required this.label});
-
-  @override
-  State<AppUpdater> createState() => _AppUpdaterState();
-}
-
-class _AppUpdaterState extends State<AppUpdater> {
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: appColor.white,
-      alignment: Alignment.center,
-      title: Text(
-        "Update iFive Hrms?",
-        style: context.textTheme.bodyMedium
-            ?.copyWith(fontWeight: FontWeight.w500, color: appColor.gray700),
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Dimensions.kVerticalSpaceSmaller,
-
-          Text(
-            'iFive Hrms recommends that you update to the latest version. '
-            'You can keep using this app while downloading the update.',
-            style: context.textTheme.labelLarge,
-          ),
-          Dimensions.kVerticalSpaceSmall,
-          RichText(
-            text: TextSpan(
-              style: context.textTheme.labelLarge,
-              children: [
-                const TextSpan(text: 'Current you have :'),
-                TextSpan(
-                  text: ' V-${widget.packageInfo.version} ',
-                  style: context.textTheme.labelLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          // Dimensions.kVerticalSpaceSmall,
-          RichText(
-            text: TextSpan(
-              style: context.textTheme.labelLarge,
-              children: [
-                const TextSpan(text: 'Now available version :'),
-                TextSpan(
-                  text: ' V-${widget.appVersion.version} ',
-                  style: context.textTheme.labelLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          Dimensions.kVerticalSpaceSmall,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: packageInstaller,
-                child: Text(
-                  "UPDATE NOW",
-                  style: context.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w500, color: appColor.success600),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  void packageInstaller() async {
-    try {
-      String url = "";
-      if (Platform.isAndroid) {
-        String packageName = widget.packageInfo.packageName;
-        url = 'https://play.google.com/store/apps/details?id=$packageName';
-      } else if (Platform.isIOS) {
-        String bundleId = widget.packageInfo.packageName;
-        url = 'https://apps.apple.com/app/id$bundleId';
-      }
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
-    } on PlatformException {
-      Logger().e('Error at Platform. Failed to install apk file.');
-    }
-  }
-}
-/*
 class AppUpdater extends StatefulWidget {
   final String label;
   final AppVersionModel appVersion;
@@ -540,46 +541,29 @@ class _AppUpdaterState extends State<AppUpdater> {
   }
 
   void packageInstaller() async {
+   
     try {
-      ///Android
+      RUpgradeInstallType installType = RUpgradeInstallType.normal;
+      int? id = await RUpgrade.upgrade(widget.appVersion.url ?? '',
+          fileName: widget.appVersion.url!.split('/').last,
+          installType: installType,
+          notificationStyle: notificationStyle,
+          notificationVisibility: notificationVisibility,
+          useDownloadManager: false);
+      upgradeMethod = UpgradeMethod.all;
 
-      String packageName = widget.packageInfo.packageName;
-      String url = 'https://play.google.com/store/apps/details?id=$packageName';
-
-      ///IOS
-      // String bundleId = "com.example.myapp"; // Replace with the Bundle ID of your app
-      // String url = 'https://apps.apple.com/app/$bundleId';
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
+      DownloadStatus? downloadStatus = await RUpgrade.getDownloadStatus(id!);
+      Logger().i("$id, $downloadStatus");
+      RUpgrade.stream.listen((DownloadInfo info) {
+        setState(() {
+          progress = info.percent;
+          status = info.status?.value;
+        });
+        Logger().i("====>${info.percent}");
+      });
     } on PlatformException {
       Logger().e('Error at Platform. Failed to install apk file.');
     }
-
-    // try {
-    //   RUpgradeInstallType installType = RUpgradeInstallType.normal;
-    //   int? id = await RUpgrade.upgrade(widget.appVersion.url ?? '',
-    //       fileName: widget.appVersion.url!.split('/').last,
-    //       installType: installType,
-    //       notificationStyle: notificationStyle,
-    //       notificationVisibility: notificationVisibility,
-    //       useDownloadManager: false);
-    //   upgradeMethod = UpgradeMethod.all;
-    //
-    //   DownloadStatus? downloadStatus = await RUpgrade.getDownloadStatus(id!);
-    //   Logger().i("$id, $downloadStatus");
-    //   RUpgrade.stream.listen((DownloadInfo info) {
-    //     setState(() {
-    //       progress = info.percent;
-    //       status = info.status?.value;
-    //     });
-    //     Logger().i("====>${info.percent}");
-    //   });
-    // } on PlatformException {
-    //   Logger().e('Error at Platform. Failed to install apk file.');
-    // }
   }
 }
 */
