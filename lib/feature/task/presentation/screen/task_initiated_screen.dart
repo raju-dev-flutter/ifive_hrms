@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lottie/lottie.dart';
 
 import '../../../../config/config.dart';
 import '../../../../core/core.dart';
@@ -135,7 +134,11 @@ class _TaskInitiatedScreenState extends State<TaskInitiatedScreen> {
                         badge(
                             color: appColor.warning500,
                             label: (task.priority ?? "").toUpperCase()),
-                        // Dimensions.kHorizontalSpaceSmaller,
+
+                        Dimensions.kHorizontalSpaceSmaller,
+                        badge(
+                            color: appColor.brand600,
+                            label: (task.projectName ?? "").toUpperCase()),
                         // badge(
                         //     color: appColor.blue600,
                         //     label: (task.status ?? "").toUpperCase()),
@@ -460,10 +463,20 @@ class _TaskInitiatedUpdateScreenState extends State<TaskInitiatedUpdateScreen> {
                           ),
                           Dimensions.kHorizontalSpaceSmall,
                           Expanded(
-                            child: Text(
-                              task.task ?? ' ',
-                              style: context.textTheme.bodySmall
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  task.projectName ?? ' ',
+                                  style: context.textTheme.bodySmall
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                Dimensions.kVerticalSpaceSmallest,
+                                Text(
+                                  task.task ?? ' ',
+                                  style: context.textTheme.labelLarge,
+                                ),
+                              ],
                             ),
                           ),
                         ],

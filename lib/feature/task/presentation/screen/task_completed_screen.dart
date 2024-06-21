@@ -108,7 +108,11 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
                   badge(
                       color: appColor.warning500,
                       label: (task.priority ?? "").toUpperCase()),
-                  // Dimensions.kHorizontalSpaceSmaller,
+
+                  Dimensions.kHorizontalSpaceSmaller,
+                  badge(
+                      color: appColor.brand600,
+                      label: (task.projectName ?? "").toUpperCase()),
                   // badge(
                   //     color: appColor.blue600,
                   //     label: (task.status ?? "").toUpperCase()),
@@ -265,6 +269,7 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
 
 class TaskCompletedDetailScreen extends StatefulWidget {
   final TaskPlanner task;
+
   const TaskCompletedDetailScreen({super.key, required this.task});
 
   @override
@@ -315,12 +320,22 @@ class _TaskCompletedDetailScreenState extends State<TaskCompletedDetailScreen> {
                             colorFilter: ColorFilter.mode(
                                 appColor.blue600, BlendMode.srcIn),
                           ),
-                          Dimensions.kHorizontalSpaceSmall,
+                          Dimensions.kHorizontalSpaceMedium,
                           Expanded(
-                            child: Text(
-                              task.task ?? ' ',
-                              style: context.textTheme.bodySmall
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  task.projectName ?? ' ',
+                                  style: context.textTheme.bodySmall
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                Dimensions.kVerticalSpaceSmallest,
+                                Text(
+                                  task.task ?? ' ',
+                                  style: context.textTheme.labelLarge,
+                                ),
+                              ],
                             ),
                           ),
                         ],

@@ -7,28 +7,30 @@ import '../../../../config/config.dart';
 import '../../../../core/core.dart';
 import '../../task.dart';
 
-class TaskPendingScreen extends StatefulWidget {
-  const TaskPendingScreen({super.key});
+class TaskCreatedScreen extends StatefulWidget {
+  const TaskCreatedScreen({super.key});
 
   @override
-  State<TaskPendingScreen> createState() => _TaskPendingScreenState();
+  State<TaskCreatedScreen> createState() => _TaskCreatedScreenState();
 }
 
-class _TaskPendingScreenState extends State<TaskPendingScreen> {
+class _TaskCreatedScreenState extends State<TaskCreatedScreen> {
   late TextEditingController searchController = TextEditingController();
-  final pendingStream = sl<TaskPendingStream>();
+
+  final createdStream = sl<TaskCreatedStream>();
 
   @override
   void initState() {
+    searchController = TextEditingController(text: "");
     super.initState();
     initialCallBack();
-    pendingStream.fetchInitialCallBack();
+    createdStream.fetchInitialCallBack();
   }
 
   Future<void> initialCallBack() async {
-    BlocProvider.of<TaskBarCubit>(context).taskBarItem(TaskItem.PENDING);
+    BlocProvider.of<TaskBarCubit>(context).taskBarItem(TaskItem.INITIATED);
     BlocProvider.of<StatusBasedTaskCubit>(context)
-        .statusBasedTask(status: "Pending", search: searchController.text);
+        .statusBasedTask(status: "Created", search: searchController.text);
   }
 
   @override
@@ -89,7 +91,7 @@ class _TaskPendingScreenState extends State<TaskPendingScreen> {
                     padding: const EdgeInsets.only(
                             left: 16, right: 16, top: 6, bottom: 16)
                         .w,
-                    itemBuilder: (_, i) => $PendingTaskCardUI(task[i]),
+                    itemBuilder: (_, i) => $InitiatedTaskCardUI(task[i]),
                   ),
                 );
               }
@@ -104,14 +106,14 @@ class _TaskPendingScreenState extends State<TaskPendingScreen> {
     );
   }
 
-  Widget $PendingTaskCardUI(TaskPlanner task) {
+  Widget $InitiatedTaskCardUI(TaskPlanner task) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4).w,
       child: InkWell(
         onTap: () => Navigator.pushNamed(
           context,
-          AppRouterPath.taskPendingUpdateScreen,
-          arguments: TaskPendingUpdateScreen(task: task),
+          AppRouterPath.taskCreatedUpdateScreen,
+          arguments: TaskCreatedUpdateScreen(task: task),
         ).then((value) => initialCallBack()),
         borderRadius: Dimensions.kBorderRadiusAllSmaller,
         child: Container(
@@ -137,10 +139,10 @@ class _TaskPendingScreenState extends State<TaskPendingScreen> {
                         badge(
                             color: appColor.brand600,
                             label: (task.projectName ?? "").toUpperCase()),
+                        // Dimensions.kHorizontalSpaceSmaller,
                         // badge(
                         //     color: appColor.blue600,
                         //     label: (task.status ?? "").toUpperCase()),
-
                         Dimensions.kSpacer,
                         if (task.taskType != null && task.taskType == "Reword")
                           badge(
@@ -172,6 +174,7 @@ class _TaskPendingScreenState extends State<TaskPendingScreen> {
                                 Dimensions.kVerticalSpaceSmallest,
                                 Text(
                                   task.description ?? '',
+                                  maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: context.textTheme.labelMedium
                                       ?.copyWith(color: appColor.gray500),
@@ -180,81 +183,49 @@ class _TaskPendingScreenState extends State<TaskPendingScreen> {
                             ],
                           ),
                         ),
-                        Dimensions.kHorizontalSpaceSmaller,
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SizedBox(
-                              width: 46.w,
-                              height: 46.h,
-                              child: CircularProgressIndicator(
-                                value: (task.percentage ?? 0).toDouble() / 100,
-                                backgroundColor: appColor.gray100,
-                                color: appColor.gray100,
-                                valueColor: AlwaysStoppedAnimation<Color?>(
-                                    appColor.success600),
-                                strokeWidth: 10,
-                                strokeCap: StrokeCap.butt,
-                              ),
-                            ),
-                            Positioned(
-                                child: Text(
-                              "${task.percentage ?? ''} %",
-                              style: context.textTheme.labelMedium?.copyWith(
-                                  color: appColor.gray500,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                          ],
-                        ),
                       ],
                     ),
                   ],
                 ),
               ),
               Divider(color: appColor.blue600.withOpacity(.1), height: 0),
-              // Dimensions.kDivider,
               Padding(
                 padding: const EdgeInsets.only(
                         left: 16, top: 12, bottom: 16, right: 16)
                     .w,
                 child: Row(
                   children: [
-                    GestureDetector(
-                      onTap: () => onTimeHistoryModel(task),
-                      child: Row(
+                    ...[
+                      Container(
+                        padding: Dimensions.kPaddingAllSmall,
+                        decoration: BoxDecoration(
+                          color: appColor.blue600.withOpacity(.1),
+                          borderRadius: Dimensions.kBorderRadiusAllSmaller,
+                        ),
+                        child: SvgPicture.asset(
+                          AppSvg.time,
+                          width: 16.w,
+                          colorFilter: ColorFilter.mode(
+                              appColor.blue600, BlendMode.srcIn),
+                        ),
+                      ),
+                      Dimensions.kHorizontalSpaceSmaller,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: Dimensions.kPaddingAllSmall,
-                            decoration: BoxDecoration(
-                              color: appColor.blue600.withOpacity(.1),
-                              borderRadius: Dimensions.kBorderRadiusAllSmaller,
-                            ),
-                            child: SvgPicture.asset(
-                              AppSvg.time,
-                              width: 16.w,
-                              colorFilter: ColorFilter.mode(
-                                  appColor.blue600, BlendMode.srcIn),
-                            ),
+                          Text(
+                            task.taskDate ?? '',
+                            style: context.textTheme.labelMedium
+                                ?.copyWith(color: appColor.gray700),
                           ),
-                          Dimensions.kHorizontalSpaceSmaller,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                task.taskDate ?? '',
-                                style: context.textTheme.labelMedium
-                                    ?.copyWith(color: appColor.gray700),
-                              ),
-                              Text(
-                                "Duration: ${task.duration ?? ''} min",
-                                style: context.textTheme.labelMedium
-                                    ?.copyWith(color: appColor.gray700),
-                              ),
-                            ],
+                          Text(
+                            "Duration: ${task.duration ?? ''} min",
+                            style: context.textTheme.labelMedium
+                                ?.copyWith(color: appColor.gray700),
                           ),
                         ],
                       ),
-                    ),
+                    ],
                     Dimensions.kSpacer,
                     BlocBuilder<TaskCrudBloc, TaskCrudState>(
                       builder: (context, state) {
@@ -269,11 +240,10 @@ class _TaskPendingScreenState extends State<TaskPendingScreen> {
                           );
                         }
                         return ActionButton(
-                          onPressed: () =>
-                              pendingStream.onSubmit(context, task),
+                          onPressed: () => onAssign(task),
                           width: 120,
                           height: 40,
-                          label: "In Progress",
+                          label: "Assign",
                         );
                       },
                     )
@@ -287,102 +257,88 @@ class _TaskPendingScreenState extends State<TaskPendingScreen> {
     );
   }
 
-  void onTimeHistoryModel(TaskPlanner task) {
-    final time = task.taskTimeHistory;
+  void onAssign(TaskPlanner planner) {
+    createdStream.filterUser('');
     AppAlerts.displayContentListAlert(
       context: context,
-      title: "Overall Time",
-      child: Container(
-        height: 300.h,
-        alignment: Alignment.center,
-        child: time!.isEmpty
-            ? const EmptyScreen()
-            : ListView.builder(
-                itemCount: time.length,
-                padding: const EdgeInsets.all(0).w,
-                itemBuilder: (_, i) {
-                  return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                                  vertical: 6, horizontal: 16)
-                              .w,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  time[i].taskStatus ?? "",
-                                  style: context.textTheme.labelSmall
-                                      ?.copyWith(color: appColor.gray800),
-                                ),
-                              ),
-                              Dimensions.kHorizontalSpaceMedium,
-                              Expanded(
-                                child: Text(
-                                  timeFormat(time[i].taskStartTime ?? ""),
-                                  style: context.textTheme.labelSmall
-                                      ?.copyWith(color: appColor.gray800),
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  timeFormat(time[i].taskEndTime ?? ""),
-                                  style: context.textTheme.labelSmall
-                                      ?.copyWith(color: appColor.gray800),
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  timeFormat(time[i].duration ?? ""),
-                                  style: context.textTheme.labelSmall
-                                      ?.copyWith(color: appColor.gray800),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        if (i != time.length - 1)
-                          Divider(
-                              color: appColor.blue600.withOpacity(.1),
-                              height: 0),
-                      ]);
-                }),
+      title: "User List",
+      child: SizedBox(
+        height: 350.h,
+        child: StreamBuilder<List<CommonList>>(
+            stream: createdStream.userList,
+            builder: (context, snapshot) {
+              return Column(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 6)
+                            .w,
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      style: context.textTheme.bodySmall,
+                      onChanged: (val) => createdStream.filterUser(val),
+                      decoration: inputDecoration(label: "Search"),
+                    ),
+                  ),
+                  // Dimensions.kVerticalSpaceSmall,
+                  Expanded(
+                    child: StreamBuilder<List<CommonList>>(
+                        stream: createdStream.filterUserList,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final user = snapshot.data;
+                            if (user!.isEmpty) return Container();
+
+                            return ListView.builder(
+                                itemCount: user.length,
+                                padding: const EdgeInsets.all(0).w,
+                                itemBuilder: (_, i) {
+                                  return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                                  vertical: 6, horizontal: 16)
+                                              .w,
+                                          child: InkWell(
+                                            onTap: () => {
+                                              createdStream
+                                                  .selectAssignTo(user[i]),
+                                              Navigator.pop(context),
+                                              createdStream.onSubmit(
+                                                  context, planner)
+                                            },
+                                            child: Text(user[i].name ?? "",
+                                                style: context
+                                                    .textTheme.labelLarge
+                                                    ?.copyWith(
+                                                        color:
+                                                            appColor.gray800)),
+                                          ),
+                                        ),
+                                        if (i != user.length - 1)
+                                          Divider(
+                                              color: appColor.blue600
+                                                  .withOpacity(.1),
+                                              height: 0),
+                                      ]);
+                                });
+                          }
+                          return Container();
+                        }),
+                  ),
+                ],
+              );
+            }),
       ),
     );
   }
 
-  int tLength(List<TaskTimeHistory> history) =>
-      history.length - 1 < 6 ? history.length : 6;
-
-  String getTimeHistory(TaskTimeHistory time) {
-    final label =
-        "${getTimeStatus(time.taskStatus ?? '')}: ${timeFormat(time.taskStartTime ?? '')} - ${timeFormat(time.taskEndTime ?? '')}";
-
-    return label;
-  }
-
-  String timeFormat(String time) {
-    final splitTime = time.split(' ').last.split('.').first.split(':');
-    return "${splitTime[0]}:${splitTime[1]}:${splitTime[2]}";
-  }
-
-  String getTimeStatus(String label) {
-    switch (label) {
-      case 'In Progress':
-        return 'IN';
-      case 'Testing L1':
-        return 'TL1';
-      case 'Testing L2':
-        return 'TL2';
-      default:
-        return 'T';
-    }
-  }
-
   InputDecoration inputDecoration(
-      {required String label, required Function() onPressed}) {
+      {required String label, Function()? onPressed}) {
     return InputDecoration(
       suffixIcon: InkWell(
         onTap: onPressed,
@@ -406,8 +362,8 @@ class _TaskPendingScreenState extends State<TaskPendingScreen> {
         borderRadius: BorderRadius.circular(6).w,
         borderSide: BorderSide(color: appColor.error600),
       ),
-      labelText: "$label...",
-      labelStyle:
+      hintText: "$label...",
+      hintStyle:
           context.textTheme.labelMedium?.copyWith(color: appColor.gray400),
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0).w,
       errorStyle:
@@ -432,26 +388,26 @@ class _TaskPendingScreenState extends State<TaskPendingScreen> {
   }
 }
 
-class TaskPendingUpdateScreen extends StatefulWidget {
+class TaskCreatedUpdateScreen extends StatefulWidget {
   final TaskPlanner task;
 
-  const TaskPendingUpdateScreen({super.key, required this.task});
+  const TaskCreatedUpdateScreen({super.key, required this.task});
 
   @override
-  State<TaskPendingUpdateScreen> createState() =>
-      _TaskPendingUpdateScreenState();
+  State<TaskCreatedUpdateScreen> createState() =>
+      _TaskCreatedUpdateScreenState();
 }
 
-class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
+class _TaskCreatedUpdateScreenState extends State<TaskCreatedUpdateScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final pendingStream = sl<TaskPendingStream>();
+  final createdStream = sl<TaskCreatedStream>();
 
   @override
   void initState() {
     super.initState();
 
-    pendingStream.fetchInitialCallBack();
+    createdStream.fetchInitialCallBack();
   }
 
   @override
@@ -463,7 +419,7 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
         preferredSize: Size(context.deviceSize.width, 52.h),
         child: CustomAppBar(
           onPressed: () => Navigator.pop(context),
-          title: "Pending Task Update",
+          title: "Update Created Task ",
         ),
       ),
       body: BlocListener<TaskCrudBloc, TaskCrudState>(
@@ -471,7 +427,7 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
           if (state is TaskCrudSuccess) {
             Navigator.pop(context);
             AppAlerts.displaySnackBar(
-                context, "Task Updated Successfully", true);
+                context, "Created Task Updated Successfully", true);
           }
           if (state is TaskCrudFailure) {
             AppAlerts.displaySnackBar(context, state.message, false);
@@ -535,13 +491,13 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
                     "Task Description:",
                     overflow: TextOverflow.ellipsis,
                     style: context.textTheme.labelLarge
-                        ?.copyWith(color: appColor.gray500),
+                        ?.copyWith(color: appColor.gray600),
                   ),
                   Dimensions.kVerticalSpaceSmallest,
                   Text(
                     task.description ?? "",
                     style: context.textTheme.labelLarge
-                        ?.copyWith(fontWeight: FontWeight.w500),
+                        ?.copyWith(color: appColor.gray800),
                   ),
                 ],
                 if (isEmpty(task.reworkRemarks)) ...[
@@ -550,13 +506,13 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
                     "Rework Task Description:",
                     overflow: TextOverflow.ellipsis,
                     style: context.textTheme.labelLarge
-                        ?.copyWith(color: appColor.gray500),
+                        ?.copyWith(color: appColor.gray600),
                   ),
                   Dimensions.kVerticalSpaceSmallest,
                   Text(
                     task.reworkRemarks ?? "",
                     style: context.textTheme.labelLarge
-                        ?.copyWith(fontWeight: FontWeight.w500),
+                        ?.copyWith(color: appColor.gray800),
                   ),
                 ],
                 Dimensions.kVerticalSpaceSmaller,
@@ -593,40 +549,6 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
             ),
           ),
         ),
-        // if (task.taskTimeHistory!.isNotEmpty)
-        //   Padding(
-        //     padding: const EdgeInsets.fromLTRB(16, 8, 16, 8).w,
-        //     child: Container(
-        //       padding: Dimensions.kPaddingAllMedium,
-        //       width: context.deviceSize.width,
-        //       decoration: boxDecoration(),
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Text(
-        //             "Task Time History",
-        //             overflow: TextOverflow.ellipsis,
-        //             maxLines: 2,
-        //             style: context.textTheme.labelLarge,
-        //           ),
-        //           Dimensions.kVerticalSpaceSmaller,
-        //           Wrap(
-        //             crossAxisAlignment: WrapCrossAlignment.start,
-        //             runAlignment: WrapAlignment.start,
-        //             spacing: 2,
-        //             runSpacing: 2,
-        //             children: [
-        //               for (var i = 0; i < tLength(task.taskTimeHistory!); i++)
-        //                 badge(
-        //                   color: appColor.blue600,
-        //                   label: getTimeHistory(task.taskTimeHistory![i]),
-        //                 ),
-        //             ],
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
         if (isEmpty(task.taskGivenByName) ||
             isEmpty(task.assignToName) ||
             isEmpty(task.supportName) ||
@@ -689,30 +611,36 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
               ),
             ),
           ),
-        // if (!isCheckTime(task.taskTimeHistory))
-        // Padding(
-        //   padding: const EdgeInsets.fromLTRB(16, 8, 16, 16).w,
-        //   child: Container(
-        //     padding: Dimensions.kPaddingAllMedium,
-        //     width: context.deviceSize.width,
-        //     decoration: boxDecoration(),
-        //     child: Column(
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         CustomStreamDropDownWidget(
-        //           label: "Status",
-        //           required: true,
-        //           streamList: pendingStream.statusList,
-        //           valueListInit: pendingStream.statusListInit,
-        //           onChanged: (params) {
-        //             pendingStream.status(params);
-        //             setState(() {});
-        //           },
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 16).w,
+          child: Container(
+            padding: Dimensions.kPaddingAllMedium,
+            width: context.deviceSize.width,
+            decoration: boxDecoration(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomTextFormField(
+                  label: "Status",
+                  controller: createdStream.statusController,
+                  readOnly: true,
+                  required: true,
+                ),
+                Dimensions.kVerticalSpaceSmaller,
+                CustomStreamDropDownWidget(
+                  label: "Assign To",
+                  required: true,
+                  streamList: createdStream.userList,
+                  valueListInit: createdStream.userListInit,
+                  onChanged: (params) {
+                    createdStream.assignTo(params);
+                    setState(() {});
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
         BlocBuilder<TaskCrudBloc, TaskCrudState>(
           builder: (context, state) {
             if (state is TaskCrudLoading) {
@@ -729,9 +657,9 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
                 width: context.deviceSize.width,
                 decoration: boxDecoration(),
                 child: ActionButton(
-                  onPressed: () => pendingStream.onSubmit(context, task),
+                  onPressed: () => createdStream.onSubmit(context, task),
                   child: Text(
-                    'UPDATE IN-PROGRESS',
+                    'UPDATE',
                     style: context.textTheme.labelLarge
                         ?.copyWith(color: Colors.white),
                   ),
@@ -750,7 +678,8 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
     return false;
   }
 
-  int tLength(List<TaskTimeHistory> history) => history.length;
+  int tLength(List<TaskTimeHistory> history) =>
+      history.length - 1 <= 6 ? history.length : 6;
 
   String getTimeHistory(TaskTimeHistory time) {
     final label =
@@ -789,6 +718,35 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
         style: context.textTheme.labelSmall?.copyWith(
             color: color ?? appColor.blue100, fontWeight: FontWeight.bold),
       ),
+    );
+  }
+
+  Widget taskProperty(
+      {required IconData icon, required String label, required String value}) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Row(
+            children: [
+              Icon(icon, size: 16.w, color: appColor.blue600),
+              Dimensions.kHorizontalSpaceSmaller,
+              Text(label, style: context.textTheme.labelLarge),
+            ],
+          ),
+        ),
+        Dimensions.kHorizontalSpaceSmallest,
+        Expanded(
+          flex: 3,
+          child: Text(
+            value,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+            style: context.textTheme.labelLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
     );
   }
 
@@ -832,39 +790,6 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
           )
         ],
       ),
-    );
-  }
-
-  Widget taskProperty(
-      {required IconData icon, required String label, required String value}) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: Row(
-            children: [
-              Icon(icon, size: 16.w, color: appColor.blue600),
-              Dimensions.kHorizontalSpaceSmaller,
-              Text(
-                label,
-                style: context.textTheme.labelLarge
-                    ?.copyWith(color: appColor.gray500),
-              ),
-            ],
-          ),
-        ),
-        Dimensions.kHorizontalSpaceSmallest,
-        Expanded(
-          flex: 3,
-          child: Text(
-            value,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-            style: context.textTheme.labelLarge
-                ?.copyWith(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
     );
   }
 

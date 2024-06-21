@@ -136,7 +136,10 @@ class _TaskInProgressScreenState extends State<TaskInProgressScreen>
                           color: appColor.warning500,
                           label: (task.priority ?? "").toUpperCase(),
                         ),
-                        // Dimensions.kHorizontalSpaceSmaller,
+                        Dimensions.kHorizontalSpaceSmaller,
+                        badge(
+                            color: appColor.brand600,
+                            label: (task.projectName ?? "").toUpperCase()),
                         // badge(
                         //     color: appColor.blue600,
                         //     label: (task.status ?? "").toUpperCase()),
@@ -565,10 +568,20 @@ class _TaskInProgressUpdateScreenState extends State<TaskInProgressUpdateScreen>
                           ),
                           Dimensions.kHorizontalSpaceSmall,
                           Expanded(
-                            child: Text(
-                              task.task ?? ' ',
-                              style: context.textTheme.bodySmall
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  task.projectName ?? ' ',
+                                  style: context.textTheme.bodySmall
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                Dimensions.kVerticalSpaceSmallest,
+                                Text(
+                                  task.task ?? ' ',
+                                  style: context.textTheme.labelLarge,
+                                ),
+                              ],
                             ),
                           ),
                         ],

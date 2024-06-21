@@ -41,11 +41,7 @@
 	<key>NSHealthShareUsageDescription</key>
 	<string>Your app requires access to health data.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>Your app requires write access to health data.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Your app requires access to location services for background use.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Your app requires access to location services for background use.</string>
+	<string>Your app requires write access to health data.</string> 
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>NSLocationTemporaryUsageDescriptionTypeBackground</key>
@@ -53,8 +49,13 @@
 		<key>NSLocationTemporaryUsageDescriptionTypeForeground</key>
 		<string>Your app requires access to location services when in use.</string>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your app requires access to location services when in use.</string>
+    <!-- Location Permissions -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>We need your location to show your position on the map.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>We need your location to track your position even when the app is in the background.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>We need your location to track your position even when the app is in the background.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Your app requires access to the microphone.</string>
 	<key>NSMotionUsageDescription</key>
@@ -77,5 +78,22 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<!-- Notifications Permissions -->
+    <key>UNNotificationAlertSound</key>
+    <true/>
+    <key>UNNotificationAlertBadge</key>
+    <true/>
+    <key>UNNotificationAlertAllowsAlerts</key>
+    <true/> 
+    <!-- Background Modes -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>location</string>
+    </array> 
+    <!-- Firebase Configuration -->
+    <key>FirebaseAppDelegateProxyEnabled</key>
+    <false/>
+
 </dict>
 </plist>

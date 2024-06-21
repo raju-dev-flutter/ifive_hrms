@@ -9,14 +9,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.22"
-  action_slider:
-    dependency: "direct main"
-    description:
-      name: action_slider
-      sha256: fad0720cde9bf06c12594c15da17dba087556a3285875a91aee3d3a64a3072e2
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.0"
   archive:
     dependency: transitive
     description:
@@ -193,14 +185,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
-  easy_date_timeline:
-    dependency: "direct main"
-    description:
-      name: easy_date_timeline
-      sha256: "645b2021f921f79f29c8ca56d7fbf93b119261bf8c62a0fa0a2ce28c4e17070d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.3"
   equatable:
     dependency: "direct main"
     description:
@@ -445,14 +429,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  fluttertoast:
-    dependency: "direct main"
-    description:
-      name: fluttertoast
-      sha256: "81b68579e23fcbcada2db3d50302813d2371664afe6165bc78148050ab94bf66"
-      url: "https://pub.dev"
-    source: hosted
-    version: "8.2.5"
   geocoding:
     dependency: "direct main"
     description:
@@ -933,14 +909,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.1"
-  r_upgrade:
-    dependency: "direct main"
-    description:
-      name: r_upgrade
-      sha256: "14337dd29cf67265ec86e1d518212cb6b6eafe9167fd366b050ccb1656461c55"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.2"
   rxdart:
     dependency: "direct main"
     description:

@@ -59,15 +59,12 @@ class _NewCallDatabaseScreenState extends State<NewCallDatabaseScreen> {
               return const Expanded(child: DatabaseCardShimmerWidget());
             }
             if (state is NewCallDatabaseFailed) {
-              return EmptyScreen(onPressed: refreshCallBack);
+              return Expanded(child: EmptyScreen(onPressed: refreshCallBack));
             }
             if (state is NewCallDatabaseLoaded) {
               if (state.database.isEmpty) {
-                return EmptyScreen(onPressed: refreshCallBack);
+                return Expanded(child: EmptyScreen(onPressed: refreshCallBack));
               }
-              // if (state.hasReachedMax) {
-              //   Fluttertoast.showToast(msg: 'End of list');
-              // }
               return Expanded(
                 child: RefreshIndicator(
                   onRefresh: refreshCallBack,

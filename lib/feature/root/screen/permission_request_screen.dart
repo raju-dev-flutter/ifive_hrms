@@ -45,7 +45,7 @@ class PermissionRequestScreen extends StatelessWidget {
                     text: TextSpan(
                       text: 'OK! ',
                       style: context.textTheme.headlineLarge
-                          ?.copyWith(color: appColor.success600),
+                          ?.copyWith(color: appColor.brand600),
                       children: [
                         TextSpan(
                           text: 'we need some access!',
@@ -60,9 +60,16 @@ class PermissionRequestScreen extends StatelessWidget {
                     svg: AppSvg.location,
                     title: "Location Permission",
                     description:
-                        "EXHILAR collects location data to enable location even when the app is Always in use. This background permission is required for attendance menu in our application we fetch the details for manage user location.",
+                        "iFive HRMS collects location data to enable location even when the app is always in use. This background permission is required for the attendance menu in our application. We fetch the details to manage user location.",
                   ),
                   const SizedBox(height: 16),
+                  resourceConstants(
+                    context: context,
+                    svg: AppSvg.camera,
+                    title: "Camera Permission",
+                    description:
+                        "Allow Ifive Hrms to take pictures and record video.",
+                  ),
                   const SizedBox(height: 60),
                   InkWell(
                     onTap: () async {
@@ -81,13 +88,13 @@ class PermissionRequestScreen extends StatelessWidget {
                       height: 58,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: appColor.success100,
+                        color: appColor.brand100,
                         borderRadius: Dimensions.kBorderRadiusAllLarger,
                       ),
                       child: Text(
                         'Allow All Access',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: appColor.success600,
+                            color: appColor.brand600,
                             fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -111,8 +118,7 @@ class PermissionRequestScreen extends StatelessWidget {
       children: [
         SvgPicture.asset(svg,
             width: Dimensions.iconSizeSmall,
-            colorFilter:
-                ColorFilter.mode(appColor.success600, BlendMode.srcIn)),
+            colorFilter: ColorFilter.mode(appColor.brand600, BlendMode.srcIn)),
         Dimensions.kHorizontalSpaceMedium,
         Expanded(
           child: Column(

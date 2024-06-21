@@ -11,6 +11,7 @@ import '../../../../core/core.dart';
 
 class TaskScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
+
   const TaskScreen({super.key, required this.scaffold});
 
   @override
@@ -67,7 +68,7 @@ class _TaskScreenState extends State<TaskScreen> {
   Widget build(BuildContext context) {
     // final taskBarCubit = BlocProvider.of<TaskBarCubit>(context);
     return DefaultTabController(
-        length: 6,
+        length: 7,
         child: BlocListener<AttendanceStatusCubit, AttendanceStatusState>(
           listener: (context, state) {
             if (state is AttendanceStatusFailed) {
@@ -101,6 +102,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 labelColor: appColor.blue600,
                 unselectedLabelColor: appColor.gray600,
                 tabs: const [
+                  Tab(icon: Text('Created')),
                   Tab(icon: Text('Initiated')),
                   Tab(icon: Text('Pending')),
                   Tab(icon: Text('In Progress')),
@@ -112,6 +114,7 @@ class _TaskScreenState extends State<TaskScreen> {
               const Expanded(
                 child: TabBarView(
                   children: [
+                    TaskCreatedScreen(),
                     TaskInitiatedScreen(),
                     TaskPendingScreen(),
                     TaskInProgressScreen(),

@@ -68,6 +68,7 @@ class AppRouterPath {
   static const String appreciationScreen = "appreciation_screen";
   static const String renewalTrackingScreen = "renewal_tracking_screen";
 
+  static const String taskCreatedScreen = "task_created_screen";
   static const String taskInitiatedScreen = "task_initiated_screen";
   static const String taskPendingScreen = "task_pending_screen";
   static const String taskInProgressScreen = "task_in_progress_screen";
@@ -77,6 +78,7 @@ class AppRouterPath {
   static const String taskCompletedDetailScreen =
       "task_completed_detail_screen";
 
+  static const String taskCreatedUpdateScreen = "task_created_update_screen";
   static const String taskInitiatedUpdateScreen =
       "task_initiated_update_screen";
   static const String taskPendingUpdateScreen = "task_pending_update_screen";

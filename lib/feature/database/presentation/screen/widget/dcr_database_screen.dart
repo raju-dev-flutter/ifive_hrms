@@ -59,11 +59,11 @@ class _DcrDatabaseScreenState extends State<DcrDatabaseScreen> {
               return const Expanded(child: DatabaseCardShimmerWidget());
             }
             if (state is DcrDatabaseFailed) {
-              return EmptyScreen(onPressed: refreshCallBack);
+              return Expanded(child: EmptyScreen(onPressed: refreshCallBack));
             }
             if (state is DcrDatabaseLoaded) {
               if (state.database.isEmpty) {
-                return EmptyScreen(onPressed: refreshCallBack);
+                return Expanded(child: EmptyScreen(onPressed: refreshCallBack));
               }
               // if (state.hasReachedMax) {
               //   Fluttertoast.showToast(msg: 'End of list');

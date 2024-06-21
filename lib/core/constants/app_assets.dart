@@ -30,6 +30,7 @@ class AppSvg {
   static const String location = "${baseSvg}location.svg";
   static const String logout = "${baseSvg}logout.svg";
 
+  static const String camera = "${baseSvg}camera.svg";
   static const String time = "${baseSvg}clock.svg";
   static const String task = "${baseSvg}task.svg";
   static const String calendar = "${baseSvg}calendar.svg";

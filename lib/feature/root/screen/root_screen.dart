@@ -8,8 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:r_upgrade/r_upgrade.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/config.dart';
@@ -37,8 +35,6 @@ class _RootScreenState extends State<RootScreen> {
     installerStore: 'UNKNOWN',
   );
 
-  final versionModel = AppVersionModel(url: "", version: "1.4.3");
-
   @override
   void initState() {
     super.initState();
@@ -48,15 +44,6 @@ class _RootScreenState extends State<RootScreen> {
   Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
     setState(() => _packageInfo = info);
-    _requestPermission(Permission.requestInstallPackages);
-
-    // BlocProvider.of<AppVersionCheckerCubit>(context, listen: false)
-    //     .appVersion();
-  }
-
-  void _requestPermission(Permission permission) async {
-    var status = await permission.status;
-    if (status.isDenied) await permission.request();
 
     BlocProvider.of<AppVersionCheckerCubit>(context, listen: false)
         .appVersion();
@@ -279,111 +266,6 @@ class _RootScreenState extends State<RootScreen> {
   }
 }
 
-// class AppUpdater extends StatefulWidget {
-//   final String label;
-//   final AppVersionModel appVersion;
-//   final PackageInfo packageInfo;
-//
-//   const AppUpdater(
-//       {super.key,
-//       required this.appVersion,
-//       required this.packageInfo,
-//       required this.label});
-//
-//   @override
-//   State<AppUpdater> createState() => _AppUpdaterState();
-// }
-//
-// class _AppUpdaterState extends State<AppUpdater> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return AlertDialog(
-//       backgroundColor: appColor.white,
-//       alignment: Alignment.center,
-//       title: Text(
-//         "Update iFive Hrms?",
-//         style: context.textTheme.bodyMedium
-//             ?.copyWith(fontWeight: FontWeight.w500, color: appColor.gray700),
-//       ),
-//       content: Column(
-//         mainAxisSize: MainAxisSize.min,
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Dimensions.kVerticalSpaceSmaller,
-//
-//           Text(
-//             'iFive Hrms recommends that you update to the latest version. '
-//             'You can keep using this app while downloading the update.',
-//             style: context.textTheme.labelLarge,
-//           ),
-//           Dimensions.kVerticalSpaceSmall,
-//           RichText(
-//             text: TextSpan(
-//               style: context.textTheme.labelLarge,
-//               children: [
-//                 const TextSpan(text: 'Current you have :'),
-//                 TextSpan(
-//                   text: ' V-${widget.packageInfo.version} ',
-//                   style: context.textTheme.labelLarge
-//                       ?.copyWith(fontWeight: FontWeight.bold),
-//                 ),
-//               ],
-//             ),
-//           ),
-//           // Dimensions.kVerticalSpaceSmall,
-//           RichText(
-//             text: TextSpan(
-//               style: context.textTheme.labelLarge,
-//               children: [
-//                 const TextSpan(text: 'Now available version :'),
-//                 TextSpan(
-//                   text: ' V-${widget.appVersion.version} ',
-//                   style: context.textTheme.labelLarge
-//                       ?.copyWith(fontWeight: FontWeight.bold),
-//                 ),
-//               ],
-//             ),
-//           ),
-//           Dimensions.kVerticalSpaceSmall,
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               TextButton(
-//                 onPressed: packageInstaller,
-//                 child: Text(
-//                   "UPDATE NOW",
-//                   style: context.textTheme.labelLarge?.copyWith(
-//                       fontWeight: FontWeight.w500, color: appColor.success600),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   void packageInstaller() async {
-//     try {
-//       String url = "";
-//       if (Platform.isAndroid) {
-//         String packageName = widget.packageInfo.packageName;
-//         url = 'https://play.google.com/store/apps/details?id=$packageName';
-//       } else if (Platform.isIOS) {
-//         String bundleId = widget.packageInfo.packageName;
-//         url = 'https://apps.apple.com/app/id$bundleId';
-//       }
-//       if (await canLaunch(url)) {
-//         await launch(url);
-//       } else {
-//         throw 'Could not launch $url';
-//       }
-//     } on PlatformException {
-//       Logger().e('Error at Platform. Failed to install apk file.');
-//     }
-//   }
-// }
-
 class AppUpdater extends StatefulWidget {
   final String label;
   final AppVersionModel appVersion;
@@ -400,29 +282,13 @@ class AppUpdater extends StatefulWidget {
 }
 
 class _AppUpdaterState extends State<AppUpdater> {
-  double? progress = 0;
-  int? status = 0;
-
-  RUpgradeInstallType installType = RUpgradeInstallType.normal;
-  NotificationVisibility notificationVisibility =
-      NotificationVisibility.VISIBILITY_VISIBLE;
-  NotificationStyle notificationStyle = NotificationStyle.planTime;
-  UpgradeMethod? upgradeMethod;
-
-  @override
-  void initState() {
-    super.initState();
-
-    RUpgrade.setDebug(true);
-  }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: appColor.white,
       alignment: Alignment.center,
       title: Text(
-        "Update App ?",
+        "Update iFive Hrms?",
         style: context.textTheme.bodyMedium
             ?.copyWith(fontWeight: FontWeight.w500, color: appColor.gray700),
       ),
@@ -431,139 +297,76 @@ class _AppUpdaterState extends State<AppUpdater> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Dimensions.kVerticalSpaceSmaller,
+
+          Text(
+            'iFive Hrms recommends that you update to the latest version. '
+            'You can keep using this app while downloading the update.',
+            style: context.textTheme.labelLarge,
+          ),
+          Dimensions.kVerticalSpaceSmall,
           RichText(
             text: TextSpan(
               style: context.textTheme.labelLarge,
               children: [
-                TextSpan(text: 'A ${widget.label} version of '),
+                const TextSpan(text: 'Current you have :'),
                 TextSpan(
-                  text: '${widget.packageInfo.packageName} ',
-                  style: context.textTheme.labelLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const TextSpan(text: 'is available! Version '),
-                TextSpan(
-                  text: '${widget.appVersion.version} ',
-                  style: context.textTheme.labelLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const TextSpan(text: ' is now available you have '),
-                TextSpan(
-                  text: widget.packageInfo.version,
+                  text: ' V-${widget.packageInfo.version} ',
                   style: context.textTheme.labelLarge
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
           ),
-          // Dimensions.kVerticalSpaceSmaller,
-          // Text("Would you like to upgrade it now?",
-          //     style: context.textTheme.labelLarge),
-          Dimensions.kVerticalSpaceSmall,
-          (progress != 0.0 && progress != null) || status == 3
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    status != 3
-                        ? Center(
-                            child: RichText(
-                              text: TextSpan(
-                                style: context.textTheme.labelLarge?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: appColor.success600),
-                                children: [
-                                  const TextSpan(text: '!!!...DOWNLOADING '),
-                                  TextSpan(
-                                    text: "${progress!} % ",
-                                    style: context.textTheme.labelLarge
-                                        ?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            color: appColor.success900),
-                                  ),
-                                  const TextSpan(text: "...!!!"),
-                                ],
-                              ),
-                            ),
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "!!!...DOWNLOAD COMPLETED...!!!",
-                                style: context.textTheme.labelLarge?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: appColor.warning600),
-                              )
-                            ],
-                          ),
-                    Dimensions.kVerticalSpaceSmaller,
-                    status == 3
-                        ? Center(
-                            child: TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text(
-                                "OK",
-                                style: context.textTheme.labelLarge?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: appColor.success600),
-                              ),
-                            ),
-                          )
-                        : const SizedBox(),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // TextButton(
-                    //   onPressed: () => {Navigator.pop(context)},
-                    //   child: Text(
-                    //     "LATER",
-                    //     style: context.textTheme.labelLarge?.copyWith(
-                    //         fontWeight: FontWeight.w500,
-                    //         color: appColor.warning600),
-                    //   ),
-                    // ),
-                    TextButton(
-                      onPressed: packageInstaller,
-                      child: Text(
-                        "UPDATE NOW",
-                        style: context.textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: appColor.success600),
-                      ),
-                    ),
-                  ],
+          // Dimensions.kVerticalSpaceSmall,
+          RichText(
+            text: TextSpan(
+              style: context.textTheme.labelLarge,
+              children: [
+                const TextSpan(text: 'Now available version :'),
+                TextSpan(
+                  text: ' V-${widget.appVersion.version} ',
+                  style: context.textTheme.labelLarge
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
+              ],
+            ),
+          ),
+          Dimensions.kVerticalSpaceSmall,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: packageInstaller,
+                child: Text(
+                  "UPDATE NOW",
+                  style: context.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.w500, color: appColor.success600),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
   void packageInstaller() async {
-   
     try {
-      RUpgradeInstallType installType = RUpgradeInstallType.normal;
-      int? id = await RUpgrade.upgrade(widget.appVersion.url ?? '',
-          fileName: widget.appVersion.url!.split('/').last,
-          installType: installType,
-          notificationStyle: notificationStyle,
-          notificationVisibility: notificationVisibility,
-          useDownloadManager: false);
-      upgradeMethod = UpgradeMethod.all;
-
-      DownloadStatus? downloadStatus = await RUpgrade.getDownloadStatus(id!);
-      Logger().i("$id, $downloadStatus");
-      RUpgrade.stream.listen((DownloadInfo info) {
-        setState(() {
-          progress = info.percent;
-          status = info.status?.value;
-        });
-        Logger().i("====>${info.percent}");
-      });
+      String url = "";
+      if (Platform.isAndroid) {
+        String packageName = widget.packageInfo.packageName;
+        url = 'https://play.google.com/store/apps/details?id=$packageName';
+      } else if (Platform.isIOS) {
+        String bundleId = widget.packageInfo.packageName;
+        url = 'https://apps.apple.com/app/id$bundleId';
+      }
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
     } on PlatformException {
       Logger().e('Error at Platform. Failed to install apk file.');
     }
   }
 }
-*/

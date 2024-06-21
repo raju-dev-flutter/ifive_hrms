@@ -63,50 +63,65 @@ class SupportTaskStream {
   final _endDateTime = BehaviorSubject<DateTime?>();
 
   Stream<List<CommonList>> get statusList => _statusList.stream;
+
   ValueStream<CommonList> get statusListInit => _statusListInit.stream;
 
   Stream<List<CommonList>> get assignList => _assignList.stream;
+
   ValueStream<CommonList> get assignListInit => _assignListInit.stream;
 
   Stream<List<CommonList>> get givenByList => _givenByList.stream;
+
   ValueStream<CommonList> get givenByListInit => _givenByListInit.stream;
 
   Stream<List<CommonList>> get typeList => _typeList.stream;
+
   ValueStream<CommonList> get typeListInit => _typeListInit.stream;
 
   Stream<List<CommonList>> get discussList => _discussList.stream;
+
   ValueStream<CommonList> get discussListInit => _discussListInit.stream;
 
   Stream<List<CommonList>> get teamList => _teamList.stream;
+
   ValueStream<CommonList> get teamListInit => _teamListInit.stream;
 
   Stream<List<CommonList>> get projectList => _projectList.stream;
+
   ValueStream<CommonList> get projectListInit => _projectListInit.stream;
 
   Stream<List<CommonList>> get priorityList => _priorityList.stream;
+
   ValueStream<CommonList> get priorityListInit => _priorityListInit.stream;
 
   ValueStream<DateTime?> get startDate => _startDate.stream;
+
   ValueStream<String?> get selectStartDate => _selectStartDate.stream;
 
   ValueStream<DateTime?> get endDate => _endDate.stream;
+
   ValueStream<String?> get selectEndDate => _selectEndDate.stream;
 
   ValueStream<TimeOfDay?> get startTime => _startTime.stream;
+
   ValueStream<TimeOfDay?> get endTime => _endTime.stream;
 
   ValueStream<String> get selectStartTime => _selectStartTime.stream;
+
   ValueStream<String> get selectEndTime => _selectEndTime.stream;
 
   ValueStream<DateTime?> get startDateTime => _startDateTime.stream;
+
   ValueStream<DateTime?> get endDateTime => _endDateTime.stream;
 
   void fetchInitialCallBack() async {
     _statusList.sink.add([
+      CommonList(id: 1, name: "Created"),
       CommonList(id: 1, name: "Initiated"),
       CommonList(id: 2, name: "Pending"),
       CommonList(id: 3, name: "Completed"),
     ]);
+
     _statusListInit.sink.add(_statusList.valueOrNull?.first ?? CommonList());
 
     _typeList.sink.add([

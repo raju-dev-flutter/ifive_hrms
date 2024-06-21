@@ -140,6 +140,7 @@ Future<void> init() async {
         leaveMode: sl(),
         leaveForward: sl(),
         leaveBalanceCalculator: sl()))
+    ..registerFactory(() => TaskCreatedStream(employeeListUseCase: sl()))
     ..registerFactory(() => TaskInitiatedStream(employeeListUseCase: sl()))
     ..registerFactory(() => TaskPendingStream())
     ..registerFactory(() => TaskInProgressStream(employeeListUseCase: sl()))

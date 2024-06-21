@@ -59,11 +59,11 @@ class _PipelineDatabaseScreenState extends State<PipelineDatabaseScreen> {
               return const Expanded(child: DatabaseCardShimmerWidget());
             }
             if (state is PipelineDatabaseFailed) {
-              return EmptyScreen(onPressed: refreshCallBack);
+              return Expanded(child: EmptyScreen(onPressed: refreshCallBack));
             }
             if (state is PipelineDatabaseLoaded) {
               if (state.database.isEmpty) {
-                return EmptyScreen(onPressed: refreshCallBack);
+                return Expanded(child: EmptyScreen(onPressed: refreshCallBack));
               }
               // if (state.hasReachedMax) {
               //   Fluttertoast.showToast(msg: 'End of list');

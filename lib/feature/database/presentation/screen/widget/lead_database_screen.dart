@@ -58,11 +58,11 @@ class _LeadDatabaseScreenState extends State<LeadDatabaseScreen> {
               return const Expanded(child: DatabaseCardShimmerWidget());
             }
             if (state is LeadDatabaseFailed) {
-              return EmptyScreen(onPressed: refreshCallBack);
+              return Expanded(child: EmptyScreen(onPressed: refreshCallBack));
             }
             if (state is LeadDatabaseLoaded) {
               if (state.database.isEmpty) {
-                return EmptyScreen(onPressed: refreshCallBack);
+                return Expanded(child: EmptyScreen(onPressed: refreshCallBack));
               }
               // if (state.hasReachedMax) {
               //   Fluttertoast.showToast(msg: 'End of list');

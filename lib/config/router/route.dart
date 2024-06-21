@@ -199,6 +199,14 @@ class AppRouter {
 
       /* ========= Task Route ============= */
 
+      case AppRouterPath.taskCreatedScreen:
+        return MaterialPageRoute(builder: (_) => const TaskCreatedScreen());
+
+      case AppRouterPath.taskCreatedUpdateScreen:
+        final arg = settings.arguments as TaskCreatedUpdateScreen;
+        return MaterialPageRoute(
+            builder: (_) => TaskCreatedUpdateScreen(task: arg.task));
+
       case AppRouterPath.taskInitiatedScreen:
         return MaterialPageRoute(builder: (_) => const TaskInitiatedScreen());
 
