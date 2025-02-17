@@ -10,6 +10,7 @@ import '../../../feature.dart';
 
 class MisspunchUpdateScreen extends StatefulWidget {
   final MisspunchApproved missPunch;
+
   const MisspunchUpdateScreen({super.key, required this.missPunch});
 
   @override
@@ -44,20 +45,10 @@ class _MisspunchUpdateScreenState extends State<MisspunchUpdateScreen> {
       padding: Dimensions.kPaddingAllMedium,
       child: BlocConsumer<MisspunchCrudBloc, MisspunchCrudState>(
         listener: (context, state) {
-          // if (state is MisspunchCrudSuccess) {
-          //   Navigator.pop(context);
-          //   AppAlerts.displaySnackBar(
-          //       context, "Misspunch Successfully  Updated", true);
-          // }
-          // if (state is MisspunchCrudFailed) {
-          //   AppAlerts.displaySnackBar(context, "Network Error", false);
-          // }
           if (state is MisspunchCrudSuccess) {
             Navigator.pop(context);
             AppAlerts.displaySnackBar(
                 context, "Misspunch Successfully Updated", true);
-            // AppAlerts.displaySuccessAlert(
-            //     context, "Misspunch", "Misspunch Successfully Updated");
           }
           if (state is MisspunchCrudFailed) {
             if (state.message == "Invalid Token") {
@@ -65,11 +56,8 @@ class _MisspunchUpdateScreenState extends State<MisspunchUpdateScreen> {
                   .add(const LoggedOut());
             } else if (state.message == "Network Error") {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayErrorAlert(context, "Misspunch", state.message);
             } else {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayWarningAlert(
-              //     context, "Misspunch", state.message);
             }
           }
         },
@@ -165,9 +153,12 @@ class _MisspunchUpdateScreenState extends State<MisspunchUpdateScreen> {
                       children: [
                         Expanded(
                           child: status != "REJECTED"
-                              ? DefaultActionButton(
+                              ? ActionButton(
                                   onPressed: () => changeState("REJECTED"),
-                                  label: "REJECTED")
+                                  color: appColor.gray100,
+                                  textColor: appColor.gray600,
+                                  label: "REJECTED",
+                                )
                               : ActionButton(
                                   onPressed: () => changeState(""),
                                   color: appColor.error600,
@@ -181,9 +172,12 @@ class _MisspunchUpdateScreenState extends State<MisspunchUpdateScreen> {
                         Dimensions.kHorizontalSpaceSmaller,
                         Expanded(
                           child: status != "APPROVED"
-                              ? DefaultActionButton(
+                              ? ActionButton(
                                   onPressed: () => changeState("APPROVED"),
-                                  label: "APPROVED")
+                                  color: appColor.gray100,
+                                  textColor: appColor.gray600,
+                                  label: "APPROVED",
+                                )
                               : ActionButton(
                                   onPressed: () => changeState(""),
                                   color: appColor.success600,
@@ -204,19 +198,20 @@ class _MisspunchUpdateScreenState extends State<MisspunchUpdateScreen> {
                       required: false,
                     ),
                     Dimensions.kVerticalSpaceMedium,
-                    state is MisspunchCrudLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : status == ""
-                            ? const DefaultActionButton(label: "SUBMIT")
-                            : ActionButton(
-                                onPressed: onSubmit,
-                                color: appColor.warning600,
-                                child: Text(
-                                  'SUBMIT',
-                                  style: context.textTheme.labelLarge
-                                      ?.copyWith(color: appColor.white),
-                                ),
+                    if (status.isNotEmpty) ...[
+                      Dimensions.kVerticalSpaceMedium,
+                      state is MisspunchCrudLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : ActionButton(
+                              onPressed: onSubmit,
+                              color: appColor.warning600,
+                              child: Text(
+                                'SUBMIT',
+                                style: context.textTheme.labelLarge
+                                    ?.copyWith(color: appColor.white),
                               ),
+                            ),
+                    ],
                   ],
                 ),
               ),
@@ -228,9 +223,7 @@ class _MisspunchUpdateScreenState extends State<MisspunchUpdateScreen> {
     );
   }
 
-  changeState(val) {
-    setState(() => status = val);
-  }
+  changeState(val) => setState(() => status = val);
 
   Widget leaveContainerCard({required Widget child}) {
     return Container(

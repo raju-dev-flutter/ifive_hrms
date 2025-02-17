@@ -87,6 +87,15 @@ class GenerateTicketStream {
       TextEditingController();
   late TextEditingController dLinkedinController = TextEditingController();
 
+  /// Field Activity Details
+  late TextEditingController fNameController = TextEditingController();
+  late TextEditingController fNumberController = TextEditingController();
+  late TextEditingController fDesignDeptController = TextEditingController();
+  late TextEditingController fEmailController = TextEditingController();
+  late TextEditingController fWhatsappNumberController =
+      TextEditingController();
+  late TextEditingController fRemarksController = TextEditingController();
+
   /// Other Contact Person Details
   late TextEditingController cp1NameController = TextEditingController();
   late TextEditingController cp1NumberController = TextEditingController();
@@ -154,7 +163,7 @@ class GenerateTicketStream {
   }
 
   void nextPage() {
-    if (_pagePosition.valueOrNull == 0 || _pagePosition.valueOrNull != 5) {
+    if (_pagePosition.valueOrNull == 0 || _pagePosition.valueOrNull != 6) {
       _pagePosition.sink.add(_pagePosition.valueOrNull! + 1);
       _subTitle.sink.add(title(_pagePosition.valueOrNull!));
     }
@@ -180,6 +189,8 @@ class GenerateTicketStream {
       case 4:
         return "Decision Maker Details";
       case 5:
+        return "Field Activity Details";
+      case 6:
         return "Other Contact Person Details";
     }
     return "";
@@ -239,55 +250,6 @@ class GenerateTicketStream {
     _segmentListInit.sink.add(CommonList(id: params.value, name: params.name));
   }
 
-  /*
-        {
-            "lead_id": 68, ---> update api
-            
-                 "company_name": customerNameController.text,
-      "company_gst": gstNoController.text,
-      "company_db_source": _dbSourceListInit.valueOrNull?.id ?? 0,
-      "company_industry": _industryListInit.valueOrNull?.id ?? 0,
-      "company_vertical": _verticalListInit.valueOrNull?.id ?? 0,
-      "company_sub_vertical": _subVerticalListInit.valueOrNull?.id ?? 0,
-      "company_segment": _segmentListInit.valueOrNull?.id ?? 0,
-      "company_no_of_employee": noOfEmployeeController.text,
-      "company_turn_over": turnOverController.text,
-      "company_custom_products": customProductsController.text,
-      "company_existing_relation": existingRelationController.text,
-      "company_remarks": remarksController.text,
-           
-            "address_area": "Tnagar,Tnagar,T",
-            "address_city": "Chennai,Chen",
-            "address_pincode": 600017,
-            "address_address": "D10, 2nd Floor, Parsn Complex No. 1, Kodambakkam Road, Before Palm Groove Hotel,      Chennai Tamil Nadu , 600002,41, Thiyagaraya Gramani Street, T Nagar Near Kodambakkam Railway Staionon, T Nagar Side      Chennai Tamil Nadu , 600017,41, Thiyagaraya Gramani Street, T Nagar Near Kodambakkam Railway Staionon, T Nagar Side      Chennai Tamil Nadu , 600017,41, Thiyagaraya Gramani Street, T Nagar Near Kodambakkam Railway Staionon, T Nagar Side      Chennai Tamil Nadu , 600017",
-            "address_website": "nil",
-            "address_phone": "(044) 28492257,044) 28492257,044) 28492257,044) 28492257",
-            "name": "Sampath Kumar (Manager),Sampath Kumar (Manager),Sampath Kumar (Manager)",
-            "phonenum": "(044) 28492257,044) 28492257,044) 28492257,044) 28492257",
-            "desig": "",
-            "email_id": "",
-            "whatsapp": 0,
-            "linked_in": "",
-            "maker_name": "",
-            "maker_number": "",
-            "maker_desig": "",
-            "maker_emailid": "",
-            "maker_whatsapp": "",
-            "maker_link": "",
-            "company_db_name": "Website",
-            "company_industry_name": "Services",
-            "company_segment_name": "SME",
-            "db_status": "DCR",
-            "next_followed_by_id": 1,
-            "next_followed_by_name": "SUPERADMIN",
-            "lead_source_id": "1",
-            "lead_source_name": "Website",
-            "requirement_id": 2,
-            "requirement_name": "ERP",
-            "priority": "Low"
-        },
-   */
-
   void onSubmit(BuildContext context) {
     final companyDetails = {
       "company_name": customerNameController.text,
@@ -337,6 +299,15 @@ class GenerateTicketStream {
       "maker_linkedin": dLinkedinController.text,
     };
 
+    final fieldActivityDetails = {
+      "field_name": fNameController.text,
+      "field_number": fNumberController.text,
+      "field_design": fDesignDeptController.text,
+      "field_email": fEmailController.text,
+      "field_whatsapp": fWhatsappNumberController.text,
+      "field_remarks": fRemarksController.text,
+    };
+
     final otherContactPersonDetails = {
       "cp1_name": cp1NameController.text,
       "cp1_number": cp1NumberController.text,
@@ -355,6 +326,7 @@ class GenerateTicketStream {
       ...existingSoftwareDetails,
       ...keyContactDetails,
       ...decisionMakerDetails,
+      ...fieldActivityDetails,
       ...otherContactPersonDetails
     };
 
@@ -403,6 +375,14 @@ class GenerateTicketStream {
     dEmailController.clear();
     dWhatsappNumberController.clear();
     dLinkedinController.clear();
+
+    /// Field Activity Details
+    fNameController.clear();
+    fNumberController.clear();
+    fDesignDeptController.clear();
+    fEmailController.clear();
+    fWhatsappNumberController.clear();
+    fRemarksController.clear();
 
     /// Decision Maker Details
     cp1NameController.clear();

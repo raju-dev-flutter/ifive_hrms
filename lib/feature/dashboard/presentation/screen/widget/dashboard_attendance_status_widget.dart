@@ -37,6 +37,7 @@ class DashboardAttendanceStatusWidget extends StatelessWidget {
                   child: InkWell(
                     onTap: () =>
                         Navigator.pushNamed(context, AppRouterPath.attendance),
+                    borderRadius: BorderRadius.circular(8).w,
                     child: Container(
                       padding: Dimensions.kPaddingAllMedium,
                       decoration: BoxDecoration(
@@ -101,6 +102,7 @@ class DashboardAttendanceStatusWidget extends StatelessWidget {
                   child: InkWell(
                     onTap: () =>
                         Navigator.pushNamed(context, AppRouterPath.attendance),
+                    borderRadius: BorderRadius.circular(8).w,
                     child: Container(
                       padding: Dimensions.kPaddingAllMedium,
                       decoration: BoxDecoration(

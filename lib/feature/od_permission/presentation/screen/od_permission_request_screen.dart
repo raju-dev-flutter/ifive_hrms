@@ -52,8 +52,6 @@ class _ODPermissionRequestScreenState extends State<ODPermissionRequestScreen>
             Navigator.pop(context);
             AppAlerts.displaySnackBar(
                 context, "OD | Permission Successfully Applied", true);
-            // AppAlerts.displaySuccessAlert(context, "OD | Permission",
-            //     "OD | Permission Successfully applied");
           }
           if (state is PermissionCrudFailed) {
             if (state.message == "Invalid Token") {
@@ -61,12 +59,8 @@ class _ODPermissionRequestScreenState extends State<ODPermissionRequestScreen>
                   .add(const LoggedOut());
             } else if (state.message == "Network Error") {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayErrorAlert(
-              //     context, "OD | Permission", state.message);
             } else {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayWarningAlert(
-              //     context, "OD | Permission", state.message);
             }
           }
         },
@@ -94,7 +88,7 @@ class _ODPermissionRequestScreenState extends State<ODPermissionRequestScreen>
                     },
                   ),
                   Dimensions.kVerticalSpaceSmaller,
-                  StreamBuilder<int>(
+                  StreamBuilder<dynamic>(
                       stream: permissionStream.balanceOdSubject,
                       builder: (context, snapshot) {
                         return CustomTextFormField(

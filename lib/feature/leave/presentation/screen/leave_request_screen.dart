@@ -70,7 +70,6 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen>
             child: Form(
               key: _formKey,
               child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomStreamDropDownWidget(
                     label: "Leave Type",
@@ -109,7 +108,6 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen>
                       );
                     },
                   ),
-                  // Dimensions.kVerticalSpaceSmaller,
                   CustomStreamDropDownWidget(
                     label: "Leave Mode",
                     required: true,
@@ -188,23 +186,6 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen>
                   StreamBuilder<LeaveBalanceModel>(
                       stream: leaveRequest.calculateLeaveBalance,
                       builder: (context, snapshot) {
-                        // final isCheck = snapshot.data?.name == "HALF DAY" &&
-                        //     snapshot.data?.name != null;
-                        //
-                        // final isDay = PickDateTime.noOfDays(
-                        //     leaveRequest.fromDate.valueOrNull,
-                        //     leaveRequest.toDate.valueOrNull);
-                        // double isLength = isDay.toDouble();
-                        //
-                        // if (isCheck) {
-                        //   if (isDay == 1) isLength = 0.5;
-                        // }
-
-                        // if (snapshot.data?.message != "SUCCESS") {
-                        //   AppAlerts.displayWarningAlert(context,
-                        //       "Leave Request", snapshot.data?.message ?? '');
-                        // }
-
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 10).h,
                           child: CustomTextFormField(
@@ -222,12 +203,7 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen>
                             },
                           ),
                         );
-                        // }
-                        // return Container();
                       }),
-                  // Dimensions.kVerticalSpaceSmaller,
-
-                  // Dimensions.kVerticalSpaceSmaller,
                   CustomTextFormField(
                     label: "Leave Status",
                     controller: leaveRequest.statusController,
@@ -239,34 +215,23 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen>
                     },
                   ),
                   Dimensions.kVerticalSpaceSmaller,
-                  CustomTextFormField(
-                    label: "Forwarded To",
-                    controller: TextEditingController(
-                        text: leaveRequest.leaveForwardSubject.valueOrNull
-                            .toString()),
-                    required: false,
-                    readOnly: true,
-                    validator: (val) {
-                      if (!isCheckTextFieldIsEmpty(val!)) {
-                        return "required *";
-                      }
-                      return null;
-                    },
-                  ),
-                  // CustomStreamDropDownWidget(
-                  //   label: "Forwarded To",
-                  //   required: true,
-                  //   streamList: leaveRequest.leaveForwardList,
-                  //   valueListInit: leaveRequest.leaveForwardListInit,
-                  //   onChanged: (val) {
-                  //     if (val != '') leaveRequest.forward(val);
-                  //     FocusScope.of(context).requestFocus(FocusNode());
-                  //   },
-                  //   validator: (val) {
-                  //     if (!isCheckTextFieldIsEmpty(val!)) return "required *";
-                  //     return null;
-                  //   },
-                  // ),
+                  StreamBuilder<String>(
+                      stream: leaveRequest.leaveForwardSubject,
+                      builder: (context, snapshot) {
+                        return CustomTextFormField(
+                          label: "Forwarded To",
+                          controller:
+                              TextEditingController(text: snapshot.data ?? ""),
+                          required: false,
+                          readOnly: true,
+                          validator: (val) {
+                            if (!isCheckTextFieldIsEmpty(val!)) {
+                              return "required *";
+                            }
+                            return null;
+                          },
+                        );
+                      }),
                   Dimensions.kVerticalSpaceSmaller,
                   CustomTextFormField(
                     label: "Leave Reason",
@@ -279,78 +244,9 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen>
                     },
                   ),
                   Dimensions.kVerticalSpaceLarge,
-                  // state is LeaveCrudLoading
-                  //     ? const CircularProgressIndicator()
-                  //     : ActionButton(
-                  //         onPressed: () => {
-                  //           if (_formKey.currentState!.validate())
-                  //             leaveRequest.onSubmit(context)
-                  //         },
-                  //         child: Text(
-                  //           'SUBMIT',
-                  //           style: context.textTheme.labelLarge
-                  //               ?.copyWith(color: AppColor.textPrimaryOnBrand),
-                  //         ),
-                  //       ),
                   state is LeaveCrudLoading
                       ? const CircularProgressIndicator()
                       : ActionButton(onPressed: onSubmit, child: submitText()),
-                  // StreamBuilder<String>(
-                  //         stream: leaveRequest.leaveRemaining,
-                  //         builder: (context, snapshot) {
-                  //           if (snapshot.hasData) {
-                  //             final leaveType = leaveRequest
-                  //                 .leaveTypeListInit.valueOrNull!.name;
-                  //             // if (leaveType != "Sick Leave") {
-                  //             // if (snapshot.data != 0) {
-                  //             if (leaveType == "Privilege Leave") {
-                  //               return StreamBuilder<LeaveBalanceModel>(
-                  //                   stream: leaveRequest.calculateLeaveBalance,
-                  //                   builder: (context, snapshot) {
-                  //                     if (snapshot.data?.totalLeave == 3) {
-                  //                       return ActionButton(
-                  //                         onPressed: onSubmit,
-                  //                         child: submitText(),
-                  //                       );
-                  //                     } else {
-                  //                       return ActionButton(
-                  //                         onPressed: () => {
-                  //                           AppAlerts.displaySnackBar(
-                  //                               context,
-                  //                               snapshot.data?.message ?? '',
-                  //                               false)
-                  //                         },
-                  //                         child: submitText(),
-                  //                       );
-                  //                     }
-                  //                   });
-                  //             } else {
-                  //               return ActionButton(
-                  //                 onPressed: onSubmit,
-                  //                 child: submitText(),
-                  //               );
-                  //             }
-                  //             // } else {
-                  //             //   return ActionButton(
-                  //             //     onPressed: () => {
-                  //             //       AppAlerts.displaySnackBar(
-                  //             //           context,
-                  //             //           "No leave is available at this time, therefore please do not apply.",
-                  //             //           false)
-                  //             //     },
-                  //             //     child: submitText(),
-                  //             //   );
-                  //             // }
-                  //           }
-                  //           // else {
-                  //           //     return ActionButton(
-                  //           //       onPressed: onSubmit,
-                  //           //       child: submitText(),
-                  //           //     );
-                  //           //   }
-                  //           // }
-                  //           return const DefaultActionButton(label: 'SUBMIT');
-                  //         }),
                   Dimensions.kVerticalSpaceSmall,
                 ],
               ),

@@ -54,63 +54,6 @@ class AccountProfileShimmerLoading extends StatelessWidget {
             ),
           ),
         ),
-        // Container(
-        //   padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16).w,
-        //   decoration: const BoxDecoration(color: AppColor.bgPrimary),
-        //   width: context.deviceSize.width,
-        //   child: ShimmerWidget(
-        //     child: Column(
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         Container(
-        //           width: 100.w,
-        //           height: 20.h,
-        //           color: AppColor.bgSecondarySolid.withOpacity(.5),
-        //         ),
-        //         Dimensions.kVerticalSpaceSmallest,
-        //         Container(
-        //           width: 120.w,
-        //           height: 16.h,
-        //           color: AppColor.bgSecondarySolid.withOpacity(.5),
-        //         ),
-        //         SizedBox(height: 1.h),
-        //         Container(
-        //           width: 60.w,
-        //           height: 16.h,
-        //           color: AppColor.bgSecondarySolid.withOpacity(.5),
-        //         ),
-        //         SizedBox(height: 4.h),
-        //         Divider(color: AppColor.bgBrandPrimary.withOpacity(.1)),
-        //         SizedBox(height: 4.h),
-        //         Container(
-        //           width: 80.w,
-        //           height: 16.h,
-        //           color: AppColor.bgSecondarySolid.withOpacity(.5),
-        //         ),
-        //         SizedBox(height: 1.h),
-        //         Container(
-        //           width: 60.w,
-        //           height: 16.h,
-        //           color: AppColor.bgSecondarySolid.withOpacity(.5),
-        //         ),
-        //         SizedBox(height: 4.h),
-        //         Divider(color: AppColor.bgSecondarySolid.withOpacity(.1)),
-        //         SizedBox(height: 4.h),
-        //         Container(
-        //           width: 100.w,
-        //           height: 16.h,
-        //           color: AppColor.bgSecondarySolid.withOpacity(.5),
-        //         ),
-        //         SizedBox(height: 1.h),
-        //         Container(
-        //           width: 60.w,
-        //           height: 16.h,
-        //           color: AppColor.bgSecondarySolid.withOpacity(.5),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }

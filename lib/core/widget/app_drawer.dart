@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logger/logger.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../app/app.dart';
 import '../../config/config.dart';
@@ -28,16 +29,6 @@ class _AppDrawerState extends State<AppDrawer> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   initialCallBack();
-  // }
-  //
-  // void initialCallBack() {
-  //   BlocProvider.of<AccountDetailsCubit>(context).getAccountDetails();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -49,7 +40,6 @@ class _AppDrawerState extends State<AppDrawer> {
           appDrawerHeaderUI(),
           Dimensions.kVerticalSpaceSmall,
           appDrawerMenu(),
-          // Dimensions.kSpacer,
           Divider(color: appColor.blue600.withOpacity(.3)),
           GestureDetector(
             onTap: () {
@@ -183,8 +173,7 @@ class _AppDrawerState extends State<AppDrawer> {
   Widget appDrawerMenu() {
     return Expanded(
       child: ListView(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        padding: const EdgeInsets.all(0),
+        padding: Dimensions.kPaddingZero,
         children: [
           /// Available Feature
           Container(
@@ -194,75 +183,48 @@ class _AppDrawerState extends State<AppDrawer> {
                     color: appColor.brand800, fontWeight: FontWeight.w600)),
           ),
           appDrawerMenuButton(
-            onPressed: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, AppRouterPath.attendance)
-            },
+            onPressed: () => goTo("Attendance"),
             icon: AppSvg.attendance,
             label: 'Attendance',
           ),
           appDrawerMenuButton(
-            onPressed: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, AppRouterPath.attendanceReport)
-            },
+            onPressed: () => goTo("Attendance Report"),
             icon: AppSvg.attendance,
             label: 'Attendance Report',
           ),
           appDrawerMenuButton(
-            onPressed: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, AppRouterPath.foodAttendance)
-            },
+            onPressed: () => goTo("Food Attendance"),
             icon: AppSvg.foodFill,
             label: 'Food Attendance',
           ),
           appDrawerMenuButton(
-            onPressed: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, AppRouterPath.misspunch)
-            },
+            onPressed: () => goTo("Misspunch"),
             icon: AppSvg.missPunch,
             label: 'Misspunch',
           ),
           appDrawerMenuButton(
-            onPressed: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, AppRouterPath.oDPermissionScreen)
-            },
+            onPressed: () => goTo("OD | Permission"),
             icon: AppSvg.calendar,
             label: 'OD | Permission',
           ),
           appDrawerMenuButton(
-            onPressed: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, AppRouterPath.payrollScreen)
-            },
+            onPressed: () => goTo("Payroll"),
             icon: AppSvg.payroll,
             label: 'Payroll',
           ),
           appDrawerMenuButton(
-            onPressed: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, AppRouterPath.expensesScreen)
-            },
+            onPressed: () => goTo("Expenses"),
             icon: AppSvg.asset,
             label: 'Expenses',
           ),
           appDrawerMenuButton(
-            onPressed: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, AppRouterPath.appreciationScreen)
-            },
+            onPressed: () => goTo("Appreciation"),
             width: 20.w,
             icon: AppSvg.appreciation,
             label: 'Appreciation',
           ),
           appDrawerMenuButton(
-            onPressed: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, AppRouterPath.renewalTrackingScreen)
-            },
+            onPressed: () => goTo("Renewal Tracking"),
             width: 20.w,
             icon: AppSvg.renewalTracking,
             label: 'Renewal Tracking',
@@ -277,17 +239,106 @@ class _AppDrawerState extends State<AppDrawer> {
                     color: appColor.brand800, fontWeight: FontWeight.w600)),
           ),
           appDrawerMenuButton(
-            onPressed: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, AppRouterPath.changePasswordScreen)
-            },
+            onPressed: () => goTo("Change Password"),
             icon: AppSvg.changePassword,
             width: 22.w,
             label: 'Change Password',
           ),
+
+          Dimensions.kVerticalSpaceSmall,
+
+          /// Additional Feature
+          BlocBuilder<AppVersionCheckerCubit, AppVersionCheckerState>(
+            builder: (context, state) {
+              if (state is AppVersionCheckerLoaded) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 6)
+                          .w,
+                      child: Text(
+                        "Share",
+                        style: context.textTheme.labelLarge?.copyWith(
+                            color: appColor.brand800,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    appDrawerMenuButton(
+                      onPressed: () => Share.share(state.appVersion.url!),
+                      icon: AppSvg.share,
+                      width: 12.w,
+                      color: appColor.brand600,
+                      label: 'Invite Teams',
+                    ),
+                  ],
+                );
+              }
+              return Container();
+            },
+          ),
         ],
       ),
     );
+  }
+
+  void goTo(label) {
+    switch (label) {
+      case "Attendance":
+        Navigator.pop(context);
+        Navigator.pushNamed(context, AppRouterPath.attendance);
+        break;
+
+      case "Attendance Report":
+        Navigator.pop(context);
+        Navigator.pushNamed(context, AppRouterPath.attendanceReport);
+        break;
+
+      case "Food Attendance":
+        Navigator.pop(context);
+        Navigator.pushNamed(context, AppRouterPath.foodAttendance);
+        break;
+
+      case "Misspunch":
+        Navigator.pop(context);
+        Navigator.pushNamed(context, AppRouterPath.misspunch);
+        break;
+
+      case "OD | Permission":
+        Navigator.pop(context);
+        Navigator.pushNamed(context, AppRouterPath.oDPermissionScreen);
+        break;
+
+      case "Payroll":
+        Navigator.pop(context);
+        Navigator.pushNamed(context, AppRouterPath.payrollScreen);
+        break;
+
+      case "Expenses":
+        Navigator.pop(context);
+        Navigator.pushNamed(context, AppRouterPath.expensesScreen);
+        break;
+
+      case "Appreciation":
+        Navigator.pop(context);
+        Navigator.pushNamed(context, AppRouterPath.appreciationScreen);
+        break;
+
+      case "Renewal Tracking":
+        Navigator.pop(context);
+        Navigator.pushNamed(context, AppRouterPath.renewalTrackingScreen);
+        break;
+
+      case "Change Password":
+        Navigator.pop(context);
+        Navigator.pushNamed(context, AppRouterPath.changePasswordScreen);
+        break;
+
+      default:
+        Navigator.pushNamed(context, AppRouterPath.noRoute);
+        break;
+    }
   }
 
   Widget poweredByWidget() {
@@ -306,6 +357,7 @@ class _AppDrawerState extends State<AppDrawer> {
       {required String label,
       required String icon,
       double? width,
+      Color? color,
       required VoidCallback onPressed}) {
     return InkWell(
       onTap: onPressed,
@@ -317,12 +369,16 @@ class _AppDrawerState extends State<AppDrawer> {
             SvgPicture.asset(
               icon,
               width: width ?? 18.w,
-              colorFilter: ColorFilter.mode(appColor.gray700, BlendMode.srcIn),
+              colorFilter:
+                  ColorFilter.mode(color ?? appColor.gray700, BlendMode.srcIn),
             ),
             Dimensions.kHorizontalSpaceMedium,
-            Text(label,
-                style: context.textTheme.labelLarge?.copyWith(
-                    color: appColor.gray700, fontWeight: FontWeight.w400)),
+            Text(
+              label,
+              style: context.textTheme.labelLarge?.copyWith(
+                  color: color ?? appColor.gray700,
+                  fontWeight: FontWeight.w400),
+            ),
           ],
         ),
       ),

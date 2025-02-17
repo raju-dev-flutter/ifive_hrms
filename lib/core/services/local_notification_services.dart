@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../core.dart';
@@ -97,9 +97,11 @@ class LocalNotificationServices {
       android: androidNotificationDetails,
       iOS: darwinNotificationDetails,
     );
+
+    final id = DateTime.now().microsecondsSinceEpoch;
     Future.delayed(Duration.zero, () {
       flutterLocalNotificationsPlugin.show(
-        0,
+        id,
         message.notification!.title.toString(),
         message.notification!.body.toString(),
         notificationDetails,

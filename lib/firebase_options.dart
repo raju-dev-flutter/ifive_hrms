@@ -65,7 +65,8 @@ class DefaultFirebaseOptions {
     projectId: 'ifive-30f06',
     databaseURL: 'https://ifive-30f06.firebaseio.com',
     storageBucket: 'ifive-30f06.appspot.com',
-    androidClientId: '296910658175-khfu1ed80tjo5nr1aafc950in7c19jt2.apps.googleusercontent.com',
-    iosBundleId: 'com.ifive.ifiveHrms',
+    androidClientId:
+        '296910658175-khfu1ed80tjo5nr1aafc950in7c19jt2.apps.googleusercontent.com',
+    iosBundleId: 'com.ifive_dev.ifive_hrmsHrms',
   );
 }

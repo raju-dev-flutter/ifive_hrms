@@ -132,15 +132,10 @@ class _TaskPendingScreenState extends State<TaskPendingScreen> {
                         badge(
                             color: appColor.warning500,
                             label: (task.priority ?? "").toUpperCase()),
-
                         Dimensions.kHorizontalSpaceSmaller,
                         badge(
                             color: appColor.brand600,
                             label: (task.projectName ?? "").toUpperCase()),
-                        // badge(
-                        //     color: appColor.blue600,
-                        //     label: (task.status ?? "").toUpperCase()),
-
                         Dimensions.kSpacer,
                         if (task.taskType != null && task.taskType == "Reword")
                           badge(
@@ -167,11 +162,10 @@ class _TaskPendingScreenState extends State<TaskPendingScreen> {
                                 style: context.textTheme.labelLarge
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              if (task.description != null &&
-                                  task.description != '') ...[
+                              if (task.menu != null && task.menu != '') ...[
                                 Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.description ?? '',
+                                  task.menu ?? '',
                                   overflow: TextOverflow.ellipsis,
                                   style: context.textTheme.labelMedium
                                       ?.copyWith(color: appColor.gray500),
@@ -511,16 +505,23 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                badge(
+                                    color: appColor.brand600,
+                                    label:
+                                        (task.projectName ?? "").toUpperCase()),
+                                Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.projectName ?? ' ',
+                                  task.task ?? ' ',
                                   style: context.textTheme.bodySmall
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 Dimensions.kVerticalSpaceSmallest,
-                                Text(
-                                  task.task ?? ' ',
-                                  style: context.textTheme.labelLarge,
-                                ),
+                                if (isEmpty(task.menu))
+                                  Text(
+                                    "---- ${task.menu ?? ' '}",
+                                    style: context.textTheme.labelLarge
+                                        ?.copyWith(color: appColor.brand600),
+                                  ),
                               ],
                             ),
                           ),
@@ -529,8 +530,8 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
                     ),
                   ],
                 ),
+                Dimensions.kVerticalSpaceSmall,
                 if (isEmpty(task.description)) ...[
-                  Dimensions.kVerticalSpaceSmall,
                   Text(
                     "Task Description:",
                     overflow: TextOverflow.ellipsis,
@@ -593,40 +594,6 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
             ),
           ),
         ),
-        // if (task.taskTimeHistory!.isNotEmpty)
-        //   Padding(
-        //     padding: const EdgeInsets.fromLTRB(16, 8, 16, 8).w,
-        //     child: Container(
-        //       padding: Dimensions.kPaddingAllMedium,
-        //       width: context.deviceSize.width,
-        //       decoration: boxDecoration(),
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Text(
-        //             "Task Time History",
-        //             overflow: TextOverflow.ellipsis,
-        //             maxLines: 2,
-        //             style: context.textTheme.labelLarge,
-        //           ),
-        //           Dimensions.kVerticalSpaceSmaller,
-        //           Wrap(
-        //             crossAxisAlignment: WrapCrossAlignment.start,
-        //             runAlignment: WrapAlignment.start,
-        //             spacing: 2,
-        //             runSpacing: 2,
-        //             children: [
-        //               for (var i = 0; i < tLength(task.taskTimeHistory!); i++)
-        //                 badge(
-        //                   color: appColor.blue600,
-        //                   label: getTimeHistory(task.taskTimeHistory![i]),
-        //                 ),
-        //             ],
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
         if (isEmpty(task.taskGivenByName) ||
             isEmpty(task.assignToName) ||
             isEmpty(task.supportName) ||
@@ -689,30 +656,6 @@ class _TaskPendingUpdateScreenState extends State<TaskPendingUpdateScreen> {
               ),
             ),
           ),
-        // if (!isCheckTime(task.taskTimeHistory))
-        // Padding(
-        //   padding: const EdgeInsets.fromLTRB(16, 8, 16, 16).w,
-        //   child: Container(
-        //     padding: Dimensions.kPaddingAllMedium,
-        //     width: context.deviceSize.width,
-        //     decoration: boxDecoration(),
-        //     child: Column(
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         CustomStreamDropDownWidget(
-        //           label: "Status",
-        //           required: true,
-        //           streamList: pendingStream.statusList,
-        //           valueListInit: pendingStream.statusListInit,
-        //           onChanged: (params) {
-        //             pendingStream.status(params);
-        //             setState(() {});
-        //           },
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
         BlocBuilder<TaskCrudBloc, TaskCrudState>(
           builder: (context, state) {
             if (state is TaskCrudLoading) {

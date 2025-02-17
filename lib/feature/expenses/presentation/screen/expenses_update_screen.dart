@@ -151,9 +151,12 @@ class _ExpensesUpdateScreenState extends State<ExpensesUpdateScreen> {
                       children: [
                         Expanded(
                           child: status != "REJECT"
-                              ? DefaultActionButton(
+                              ? ActionButton(
                                   onPressed: () => changeState("REJECT"),
-                                  label: "REJECT")
+                                  color: appColor.gray100,
+                                  textColor: appColor.gray600,
+                                  label: "REJECT",
+                                )
                               : ActionButton(
                                   onPressed: () => changeState(""),
                                   color: appColor.error600,
@@ -167,9 +170,12 @@ class _ExpensesUpdateScreenState extends State<ExpensesUpdateScreen> {
                         Dimensions.kHorizontalSpaceSmaller,
                         Expanded(
                           child: status != "APPROVE"
-                              ? DefaultActionButton(
+                              ? ActionButton(
                                   onPressed: () => changeState("APPROVE"),
-                                  label: "APPROVE")
+                                  color: appColor.gray100,
+                                  textColor: appColor.gray600,
+                                  label: "APPROVE",
+                                )
                               : ActionButton(
                                   onPressed: () => changeState(""),
                                   color: appColor.success600,
@@ -182,20 +188,20 @@ class _ExpensesUpdateScreenState extends State<ExpensesUpdateScreen> {
                         ),
                       ],
                     ),
-                    Dimensions.kVerticalSpaceMedium,
-                    state is ExpensesCrudLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : status == ""
-                            ? const DefaultActionButton(label: "SUBMIT")
-                            : ActionButton(
-                                onPressed: onSubmit,
-                                color: appColor.warning600,
-                                child: Text(
-                                  'SUBMIT',
-                                  style: context.textTheme.labelLarge
-                                      ?.copyWith(color: appColor.white),
-                                ),
+                    if (status.isNotEmpty) ...[
+                      Dimensions.kVerticalSpaceMedium,
+                      state is ExpensesCrudLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : ActionButton(
+                              onPressed: onSubmit,
+                              color: appColor.warning600,
+                              child: Text(
+                                'SUBMIT',
+                                style: context.textTheme.labelLarge
+                                    ?.copyWith(color: appColor.white),
                               ),
+                            ),
+                    ],
                   ],
                 ),
               ),

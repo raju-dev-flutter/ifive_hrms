@@ -3,6 +3,7 @@ part of 'utils.dart';
 class AppAlerts {
   const AppAlerts._();
 
+  // Display a SnackBar with a message and success or error indicator
   static displaySnackBar(BuildContext context, String message, bool isSuccess) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -36,6 +37,7 @@ class AppAlerts {
     );
   }
 
+  // Display an error alert with a title and message
   static displayErrorAlert(BuildContext context, String title, String message) {
     showAdaptiveDialog(
         context: context,
@@ -82,6 +84,7 @@ class AppAlerts {
         });
   }
 
+  // Display a warning alert with a title and message
   static displayWarningAlert(
       BuildContext context, String title, String message) {
     showAdaptiveDialog(
@@ -129,6 +132,7 @@ class AppAlerts {
         });
   }
 
+  // Display a success alert with a title and message
   static displaySuccessAlert(
       BuildContext context, String title, String message) {
     showAdaptiveDialog(
@@ -176,6 +180,7 @@ class AppAlerts {
         });
   }
 
+  // Display a logout alert with an action callback
   static displayLogoutAlert(
       {required BuildContext context, required VoidCallback onPressed}) {
     showAdaptiveDialog(
@@ -252,6 +257,7 @@ class AppAlerts {
         });
   }
 
+  // Display a fencing alert with an action callback
   static displayFencingAlert(
       {required BuildContext context, required VoidCallback onPressed}) {
     showAdaptiveDialog(
@@ -318,6 +324,7 @@ class AppAlerts {
         });
   }
 
+  // Display an exit app alert with a confirmation callback
   static displayExitAppAlert({required BuildContext context}) {
     return showAdaptiveDialog(
         context: context,
@@ -394,6 +401,7 @@ class AppAlerts {
         });
   }
 
+  // Helper method to create the top container of an alert dialog
   static topContainer(
       {required BuildContext context,
       required Color backgroundColor,
@@ -412,6 +420,7 @@ class AppAlerts {
     );
   }
 
+  // Display an
   static bottomContainer(
       {required BuildContext context,
       required Widget child,
@@ -430,6 +439,7 @@ class AppAlerts {
     );
   }
 
+  // Display an content list app alert with an action callback
   static displayContentListAlert(
       {required BuildContext context,
       required String title,

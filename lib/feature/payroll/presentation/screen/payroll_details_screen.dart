@@ -4,15 +4,13 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../config/config.dart';
-
 import '../../../../core/core.dart';
 import '../../payroll.dart';
 
@@ -125,10 +123,12 @@ class _PayrollDetailsScreenState extends State<PayrollDetailsScreen> {
         // Show download notification
         showDownloadNotification(filePath);
       } else {
-        throw Exception('Failed to download PDF: ${response.statusCode}');
+        debugPrint('Failed to download PDF: ${response.statusCode}');
+        // throw Exception('Failed to download PDF: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Failed to download PDF: $e');
+      debugPrint('Failed to download PDF: $e');
+      // throw Exception('Failed to download PDF: $e');
     }
   }
 

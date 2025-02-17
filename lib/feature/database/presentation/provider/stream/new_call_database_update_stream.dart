@@ -125,6 +125,15 @@ class NewCallDatabaseUpdateStream {
       TextEditingController();
   late TextEditingController dLinkedinController = TextEditingController();
 
+  /// Field Activity Details
+  late TextEditingController fNameController = TextEditingController();
+  late TextEditingController fNumberController = TextEditingController();
+  late TextEditingController fDesignDeptController = TextEditingController();
+  late TextEditingController fEmailController = TextEditingController();
+  late TextEditingController fWhatsappNumberController =
+      TextEditingController();
+  late TextEditingController fRemarksController = TextEditingController();
+
   /// Other Contact Person Details
   late TextEditingController cp1NameController = TextEditingController();
   late TextEditingController cp1NumberController = TextEditingController();
@@ -380,7 +389,7 @@ class NewCallDatabaseUpdateStream {
   }
 
   void nextPage() {
-    if (_pagePosition.valueOrNull == 0 || _pagePosition.valueOrNull != 5) {
+    if (_pagePosition.valueOrNull == 0 || _pagePosition.valueOrNull != 7) {
       _pagePosition.sink.add(_pagePosition.valueOrNull! + 1);
       _subTitle.sink.add(title(_pagePosition.valueOrNull!));
     }
@@ -408,6 +417,8 @@ class NewCallDatabaseUpdateStream {
       case 5:
         return "Decision Maker Details";
       case 6:
+        return "Field Activity Details";
+      case 7:
         return "Other Contact Person Details";
     }
     return "";
@@ -588,6 +599,7 @@ class NewCallDatabaseUpdateStream {
       "key_whatsapp": kWhatsappNumberController.text,
       "key_linkedin": kLinkedinController.text,
     };
+
     final decisionMakerDetails = {
       "maker_name": dNameController.text,
       "maker_number": dNumberController.text,
@@ -595,6 +607,15 @@ class NewCallDatabaseUpdateStream {
       "maker_email": dEmailController.text,
       "maker_whatsapp": dWhatsappNumberController.text,
       "maker_linkedin": dLinkedinController.text,
+    };
+
+    final fieldActivityDetails = {
+      "field_name": fNameController.text,
+      "field_number": fNumberController.text,
+      "field_design": fDesignDeptController.text,
+      "field_email": fEmailController.text,
+      "field_whatsapp": fWhatsappNumberController.text,
+      "field_remarks": fRemarksController.text,
     };
 
     final otherContactPersonDetails = {
@@ -616,6 +637,7 @@ class NewCallDatabaseUpdateStream {
       ...existingSoftwareDetails,
       ...keyContactDetails,
       ...decisionMakerDetails,
+      ...fieldActivityDetails,
       ...otherContactPersonDetails
     };
 
@@ -668,6 +690,14 @@ class NewCallDatabaseUpdateStream {
     dEmailController.clear();
     dWhatsappNumberController.clear();
     dLinkedinController.clear();
+
+    /// Field Activity Details
+    fNameController.clear();
+    fNumberController.clear();
+    fDesignDeptController.clear();
+    fEmailController.clear();
+    fWhatsappNumberController.clear();
+    fRemarksController.clear();
 
     /// Decision Maker Details
     cp1NameController.clear();

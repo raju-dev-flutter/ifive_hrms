@@ -159,13 +159,6 @@ class _ExpensesHistoryScreenState extends State<ExpensesHistoryScreen> {
                   Text('EMPLOYEE NAME : ',
                       style: context.textTheme.labelMedium?.copyWith(
                           fontWeight: FontWeight.bold, color: color)),
-
-                  // SvgPicture.asset(
-                  //   AppSvg.accountFill,
-                  //   width: 16,
-                  //   colorFilter:
-                  //       ColorFilter.mode(color, BlendMode.srcIn),
-                  // ),
                   Dimensions.kHorizontalSpaceSmaller,
                   Text(expenses.employeeName ?? '',
                       style: context.textTheme.labelMedium

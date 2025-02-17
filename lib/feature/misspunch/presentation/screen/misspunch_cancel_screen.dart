@@ -10,6 +10,7 @@ import '../../../feature.dart';
 
 class MisspunchCancelScreen extends StatefulWidget {
   final MisspunchHistory missPunch;
+
   const MisspunchCancelScreen({super.key, required this.missPunch});
 
   @override
@@ -44,21 +45,10 @@ class _MisspunchCancelScreenState extends State<MisspunchCancelScreen> {
       padding: Dimensions.kPaddingAllMedium,
       child: BlocConsumer<MisspunchCrudBloc, MisspunchCrudState>(
         listener: (context, state) {
-          // if (state is MisspunchCrudSuccess) {
-          //   Navigator.pop(context);
-          //   AppAlerts.displaySnackBar(
-          //       context, "Misspunch Successfully Cancel", true);
-          // }
-          // if (state is MisspunchCrudFailed) {
-          //   AppAlerts.displaySnackBar(context, "Network Error", false);
-          // }
-
           if (state is MisspunchCrudSuccess) {
             Navigator.pop(context);
             AppAlerts.displaySnackBar(
                 context, "Misspunch Successfully Canceled", true);
-            // AppAlerts.displaySuccessAlert(
-            //     context, "Misspunch", "Misspunch Successfully Canceled");
           }
           if (state is MisspunchCrudFailed) {
             if (state.message == "Invalid Token") {
@@ -66,11 +56,8 @@ class _MisspunchCancelScreenState extends State<MisspunchCancelScreen> {
                   .add(const LoggedOut());
             } else if (state.message == "Network Error") {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayErrorAlert(context, "Misspunch", state.message);
             } else {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayWarningAlert(
-              //     context, "Misspunch", state.message);
             }
           }
         },
@@ -88,12 +75,6 @@ class _MisspunchCancelScreenState extends State<MisspunchCancelScreen> {
                             value: widget.missPunch.lookupCode ?? '',
                           ),
                         ),
-                        // Expanded(
-                        //   child: leaveDetailCard(
-                        //     label: 'Leave Mode',
-                        //     value: widget.leave.leavemode ?? '',
-                        //   ),
-                        // ),
                       ],
                     ),
                     Divider(color: appColor.brand900.withOpacity(.1)),

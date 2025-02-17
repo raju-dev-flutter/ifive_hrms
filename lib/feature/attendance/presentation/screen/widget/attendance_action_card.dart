@@ -1,22 +1,22 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../../config/config.dart';
 import '../../../../../core/core.dart';
-import '../../../../../core/services/volume_controller.dart';
 import '../../../../dashboard/dashboard.dart';
 import '../../../../food/food.dart';
 import '../../../attendance.dart';
 
 class AttendanceActionCard extends StatelessWidget {
   final AttendanceStream attendanceStream;
+
   const AttendanceActionCard({super.key, required this.attendanceStream});
 
   @override
@@ -64,8 +64,6 @@ class AttendanceActionCard extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   image: DecorationImage(
-                                    // alignment: Alignment.,
-                                    // image: MemoryImage(snapshot.data!),
                                     image: FileImage(File(snapshot.data!.path)),
                                     fit: BoxFit.contain,
                                   ),
@@ -174,7 +172,6 @@ class AttendanceActionCard extends StatelessWidget {
                   Text('Day Summery', style: context.textTheme.labelLarge),
                   Dimensions.kVerticalSpaceSmallest,
                   TextFormField(
-                    // autofocus: true,
                     controller: attendanceStream.descriptionController,
                     keyboardType: TextInputType.text,
                     enableSuggestions: true,
@@ -449,6 +446,7 @@ class AttendanceFrontCameraWidget extends StatefulWidget {
   final List<CameraDescription>? cameras;
 
   final AttendanceStream attendanceStream;
+
   const AttendanceFrontCameraWidget(
       {super.key, this.cameras, required this.attendanceStream});
 

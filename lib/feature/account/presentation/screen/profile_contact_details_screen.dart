@@ -62,8 +62,6 @@ class ProfileContactDetailsScreen extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
-                // height: context.deviceSize.height * 0.8,
-                // alignment: Alignment.center,
                 children: [
                   Lottie.asset(AppLottie.empty, width: 250.w),
                 ],

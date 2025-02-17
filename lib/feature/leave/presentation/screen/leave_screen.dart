@@ -120,8 +120,6 @@ class _LeaveScreenState extends State<LeaveScreen> {
           }
           if (state.message == "Network Error") {
             AppAlerts.displaySnackBar(context, state.message, false);
-            // AppAlerts.displayErrorAlert(
-            //     context, "Leave History", state.message);
           }
         }
       },

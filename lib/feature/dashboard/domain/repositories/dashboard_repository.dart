@@ -9,9 +9,12 @@ abstract class DashboardRepository {
 
   ResultFuture<DashboardCountModel> dashboardCount();
 
-  ResultFuture<ApprovalLeaveHistoryModel> approvalLeaveHistory(String date);
+  ResultFuture<ApprovalLeaveHistoryModel> approvalLeaveHistory(
+      String fromDate, String toDate);
 
   ResultFuture<AppVersionModel> appVersion();
 
   ResultFuture<AppMenuModel> appMenu();
+
+  ResultFuture<TaskLeadDataModel> taskLeadData();
 }

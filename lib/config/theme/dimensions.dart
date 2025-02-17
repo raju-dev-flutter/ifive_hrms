@@ -10,6 +10,7 @@ class Dimensions {
   static final kPaddingAllSmall = const EdgeInsets.all(12.0).w;
   static final kPaddingAllSmaller = const EdgeInsets.all(8.0).w;
   static final kPaddingAllSmallest = const EdgeInsets.all(4.0).w;
+  static const kPaddingZero = EdgeInsets.zero;
 
   //BorderRadius
   static final kBorderRadiusAllLargest = BorderRadius.circular(50).w;

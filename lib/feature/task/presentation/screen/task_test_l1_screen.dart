@@ -112,11 +112,14 @@ class _TaskTestL1ScreenState extends State<TaskTestL1Screen>
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4).w,
       child: InkWell(
-        onTap: () => Navigator.pushNamed(
-          context,
-          AppRouterPath.taskTestL1UpdateScreen,
-          arguments: TaskTestL1UpdateScreen(task: task),
-        ).then((value) => initialCallBack()),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            AppRouterPath.taskTestL1UpdateScreen,
+            arguments: TaskTestL1UpdateScreen(task: task),
+          ).then((value) => initialCallBack());
+        },
+        borderRadius: Dimensions.kBorderRadiusAllSmaller,
         child: Container(
           decoration: BoxDecoration(
             color: appColor.white,
@@ -134,14 +137,10 @@ class _TaskTestL1ScreenState extends State<TaskTestL1Screen>
                         badge(
                             color: appColor.warning500,
                             label: (task.priority ?? "").toUpperCase()),
-
                         Dimensions.kHorizontalSpaceSmaller,
                         badge(
                             color: appColor.brand600,
                             label: (task.projectName ?? "").toUpperCase()),
-                        // badge(
-                        //     color: appColor.blue600,
-                        //     label: (task.status ?? "").toUpperCase()),
                         Dimensions.kSpacer,
                         if (task.taskType != null && task.taskType == "Reword")
                           badge(
@@ -168,11 +167,10 @@ class _TaskTestL1ScreenState extends State<TaskTestL1Screen>
                                 style: context.textTheme.labelLarge
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              if (task.description != null &&
-                                  task.description != '') ...[
+                              if (task.menu != null && task.menu != '') ...[
                                 Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.description ?? '',
+                                  task.menu ?? '',
                                   overflow: TextOverflow.ellipsis,
                                   style: context.textTheme.labelMedium
                                       ?.copyWith(color: appColor.gray500),
@@ -209,33 +207,6 @@ class _TaskTestL1ScreenState extends State<TaskTestL1Screen>
                         ),
                       ],
                     ),
-                    // Dimensions.kVerticalSpaceSmaller,
-                    // RichText(
-                    //   text: TextSpan(
-                    //     text: "${task.percentage ?? 0}% ",
-                    //     style: context.textTheme.labelLarge?.copyWith(
-                    //         fontWeight: FontWeight.bold,
-                    //         color: appColor.gray900.withOpacity(.8)),
-                    //     children: [
-                    //       TextSpan(
-                    //         text: "Completed",
-                    //         style: context.textTheme.labelLarge
-                    //             ?.copyWith(color: appColor.gray600),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    // Dimensions.kVerticalSpaceSmallest,
-                    // LinearProgressIndicator(
-                    //   semanticsLabel: "Task Completed Status",
-                    //   semanticsValue: "${task.percentage ?? 0} %",
-                    //   value: (task.percentage ?? 0).toDouble() / 100,
-                    //   backgroundColor: appColor.gray200,
-                    //   valueColor:
-                    //       AlwaysStoppedAnimation<Color>(appColor.success600),
-                    //   minHeight: 10.h,
-                    //   borderRadius: Dimensions.kBorderRadiusAllSmall,
-                    // ),
                   ],
                 ),
               ),
@@ -284,31 +255,6 @@ class _TaskTestL1ScreenState extends State<TaskTestL1Screen>
                       ),
                     ),
                     Dimensions.kSpacer,
-                    // if (!isCheckTime(task.taskTimeHistory)) ...[
-                    //   SizedBox(
-                    //     width: 160,
-                    //     child: Form(
-                    //       key: _formKey,
-                    //       child: CustomStreamDropDownWidget(
-                    //         label: "",
-                    //         required: false,
-                    //         streamList: testL1Stream.statusList,
-                    //         valueListInit: testL1Stream.statusListInit,
-                    //         onChanged: (params) {
-                    //           testL1Stream.status(params);
-                    //           setState(() {});
-                    //         },
-                    //         validator: (val) {
-                    //           if (!isCheckTextFieldIsEmpty(val!))
-                    //             return "required *";
-                    //           return null;
-                    //         },
-                    //       ),
-                    //     ),
-                    //   ),
-                    //   Dimensions.kHorizontalSpaceSmaller,
-                    // ],
-                    // if (isCheckTime(task.taskTimeHistory))
                     BlocBuilder<TaskCrudBloc, TaskCrudState>(
                       builder: (context, state) {
                         if (state is TaskCrudLoading) {
@@ -338,27 +284,6 @@ class _TaskTestL1ScreenState extends State<TaskTestL1Screen>
                         );
                       },
                     )
-                    // else
-                    //   BlocBuilder<TaskCrudBloc, TaskCrudState>(
-                    //     builder: (context, state) {
-                    //       if (state is TaskCrudLoading) {
-                    //         return ActionButton(
-                    //           onPressed: () {},
-                    //           width: 120,
-                    //           height: 40,
-                    //           color: appColor.white,
-                    //           child: CircularProgressIndicator(
-                    //               color: appColor.blue600),
-                    //         );
-                    //       }
-                    //       return ActionButton(
-                    //         onPressed: () => onUpdateModel(task),
-                    //         width: 120,
-                    //         height: 40,
-                    //         label: "End",
-                    //       );
-                    //     },
-                    //   )
                   ],
                 ),
               )
@@ -478,13 +403,6 @@ class _TaskTestL1ScreenState extends State<TaskTestL1Screen>
                   return null;
                 },
               ),
-              // Dimensions.kVerticalSpaceSmaller,
-              // CustomTextFormField(
-              //   label: "Percentage",
-              //   controller: testL1Stream.percentageController,
-              //   required: false,
-              //   keyboardType: TextInputType.number,
-              // ),
               Dimensions.kVerticalSpaceSmaller,
               StreamBuilder<CommonList>(
                   stream: testL1Stream.statusListInit,
@@ -510,20 +428,6 @@ class _TaskTestL1ScreenState extends State<TaskTestL1Screen>
                       }
                     }
                     return Container();
-                    //   return CustomStreamDropDownWidget(
-                    //     label: "Assign To",
-                    //     required: true,
-                    //     streamList: testL1Stream.userList,
-                    //     valueListInit: testL1Stream.userListInit,
-                    //     onChanged: (params) {
-                    //       testL1Stream.assignTo(params);
-                    //       setState(() {});
-                    //     },
-                    //     validator: (val) {
-                    //       if (!isCheckTextFieldIsEmpty(val!)) return "required *";
-                    //       return null;
-                    //     },
-                    //   );
                   }),
               Dimensions.kSpacer,
               ActionButton(
@@ -545,18 +449,6 @@ class _TaskTestL1ScreenState extends State<TaskTestL1Screen>
       ),
     );
   }
-
-  // bool isCheckTime(List<TaskTimeHistory>? task) {
-  //   if (task!.isEmpty) {
-  //     return true;
-  //   }
-  //   if (timeFormat(task.first.taskStartTime ?? "") != "00:00" &&
-  //       timeFormat(task.first.taskEndTime ?? "") == "00:00") {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
 
   int tLength(List<TaskTimeHistory> history) =>
       history.length - 1 < 6 ? history.length : 6;
@@ -669,7 +561,7 @@ class _TaskTestL1UpdateScreenState extends State<TaskTestL1UpdateScreen>
         preferredSize: Size(context.deviceSize.width, 52.h),
         child: CustomAppBar(
           onPressed: () => Navigator.pop(context),
-          title: "Testing L1 Task Update",
+          title: "Testing L1 Task Details",
         ),
       ),
       body: BlocListener<TaskCrudBloc, TaskCrudState>(
@@ -718,16 +610,23 @@ class _TaskTestL1UpdateScreenState extends State<TaskTestL1UpdateScreen>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                badge(
+                                    color: appColor.brand600,
+                                    label:
+                                        (task.projectName ?? "").toUpperCase()),
+                                Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.projectName ?? ' ',
+                                  task.task ?? ' ',
                                   style: context.textTheme.bodySmall
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 Dimensions.kVerticalSpaceSmallest,
-                                Text(
-                                  task.task ?? ' ',
-                                  style: context.textTheme.labelLarge,
-                                ),
+                                if (isEmpty(task.menu))
+                                  Text(
+                                    "---- ${task.menu ?? ' '}",
+                                    style: context.textTheme.labelLarge
+                                        ?.copyWith(color: appColor.brand600),
+                                  ),
                               ],
                             ),
                           ),
@@ -736,8 +635,8 @@ class _TaskTestL1UpdateScreenState extends State<TaskTestL1UpdateScreen>
                     ),
                   ],
                 ),
+                Dimensions.kVerticalSpaceSmall,
                 if (isEmpty(task.description)) ...[
-                  Dimensions.kVerticalSpaceSmall,
                   Text(
                     "Task Description",
                     overflow: TextOverflow.ellipsis,
@@ -800,40 +699,6 @@ class _TaskTestL1UpdateScreenState extends State<TaskTestL1UpdateScreen>
             ),
           ),
         ),
-        // if (task.taskTimeHistory!.isNotEmpty)
-        //   Padding(
-        //     padding: const EdgeInsets.fromLTRB(16, 8, 16, 8).w,
-        //     child: Container(
-        //       padding: Dimensions.kPaddingAllMedium,
-        //       width: context.deviceSize.width,
-        //       decoration: boxDecoration(),
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Text(
-        //             "Task Time History",
-        //             overflow: TextOverflow.ellipsis,
-        //             maxLines: 2,
-        //             style: context.textTheme.labelLarge,
-        //           ),
-        //           Dimensions.kVerticalSpaceSmaller,
-        //           Wrap(
-        //             crossAxisAlignment: WrapCrossAlignment.start,
-        //             runAlignment: WrapAlignment.start,
-        //             spacing: 2,
-        //             runSpacing: 2,
-        //             children: [
-        //               for (var i = 0; i < tLength(task.taskTimeHistory!); i++)
-        //                 badge(
-        //                   color: appColor.blue600,
-        //                   label: getTimeHistory(task.taskTimeHistory![i]),
-        //                 ),
-        //             ],
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
         if (isEmpty(task.taskGivenByName) ||
             isEmpty(task.assignToName) ||
             isEmpty(task.supportName) ||
@@ -920,13 +785,6 @@ class _TaskTestL1UpdateScreenState extends State<TaskTestL1UpdateScreen>
                       return null;
                     },
                   ),
-                  // Dimensions.kVerticalSpaceSmaller,
-                  // CustomTextFormField(
-                  //   label: "Percentage",
-                  //   controller: testL1Stream.percentageController,
-                  //   required: true,
-                  //   keyboardType: TextInputType.number,
-                  // ),
                   Dimensions.kVerticalSpaceSmaller,
                   StreamBuilder<CommonList>(
                       stream: testL1Stream.statusListInit,
@@ -952,22 +810,6 @@ class _TaskTestL1UpdateScreenState extends State<TaskTestL1UpdateScreen>
                           }
                         }
                         return Container();
-                        //   return CustomStreamDropDownWidget(
-                        //     label: "Assign To",
-                        //     required: true,
-                        //     streamList: testL1Stream.userList,
-                        //     valueListInit: testL1Stream.userListInit,
-                        //     onChanged: (params) {
-                        //       testL1Stream.assignTo(params);
-                        //       setState(() {});
-                        //     },
-                        //     validator: (val) {
-                        //       if (!isCheckTextFieldIsEmpty(val!)) {
-                        //         return "required *";
-                        //       }
-                        //       return null;
-                        //     },
-                        //   );
                       }),
                 ],
               ),
@@ -1009,37 +851,6 @@ class _TaskTestL1UpdateScreenState extends State<TaskTestL1UpdateScreen>
             );
           },
         ),
-        // BlocBuilder<TaskCrudBloc, TaskCrudState>(
-        //   builder: (context, state) {
-        //     if (state is TaskCrudLoading) {
-        //       Container(
-        //         padding: const EdgeInsets.fromLTRB(16, 8, 16, 16).w,
-        //         alignment: Alignment.center,
-        //         child: const CircularProgressIndicator(),
-        //       );
-        //     }
-        //     return Padding(
-        //       padding: const EdgeInsets.fromLTRB(16, 8, 16, 16).w,
-        //       child: Container(
-        //         padding: Dimensions.kPaddingAllMedium,
-        //         width: context.deviceSize.width,
-        //         decoration: boxDecoration(),
-        //         child: ActionButton(
-        //           onPressed: () {
-        //             if (_formKey.currentState!.validate()) {
-        //               testL1Stream.onSubmit(context, task);
-        //             }
-        //           },
-        //           child: Text(
-        //             'UPDATE',
-        //             style: context.textTheme.labelLarge
-        //                 ?.copyWith(color: Colors.white),
-        //           ),
-        //         ),
-        //       ),
-        //     );
-        //   },
-        // ),
         Dimensions.kVerticalSpaceSmall,
       ],
     );

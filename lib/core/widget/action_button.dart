@@ -8,27 +8,33 @@ class ActionButton extends StatelessWidget {
   final String? label;
   final double? width;
   final double? height;
+  final double? radius;
   final Color? color;
-  const ActionButton(
-      {super.key,
-      required this.onPressed,
-      this.child,
-      this.label,
-      this.height,
-      this.color,
-      this.width});
+  final Color? textColor;
+
+  const ActionButton({
+    super.key,
+    required this.onPressed,
+    this.child,
+    this.label,
+    this.height,
+    this.radius,
+    this.color,
+    this.width,
+    this.textColor,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(radius ?? 8),
       child: Container(
-        width: width,
+        width: width ?? context.deviceSize.width,
         height: height ?? 48,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(radius ?? 8),
           color: color,
           gradient: color == null
               ? LinearGradient(
@@ -50,7 +56,7 @@ class ActionButton extends StatelessWidget {
             Text(
               label!,
               style: context.textTheme.labelLarge?.copyWith(
-                  color: appColor.white,
+                  color: textColor ?? appColor.white,
                   letterSpacing: .6,
                   fontWeight: FontWeight.w500),
             ),
@@ -60,36 +66,32 @@ class ActionButton extends StatelessWidget {
 }
 
 class DefaultActionButton extends StatelessWidget {
-  final VoidCallback? onPressed;
   final String label;
   final double? height;
-  const DefaultActionButton(
-      {super.key, this.onPressed, required this.label, this.height});
+
+  const DefaultActionButton({super.key, required this.label, this.height});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        height: height ?? 48,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: appColor.gray100,
-          boxShadow: [
-            BoxShadow(
-              color: appColor.gray100.withOpacity(.1),
-              blurRadius: 12,
-              spreadRadius: 3,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Text(
-          label,
-          style: context.textTheme.labelLarge
-              ?.copyWith(color: appColor.gray600, fontWeight: FontWeight.bold),
-        ),
+    return Container(
+      height: height ?? 48,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: appColor.gray100,
+        boxShadow: [
+          BoxShadow(
+            color: appColor.gray100.withOpacity(.1),
+            blurRadius: 12,
+            spreadRadius: 3,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Text(
+        label,
+        style: context.textTheme.labelLarge
+            ?.copyWith(color: appColor.gray600, fontWeight: FontWeight.bold),
       ),
     );
   }

@@ -112,11 +112,13 @@ class _TaskInProgressScreenState extends State<TaskInProgressScreen>
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4).w,
       child: InkWell(
-        onTap: () => Navigator.pushNamed(
-          context,
-          AppRouterPath.taskInProgressUpdateScreen,
-          arguments: TaskInProgressUpdateScreen(task: task),
-        ).then((value) => initialCallBack()),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            AppRouterPath.taskInProgressUpdateScreen,
+            arguments: TaskInProgressUpdateScreen(task: task),
+          ).then((value) => initialCallBack());
+        },
         borderRadius: Dimensions.kBorderRadiusAllSmaller,
         child: Container(
           decoration: BoxDecoration(
@@ -140,9 +142,6 @@ class _TaskInProgressScreenState extends State<TaskInProgressScreen>
                         badge(
                             color: appColor.brand600,
                             label: (task.projectName ?? "").toUpperCase()),
-                        // badge(
-                        //     color: appColor.blue600,
-                        //     label: (task.status ?? "").toUpperCase()),
                         Dimensions.kSpacer,
                         if (task.taskType != null && task.taskType == "Reword")
                           badge(
@@ -169,11 +168,10 @@ class _TaskInProgressScreenState extends State<TaskInProgressScreen>
                                 style: context.textTheme.labelLarge
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              if (task.description != null &&
-                                  task.description != '') ...[
+                              if (task.menu != null && task.menu != '') ...[
                                 Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.description ?? '',
+                                  task.menu ?? '',
                                   overflow: TextOverflow.ellipsis,
                                   style: context.textTheme.labelMedium
                                       ?.copyWith(color: appColor.gray500),
@@ -352,7 +350,7 @@ class _TaskInProgressScreenState extends State<TaskInProgressScreen>
         child: time!.isEmpty
             ? const EmptyScreen()
             : ListView.builder(
-                itemCount: time!.length,
+                itemCount: time.length,
                 padding: const EdgeInsets.all(0).w,
                 itemBuilder: (_, i) {
                   return Column(
@@ -439,7 +437,7 @@ class _TaskInProgressScreenState extends State<TaskInProgressScreen>
       {required String label, Function()? onPressed}) {
     return InputDecoration(
       suffixIcon: label == "Search"
-          ? InkWell(
+          ? GestureDetector(
               onTap: onPressed,
               child: Icon(Icons.search, color: appColor.gray400),
             )
@@ -521,7 +519,7 @@ class _TaskInProgressUpdateScreenState extends State<TaskInProgressUpdateScreen>
         preferredSize: Size(context.deviceSize.width, 52.h),
         child: CustomAppBar(
           onPressed: () => Navigator.pop(context),
-          title: "In Progress Update",
+          title: "In-Progress Task Details",
         ),
       ),
       body: BlocListener<TaskCrudBloc, TaskCrudState>(
@@ -571,16 +569,23 @@ class _TaskInProgressUpdateScreenState extends State<TaskInProgressUpdateScreen>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                badge(
+                                    color: appColor.brand600,
+                                    label:
+                                        (task.projectName ?? "").toUpperCase()),
+                                Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.projectName ?? ' ',
+                                  task.task ?? ' ',
                                   style: context.textTheme.bodySmall
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 Dimensions.kVerticalSpaceSmallest,
-                                Text(
-                                  task.task ?? ' ',
-                                  style: context.textTheme.labelLarge,
-                                ),
+                                if (isEmpty(task.menu))
+                                  Text(
+                                    "---- ${task.menu ?? ' '}",
+                                    style: context.textTheme.labelLarge
+                                        ?.copyWith(color: appColor.brand600),
+                                  ),
                               ],
                             ),
                           ),
@@ -589,8 +594,8 @@ class _TaskInProgressUpdateScreenState extends State<TaskInProgressUpdateScreen>
                     ),
                   ],
                 ),
+                Dimensions.kVerticalSpaceSmall,
                 if (isEmpty(task.description)) ...[
-                  Dimensions.kVerticalSpaceSmall,
                   Text(
                     "Task Description:",
                     overflow: TextOverflow.ellipsis,
@@ -653,40 +658,6 @@ class _TaskInProgressUpdateScreenState extends State<TaskInProgressUpdateScreen>
             ),
           ),
         ),
-        // if (task.taskTimeHistory!.isNotEmpty)
-        //   Padding(
-        //     padding: const EdgeInsets.fromLTRB(16, 8, 16, 8).w,
-        //     child: Container(
-        //       padding: Dimensions.kPaddingAllMedium,
-        //       width: context.deviceSize.width,
-        //       decoration: boxDecoration(),
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Text(
-        //             "Task Time History",
-        //             overflow: TextOverflow.ellipsis,
-        //             maxLines: 2,
-        //             style: context.textTheme.labelLarge,
-        //           ),
-        //           Dimensions.kVerticalSpaceSmaller,
-        //           Wrap(
-        //             crossAxisAlignment: WrapCrossAlignment.start,
-        //             runAlignment: WrapAlignment.start,
-        //             spacing: 2,
-        //             runSpacing: 2,
-        //             children: [
-        //               for (var i = 0; i < tLength(task.taskTimeHistory!); i++)
-        //                 badge(
-        //                   color: appColor.blue600,
-        //                   label: getTimeHistory(task.taskTimeHistory![i]),
-        //                 ),
-        //             ],
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
         if (isEmpty(task.taskGivenByName) ||
             isEmpty(task.assignToName) ||
             isEmpty(task.supportName) ||
@@ -758,21 +729,6 @@ class _TaskInProgressUpdateScreenState extends State<TaskInProgressUpdateScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // CustomStreamDropDownWidget(
-                  //   label: "Status",
-                  //   required: true,
-                  //   streamList: inProgressStream.statusList,
-                  //   valueListInit: inProgressStream.statusListInit,
-                  //   onChanged: (params) {
-                  //     inProgressStream.status(params);
-                  //     setState(() {});
-                  //   },
-                  //   validator: (val) {
-                  //     if (!isCheckTextFieldIsEmpty(val!)) return "required *";
-                  //     return null;
-                  //   },
-                  // ),
-                  // Dimensions.kVerticalSpaceSmaller,
                   CustomTextFormField(
                     label: "Percentage",
                     controller: inProgressStream.percentageController,
@@ -783,32 +739,6 @@ class _TaskInProgressUpdateScreenState extends State<TaskInProgressUpdateScreen>
                       return null;
                     },
                   ),
-                  // Dimensions.kVerticalSpaceSmaller,
-                  // StreamBuilder<CommonList>(
-                  //     stream: inProgressStream.statusListInit,
-                  //     builder: (context, snapshot) {
-                  //       if (snapshot.hasData) {
-                  //         if (snapshot.data!.name == "Pending") {
-                  //           return Container();
-                  //         }
-                  //       }
-                  //       return CustomStreamDropDownWidget(
-                  //         label: "Test To",
-                  //         required: true,
-                  //         streamList: inProgressStream.userList,
-                  //         valueListInit: inProgressStream.userListInit,
-                  //         onChanged: (params) {
-                  //           inProgressStream.assignTo(params);
-                  //           setState(() {});
-                  //         },
-                  //         validator: (val) {
-                  //           if (!isCheckTextFieldIsEmpty(val!)) {
-                  //             return "required *";
-                  //           }
-                  //           return null;
-                  //         },
-                  //       );
-                  //     }),
                 ],
               ),
             ),
@@ -1012,160 +942,3 @@ class _TaskInProgressUpdateScreenState extends State<TaskInProgressUpdateScreen>
     );
   }
 }
-// Dimensions.kVerticalSpaceSmaller,
-// RichText(
-//   text: TextSpan(
-//     text: "${task.percentage ?? 0}% ",
-//     style: context.textTheme.labelLarge?.copyWith(
-//         fontWeight: FontWeight.bold,
-//         color: appColor.gray900.withOpacity(.8)),
-//     children: [
-//       TextSpan(
-//         text: "Completed",
-//         style: context.textTheme.labelLarge
-//             ?.copyWith(color: appColor.gray600),
-//       ),
-//     ],
-//   ),
-// ),
-// Dimensions.kVerticalSpaceSmallest,
-// LinearProgressIndicator(
-//   semanticsLabel: "Task Completed Status",
-//   semanticsValue: "${task.percentage ?? 0} %",
-//   value: (task.percentage ?? 0).toDouble() / 100,
-//   backgroundColor: appColor.gray200,
-//   valueColor:
-//       AlwaysStoppedAnimation<Color>(appColor.success600),
-//   minHeight: 10.h,
-//   borderRadius: Dimensions.kBorderRadiusAllSmall,
-// ),
-// return Padding(
-//   padding: const EdgeInsets.symmetric(vertical: 4).w,
-//   child: InkWell(
-//     onTap: () => Navigator.pushNamed(
-//       context,
-//       AppRouterPath.taskInProgressUpdateScreen,
-//       arguments: TaskInProgressUpdateScreen(task: task),
-//     ).then((value) => initialCallBack()),
-//     child: Container(
-//       decoration: BoxDecoration(
-//         color: appColor.white,
-//         borderRadius: Dimensions.kBorderRadiusAllSmaller,
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Padding(
-//             padding: Dimensions.kPaddingAllSmall,
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Row(
-//                   children: [
-//                     badge(
-//                         color: appColor.warning500,
-//                         label: (task.priority ?? "").toUpperCase()),
-//                     Dimensions.kHorizontalSpaceSmaller,
-//                     badge(
-//                         color: appColor.blue600,
-//                         label: (task.status ?? "").toUpperCase()),
-//                   ],
-//                 ),
-//                 Dimensions.kVerticalSpaceSmaller,
-//                 Row(
-//                   children: [
-//                     Expanded(
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             task.task ?? '',
-//                             maxLines: 2,
-//                             overflow: TextOverflow.ellipsis,
-//                             style: context.textTheme.labelLarge
-//                                 ?.copyWith(fontWeight: FontWeight.bold),
-//                           ),
-//                           Dimensions.kVerticalSpaceSmallest,
-//                           Text(
-//                             task.description ?? '',
-//                             maxLines: 2,
-//                             overflow: TextOverflow.ellipsis,
-//                             style: context.textTheme.labelMedium
-//                                 ?.copyWith(color: appColor.gray500),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     Dimensions.kHorizontalSpaceSmaller,
-//                     Stack(
-//                       alignment: Alignment.center,
-//                       children: [
-//                         SizedBox(
-//                           width: 46.w,
-//                           height: 46.h,
-//                           child: CircularProgressIndicator(
-//                             value: (task.percentage ?? 0).toDouble() / 100,
-//                             backgroundColor: appColor.gray100,
-//                             color: appColor.gray100,
-//                             valueColor: AlwaysStoppedAnimation<Color?>(
-//                                 appColor.success600),
-//                             strokeWidth: 10,
-//                             strokeCap: StrokeCap.butt,
-//                           ),
-//                         ),
-//                         Positioned(
-//                             child: Text(
-//                           "${task.percentage ?? ''} %",
-//                           style: context.textTheme.labelMedium?.copyWith(
-//                               color: appColor.gray500,
-//                               fontWeight: FontWeight.bold),
-//                         )),
-//                       ],
-//                     ),
-//                   ],
-//                 ),
-//                 Dimensions.kVerticalSpaceSmaller,
-//                 Row(
-//                   children: [
-//                     SvgPicture.asset(
-//                       AppSvg.time,
-//                       width: 12.w,
-//                       colorFilter: ColorFilter.mode(
-//                           appColor.gray500, BlendMode.srcIn),
-//                     ),
-//                     Dimensions.kHorizontalSpaceSmaller,
-//                     Text(
-//                       task.taskDate ?? '',
-//                       style: context.textTheme.labelMedium
-//                           ?.copyWith(color: appColor.gray500),
-//                     ),
-//                   ],
-//                 ),
-//               ],
-//             ),
-//           ),
-//           if (task.taskTimeHistory != null &&
-//               task.taskTimeHistory!.isNotEmpty) ...[
-//             const Divider(height: 0),
-//             Padding(
-//               padding: Dimensions.kPaddingAllSmaller,
-//               child: Wrap(
-//                 crossAxisAlignment: WrapCrossAlignment.start,
-//                 runAlignment: WrapAlignment.start,
-//                 spacing: 2,
-//                 runSpacing: 2,
-//                 children: [
-//                   for (var i = 0; i < tLength(task.taskTimeHistory!); i++)
-//                     badge(
-//                       color: appColor.blue600,
-//                       label: getTimeHistory(task.taskTimeHistory![i]),
-//                     ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ],
-//       ),
-//     ),
-//   ),
-// );

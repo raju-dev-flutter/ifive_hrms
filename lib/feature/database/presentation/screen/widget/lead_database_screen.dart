@@ -64,9 +64,6 @@ class _LeadDatabaseScreenState extends State<LeadDatabaseScreen> {
               if (state.database.isEmpty) {
                 return Expanded(child: EmptyScreen(onPressed: refreshCallBack));
               }
-              // if (state.hasReachedMax) {
-              //   Fluttertoast.showToast(msg: 'End of list');
-              // }
               return Expanded(
                 child: RefreshIndicator(
                   onRefresh: refreshCallBack,
@@ -82,12 +79,14 @@ class _LeadDatabaseScreenState extends State<LeadDatabaseScreen> {
                         return const Center(child: CircularProgressIndicator());
                       }
                       return DatabaseCardWidget(
-                        onPressed: () => Navigator.pushNamed(
-                          context,
-                          AppRouterPath.leadDatabaseUpdateScreen,
-                          arguments: LeadDatabaseUpdateScreen(
-                              database: state.database[i]),
-                        ).then((value) => refreshCallBack()),
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRouterPath.leadDatabaseUpdateScreen,
+                            arguments: LeadDatabaseUpdateScreen(
+                                database: state.database[i]),
+                          ).then((value) => refreshCallBack());
+                        },
                         database: state.database[i],
                       );
                     },

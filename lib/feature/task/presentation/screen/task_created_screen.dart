@@ -110,14 +110,15 @@ class _TaskCreatedScreenState extends State<TaskCreatedScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4).w,
       child: InkWell(
-        onTap: () => Navigator.pushNamed(
-          context,
-          AppRouterPath.taskCreatedUpdateScreen,
-          arguments: TaskCreatedUpdateScreen(task: task),
-        ).then((value) => initialCallBack()),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            AppRouterPath.taskCreatedUpdateScreen,
+            arguments: TaskCreatedUpdateScreen(task: task),
+          ).then((value) => initialCallBack());
+        },
         borderRadius: Dimensions.kBorderRadiusAllSmaller,
         child: Container(
-          // padding: Dimensions.kPaddingAllMedium,
           decoration: BoxDecoration(
             color: appColor.white,
             borderRadius: Dimensions.kBorderRadiusAllSmaller,
@@ -134,15 +135,10 @@ class _TaskCreatedScreenState extends State<TaskCreatedScreen> {
                         badge(
                             color: appColor.warning500,
                             label: (task.priority ?? "").toUpperCase()),
-
                         Dimensions.kHorizontalSpaceSmaller,
                         badge(
                             color: appColor.brand600,
                             label: (task.projectName ?? "").toUpperCase()),
-                        // Dimensions.kHorizontalSpaceSmaller,
-                        // badge(
-                        //     color: appColor.blue600,
-                        //     label: (task.status ?? "").toUpperCase()),
                         Dimensions.kSpacer,
                         if (task.taskType != null && task.taskType == "Reword")
                           badge(
@@ -169,11 +165,10 @@ class _TaskCreatedScreenState extends State<TaskCreatedScreen> {
                                 style: context.textTheme.labelLarge
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              if (task.description != null &&
-                                  task.description != '') ...[
+                              if (task.menu != null && task.menu != '') ...[
                                 Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.description ?? '',
+                                  task.menu ?? '',
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: context.textTheme.labelMedium
@@ -280,7 +275,6 @@ class _TaskCreatedScreenState extends State<TaskCreatedScreen> {
                       decoration: inputDecoration(label: "Search"),
                     ),
                   ),
-                  // Dimensions.kVerticalSpaceSmall,
                   Expanded(
                     child: StreamBuilder<List<CommonList>>(
                         stream: createdStream.filterUserList,
@@ -288,7 +282,6 @@ class _TaskCreatedScreenState extends State<TaskCreatedScreen> {
                           if (snapshot.hasData) {
                             final user = snapshot.data;
                             if (user!.isEmpty) return Container();
-
                             return ListView.builder(
                                 itemCount: user.length,
                                 padding: const EdgeInsets.all(0).w,
@@ -304,12 +297,12 @@ class _TaskCreatedScreenState extends State<TaskCreatedScreen> {
                                                   vertical: 6, horizontal: 16)
                                               .w,
                                           child: InkWell(
-                                            onTap: () => {
+                                            onTap: () {
                                               createdStream
-                                                  .selectAssignTo(user[i]),
-                                              Navigator.pop(context),
+                                                  .selectAssignTo(user[i]);
+                                              Navigator.pop(context);
                                               createdStream.onSubmit(
-                                                  context, planner)
+                                                  context, planner);
                                             },
                                             child: Text(user[i].name ?? "",
                                                 style: context
@@ -340,7 +333,7 @@ class _TaskCreatedScreenState extends State<TaskCreatedScreen> {
   InputDecoration inputDecoration(
       {required String label, Function()? onPressed}) {
     return InputDecoration(
-      suffixIcon: InkWell(
+      suffixIcon: GestureDetector(
         onTap: onPressed,
         child: Icon(Icons.search, color: appColor.gray400),
       ),
@@ -419,7 +412,7 @@ class _TaskCreatedUpdateScreenState extends State<TaskCreatedUpdateScreen> {
         preferredSize: Size(context.deviceSize.width, 52.h),
         child: CustomAppBar(
           onPressed: () => Navigator.pop(context),
-          title: "Update Created Task ",
+          title: "Created Task Details",
         ),
       ),
       body: BlocListener<TaskCrudBloc, TaskCrudState>(
@@ -467,16 +460,23 @@ class _TaskCreatedUpdateScreenState extends State<TaskCreatedUpdateScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                badge(
+                                    color: appColor.brand600,
+                                    label:
+                                        (task.projectName ?? "").toUpperCase()),
+                                Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.projectName ?? ' ',
+                                  task.task ?? ' ',
                                   style: context.textTheme.bodySmall
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 Dimensions.kVerticalSpaceSmallest,
-                                Text(
-                                  task.task ?? ' ',
-                                  style: context.textTheme.labelLarge,
-                                ),
+                                if (isEmpty(task.menu))
+                                  Text(
+                                    "---- ${task.menu ?? ' '}",
+                                    style: context.textTheme.labelLarge
+                                        ?.copyWith(color: appColor.brand600),
+                                  ),
                               ],
                             ),
                           ),
@@ -485,8 +485,8 @@ class _TaskCreatedUpdateScreenState extends State<TaskCreatedUpdateScreen> {
                     ),
                   ],
                 ),
+                Dimensions.kVerticalSpaceSmall,
                 if (isEmpty(task.description)) ...[
-                  Dimensions.kVerticalSpaceSmall,
                   Text(
                     "Task Description:",
                     overflow: TextOverflow.ellipsis,

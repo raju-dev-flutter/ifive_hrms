@@ -133,8 +133,6 @@ class _MisspunchScreenState extends State<MisspunchScreen> {
               }
               if (state.message == "Network Error") {
                 AppAlerts.displaySnackBar(context, state.message, false);
-                // AppAlerts.displayErrorAlert(
-                //     context, "Misspunch  Approval", state.message);
               }
             }
           },
@@ -196,8 +194,6 @@ class _MisspunchScreenState extends State<MisspunchScreen> {
               }
               if (state.message == "Network Error") {
                 AppAlerts.displaySnackBar(context, state.message, false);
-                // AppAlerts.displayErrorAlert(
-                //     context, "Misspunch History", state.message);
               }
             }
           },
@@ -470,6 +466,7 @@ class _MisspunchScreenState extends State<MisspunchScreen> {
         onTap: () => Navigator.pushNamed(context, AppRouterPath.misspunchCancel,
                 arguments: MisspunchCancelScreen(missPunch: missPunch))
             .then((value) => initialCallBack()),
+        borderRadius: BorderRadius.circular(8).w,
         child: Container(
           decoration: BoxDecoration(
             color: appColor.white,

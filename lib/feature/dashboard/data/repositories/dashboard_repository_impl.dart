@@ -33,17 +33,6 @@ class DashboardRepositoryImpl implements DashboardRepository {
   }
 
   @override
-  ResultFuture<DashboardCountModel> dashboardCount() async {
-    try {
-      final response = await _datasource.dashboardCount();
-      return Right(response);
-    } on APIException catch (e) {
-      Logger().e(e.message);
-      return Left(APIFailure.fromException(e));
-    }
-  }
-
-  @override
   ResultFuture<AppVersionModel> appVersion() async {
     try {
       final response = await _datasource.appVersion();
@@ -55,10 +44,21 @@ class DashboardRepositoryImpl implements DashboardRepository {
   }
 
   @override
-  ResultFuture<ApprovalLeaveHistoryModel> approvalLeaveHistory(
-      String date) async {
+  ResultFuture<DashboardCountModel> dashboardCount() async {
     try {
-      final response = await _datasource.approvalLeaveHistory(date);
+      final response = await _datasource.dashboardCount();
+      return Right(response);
+    } on APIException catch (e) {
+      Logger().e(e.message);
+      return Left(APIFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<ApprovalLeaveHistoryModel> approvalLeaveHistory(
+      String fromDate, String toDate) async {
+    try {
+      final response = await _datasource.approvalLeaveHistory(fromDate, toDate);
       return Right(response);
     } on APIException catch (e) {
       Logger().e(e.message);
@@ -70,6 +70,17 @@ class DashboardRepositoryImpl implements DashboardRepository {
   ResultFuture<AppMenuModel> appMenu() async {
     try {
       final response = await _datasource.appMenu();
+      return Right(response);
+    } on APIException catch (e) {
+      Logger().e(e.message);
+      return Left(APIFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<TaskLeadDataModel> taskLeadData() async {
+    try {
+      final response = await _datasource.taskLeadData();
       return Right(response);
     } on APIException catch (e) {
       Logger().e(e.message);

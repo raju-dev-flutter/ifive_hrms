@@ -12,4 +12,6 @@ abstract class SfaRepository {
 
   ResultFuture<DatabaseDataModel> getTicket(
       DataMapString header, int page, int parPage);
+
+  ResultVoid uploadDataBaseCamera(DataMap body);
 }

@@ -56,38 +56,31 @@ class _TodayOdPermissionWidgetState extends State<TodayOdPermissionWidget> {
       },
       builder: (context, state) {
         if (state is PermissionHistoryLoading) {
-          return Expanded(
-            child: ListView.builder(
-              padding:
-                  const EdgeInsets.only(top: 0, bottom: 12, left: 16, right: 16)
-                      .w,
-              itemCount: 5,
-              itemBuilder: (_, i) => const LeaveShimmerLoading(),
-            ),
+          return ListView.separated(
+            padding: const EdgeInsets.only(top: 0).w,
+            itemCount: 5,
+            itemBuilder: (_, i) => const LeaveShimmerLoading(),
+            separatorBuilder: (_, i) {
+              return Dimensions.kVerticalSpaceSmaller;
+            },
           );
         }
         if (state is PermissionHistoryLoaded) {
           if (state.history.permissionList.isEmpty) {
-            return Expanded(
-                child:
-                    Center(child: Lottie.asset(AppLottie.empty, width: 250.w)));
+            return Center(child: Lottie.asset(AppLottie.empty, width: 250.w));
           }
-          return Expanded(
-            child: RefreshIndicator(
-              onRefresh: initialCallBack,
-              child: ListView.builder(
-                padding: const EdgeInsets.only(
-                        top: 0, bottom: 12, left: 16, right: 16)
-                    .w,
-                itemCount: state.history.permissionList.length,
-                itemBuilder: (_, i) {
-                  final permissionHistory = state.history.permissionList[i];
+          return ListView.separated(
+            padding: const EdgeInsets.only(top: 0).w,
+            itemCount: state.history.permissionList.length,
+            itemBuilder: (_, i) {
+              final permissionHistory = state.history.permissionList[i];
 
-                  return permissionApprovalCardUI(permissionHistory,
-                      getColor(state.history.permissionList[i].status ?? ""));
-                },
-              ),
-            ),
+              return permissionApprovalCardUI(permissionHistory,
+                  getColor(state.history.permissionList[i].status ?? ""));
+            },
+            separatorBuilder: (_, i) {
+              return Dimensions.kVerticalSpaceSmaller;
+            },
           );
         }
         return Container();
@@ -96,115 +89,112 @@ class _TodayOdPermissionWidgetState extends State<TodayOdPermissionWidget> {
   }
 
   Widget permissionApprovalCardUI(PermissionResponse permission, Color color) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4).w,
-      child: InkWell(
-        onTap: () => Navigator.pushNamed(
-                context, AppRouterPath.oDPermissionUpdateScreen,
-                arguments: ODPermissionUpdateScreen(permission: permission))
-            .then((value) => initialCallBack()),
-        borderRadius: BorderRadius.circular(8).w,
-        child: Container(
-          decoration: BoxDecoration(
-            color: appColor.white,
-            borderRadius: BorderRadius.circular(8).w,
-            border: Border(left: BorderSide(width: 5, color: color)),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFFF5F5F5).withOpacity(.2),
-                blurRadius: 12,
-                offset: const Offset(0, 3),
-                spreadRadius: 3,
+    return InkWell(
+      onTap: () => Navigator.pushNamed(
+              context, AppRouterPath.oDPermissionUpdateScreen,
+              arguments: ODPermissionUpdateScreen(permission: permission))
+          .then((value) => initialCallBack()),
+      borderRadius: BorderRadius.circular(8).w,
+      child: Container(
+        decoration: BoxDecoration(
+          color: appColor.white,
+          borderRadius: BorderRadius.circular(8).w,
+          border: Border(left: BorderSide(width: 5, color: color)),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFF5F5F5).withOpacity(.2),
+              blurRadius: 12,
+              offset: const Offset(0, 3),
+              spreadRadius: 3,
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              width: context.deviceSize.width,
+              padding: Dimensions.kPaddingAllMedium,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          permission.username ?? '',
+                          style: context.textTheme.labelLarge?.copyWith(
+                              fontWeight: FontWeight.w500, letterSpacing: .5),
+                        ),
+                      ),
+                      leaveTag(
+                        label: permission.status ?? "",
+                        color: color,
+                      ),
+                    ],
+                  ),
+                  Dimensions.kVerticalSpaceSmaller,
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        AppSvg.calendar,
+                        width: 16,
+                        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                      ),
+                      Dimensions.kHorizontalSpaceSmaller,
+                      Text('DATE :',
+                          style: context.textTheme.labelMedium?.copyWith(
+                              fontWeight: FontWeight.bold, color: color)),
+                      Dimensions.kHorizontalSpaceSmall,
+                      Text(permission.date ?? '',
+                          style: context.textTheme.labelMedium
+                              ?.copyWith(fontWeight: FontWeight.bold)),
+                      Dimensions.kHorizontalSpaceSmall,
+                    ],
+                  ),
+                  Dimensions.kVerticalSpaceSmaller,
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        AppSvg.time,
+                        width: 16,
+                        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                      ),
+                      Dimensions.kHorizontalSpaceSmaller,
+                      Text('TIME :',
+                          style: context.textTheme.labelMedium?.copyWith(
+                              fontWeight: FontWeight.bold, color: color)),
+                      Dimensions.kHorizontalSpaceSmall,
+                      Text(
+                          permission.inTime == null
+                              ? ' '
+                              : permission.inTime!.split(' ').last,
+                          style: context.textTheme.labelMedium
+                              ?.copyWith(fontWeight: FontWeight.bold)),
+                      Dimensions.kHorizontalSpaceSmall,
+                      SizedBox(
+                        width: permission.outTime == null ? 0 : 10.w,
+                        child: Divider(color: appColor.error600),
+                      ),
+                      Dimensions.kHorizontalSpaceSmall,
+                      Text(
+                          permission.outTime == null
+                              ? ' '
+                              : permission.outTime!.split(' ').last,
+                          style: context.textTheme.labelMedium
+                              ?.copyWith(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  Dimensions.kVerticalSpaceSmaller,
+                  Text("\" ${permission.reason ?? ''} \"",
+                      style: context.textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          letterSpacing: .8)),
+                ],
               ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Container(
-                width: context.deviceSize.width,
-                padding: Dimensions.kPaddingAllMedium,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            permission.username ?? '',
-                            style: context.textTheme.labelLarge?.copyWith(
-                                fontWeight: FontWeight.w500, letterSpacing: .5),
-                          ),
-                        ),
-                        leaveTag(
-                          label: permission.status ?? "",
-                          color: color,
-                        ),
-                      ],
-                    ),
-                    Dimensions.kVerticalSpaceSmaller,
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          AppSvg.calendar,
-                          width: 16,
-                          colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-                        ),
-                        Dimensions.kHorizontalSpaceSmaller,
-                        Text('DATE :',
-                            style: context.textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.bold, color: color)),
-                        Dimensions.kHorizontalSpaceSmall,
-                        Text(permission.date ?? '',
-                            style: context.textTheme.labelMedium
-                                ?.copyWith(fontWeight: FontWeight.bold)),
-                        Dimensions.kHorizontalSpaceSmall,
-                      ],
-                    ),
-                    Dimensions.kVerticalSpaceSmaller,
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          AppSvg.time,
-                          width: 16,
-                          colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-                        ),
-                        Dimensions.kHorizontalSpaceSmaller,
-                        Text('TIME :',
-                            style: context.textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.bold, color: color)),
-                        Dimensions.kHorizontalSpaceSmall,
-                        Text(
-                            permission.inTime == null
-                                ? ' '
-                                : permission.inTime!.split(' ').last,
-                            style: context.textTheme.labelMedium
-                                ?.copyWith(fontWeight: FontWeight.bold)),
-                        Dimensions.kHorizontalSpaceSmall,
-                        SizedBox(
-                          width: permission.outTime == null ? 0 : 10.w,
-                          child: Divider(color: appColor.error600),
-                        ),
-                        Dimensions.kHorizontalSpaceSmall,
-                        Text(
-                            permission.outTime == null
-                                ? ' '
-                                : permission.outTime!.split(' ').last,
-                            style: context.textTheme.labelMedium
-                                ?.copyWith(fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                    Dimensions.kVerticalSpaceSmaller,
-                    Text("\" ${permission.reason ?? ''} \"",
-                        style: context.textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            letterSpacing: .8)),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

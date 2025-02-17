@@ -93,24 +93,43 @@ class _NewCallDatabaseUpdateScreenState
                 stream: newCallDatabase.pagePosition,
                 builder: (context, snapshot) {
                   final position = snapshot.hasData ? snapshot.data ?? 0 : 0;
-                  return Column(children: _buildBody(position));
+                  return Column(
+                    children: [
+                      Column(children: _buildBody(position)),
+                      Dimensions.kVerticalSpaceMedium,
+                      StreamBuilder<int>(
+                          stream: newCallDatabase.pagePosition,
+                          builder: (_, snapshot) {
+                            final count =
+                                snapshot.hasData ? snapshot.data ?? 0 : 0;
+                            return TicketBottomActionButton(
+                              position: count,
+                              lastPosition: 7,
+                              onPressedBack: onBack,
+                              onPressedNext: onNext,
+                              onPressedSubmit: onSubmit,
+                            );
+                          }),
+                      Dimensions.kVerticalSpaceLargest,
+                    ],
+                  );
                 },
               ),
             ),
           ),
         ),
       ),
-      bottomNavigationBar: StreamBuilder<int>(
-          stream: newCallDatabase.pagePosition,
-          builder: (_, snapshot) {
-            final count = snapshot.hasData ? snapshot.data ?? 0 : 0;
-            return TicketBottomActionButton(
-              position: count,
-              onPressedBack: onBack,
-              onPressedNext: onNext,
-              onPressedSubmit: onSubmit,
-            );
-          }),
+      // bottomNavigationBar: StreamBuilder<int>(
+      //     stream: newCallDatabase.pagePosition,
+      //     builder: (_, snapshot) {
+      //       final count = snapshot.hasData ? snapshot.data ?? 0 : 0;
+      //       return TicketBottomActionButton(
+      //         position: count,
+      //         onPressedBack: onBack,
+      //         onPressedNext: onNext,
+      //         onPressedSubmit: onSubmit,
+      //       );
+      //     }),
     );
   }
 
@@ -511,6 +530,47 @@ class _NewCallDatabaseUpdateScreenState
     ];
   }
 
+  List<Widget> _buildFieldActivityDetailUI() {
+    return [
+      CustomTextFormField(
+        label: "Name",
+        controller: newCallDatabase.fNameController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Mobile Number",
+        controller: newCallDatabase.fNumberController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Design & Dept",
+        controller: newCallDatabase.fDesignDeptController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "E-Mail Id",
+        controller: newCallDatabase.fEmailController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Whatsapp Number",
+        controller: newCallDatabase.fWhatsappNumberController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Remarks",
+        maxLines: 4,
+        controller: newCallDatabase.fRemarksController,
+        required: false,
+      ),
+    ];
+  }
+
   List<Widget> _buildOtherContactPersonDetailUI() {
     return [
       CustomTextFormField(
@@ -584,6 +644,8 @@ class _NewCallDatabaseUpdateScreenState
       case 5:
         return _buildDecisionMakerDetailUI();
       case 6:
+        return _buildFieldActivityDetailUI();
+      case 7:
         return _buildOtherContactPersonDetailUI();
     }
     return <Widget>[];

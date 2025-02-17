@@ -65,9 +65,6 @@ class _DcrDatabaseScreenState extends State<DcrDatabaseScreen> {
               if (state.database.isEmpty) {
                 return Expanded(child: EmptyScreen(onPressed: refreshCallBack));
               }
-              // if (state.hasReachedMax) {
-              //   Fluttertoast.showToast(msg: 'End of list');
-              // }
               return Expanded(
                 child: RefreshIndicator(
                   onRefresh: refreshCallBack,
@@ -83,12 +80,13 @@ class _DcrDatabaseScreenState extends State<DcrDatabaseScreen> {
                         return const Center(child: CircularProgressIndicator());
                       }
                       return DatabaseCardWidget(
-                        onPressed: () => Navigator.pushNamed(
-                          context,
-                          AppRouterPath.dcrDatabaseUpdateScreen,
-                          arguments: DcrDatabaseUpdateScreen(
-                              database: state.database[i]),
-                        ).then((value) => refreshCallBack()),
+                        onPressed: () {
+                          Navigator.pushNamed(context,
+                                  AppRouterPath.dcrDatabaseUpdateScreen,
+                                  arguments: DcrDatabaseUpdateScreen(
+                                      database: state.database[i]))
+                              .then((value) => refreshCallBack());
+                        },
                         database: state.database[i],
                       );
                     },

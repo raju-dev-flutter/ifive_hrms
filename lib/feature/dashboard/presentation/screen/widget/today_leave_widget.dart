@@ -58,36 +58,31 @@ class _TodayLeaveWidgetState extends State<TodayLeaveWidget> {
       },
       builder: (context, state) {
         if (state is LeaveApprovedLoading) {
-          return Expanded(
-            child: ListView.builder(
-              padding:
-                  const EdgeInsets.only(top: 0, bottom: 12, left: 16, right: 16)
-                      .w,
-              itemCount: 5,
-              itemBuilder: (_, i) {
-                return const LeaveShimmerLoading();
-              },
-            ),
+          return ListView.separated(
+            padding: const EdgeInsets.only(top: 0).w,
+            itemCount: 5,
+            itemBuilder: (_, i) {
+              return const LeaveShimmerLoading();
+            },
+            separatorBuilder: (_, i) {
+              return Dimensions.kVerticalSpaceSmaller;
+            },
           );
         }
         if (state is LeaveApprovedLoaded) {
           if (state.approved.leavelist!.isEmpty) {
-            return Expanded(child: Lottie.asset(AppLottie.empty, width: 250.w));
+            return Lottie.asset(AppLottie.empty, width: 250.w);
           }
-          return Expanded(
-            child: RefreshIndicator(
-              onRefresh: initialCallBack,
-              child: ListView.builder(
-                padding: const EdgeInsets.only(
-                        top: 0, bottom: 12, left: 16, right: 16)
-                    .w,
-                itemCount: state.approved.leavelist?.length,
-                itemBuilder: (_, i) {
-                  return leaveApprovedCardUI(state.approved.leavelist![i],
-                      getColor(state.approved.leavelist![i].leaveStatus ?? ""));
-                },
-              ),
-            ),
+          return ListView.separated(
+            padding: const EdgeInsets.only(top: 0).w,
+            itemCount: state.approved.leavelist!.length,
+            itemBuilder: (_, i) {
+              return leaveApprovedCardUI(state.approved.leavelist![i],
+                  getColor(state.approved.leavelist![i].leaveStatus ?? ""));
+            },
+            separatorBuilder: (_, i) {
+              return Dimensions.kVerticalSpaceSmaller;
+            },
           );
         }
         if (state is LeaveHistoryFailed) {}
@@ -97,105 +92,103 @@ class _TodayLeaveWidgetState extends State<TodayLeaveWidget> {
   }
 
   Widget leaveApprovedCardUI(Leavelist leave, Color color) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4).w,
-      child: InkWell(
-        onTap: () => Navigator.pushNamed(context, AppRouterPath.leaveUpdate,
-                arguments: LeaveUpdateScreen(leave: leave))
-            .then((value) => initialCallBack()),
-        child: Container(
-          decoration: BoxDecoration(
-            color: appColor.white,
-            borderRadius: BorderRadius.circular(8).w,
-            border: Border(left: BorderSide(width: 5, color: color)),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFFF5F5F5).withOpacity(.2),
-                blurRadius: 12,
-                offset: const Offset(0, 3),
-                spreadRadius: 3,
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, AppRouterPath.leaveUpdate,
+              arguments: LeaveUpdateScreen(leave: leave))
+          .then((value) => initialCallBack()),
+      borderRadius: BorderRadius.circular(8).w,
+      child: Container(
+        decoration: BoxDecoration(
+          color: appColor.white,
+          borderRadius: BorderRadius.circular(8).w,
+          border: Border(left: BorderSide(width: 5, color: color)),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFF5F5F5).withOpacity(.2),
+              blurRadius: 12,
+              offset: const Offset(0, 3),
+              spreadRadius: 3,
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              width: context.deviceSize.width,
+              padding: Dimensions.kPaddingAllMedium,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          leave.username ?? '',
+                          style: context.textTheme.labelLarge?.copyWith(
+                              fontWeight: FontWeight.w500, letterSpacing: .5),
+                        ),
+                      ),
+                      leaveTag(
+                        label: leave.leaveStatus ?? "",
+                        color: color,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(leave.lookupMeaning ?? '',
+                          style: context.textTheme.labelMedium?.copyWith(
+                              letterSpacing: .8, color: appColor.gray700)),
+                      Dimensions.kHorizontalSpaceSmall,
+                      SizedBox(
+                        width: 10.w,
+                        child: Divider(color: appColor.gray700),
+                      ),
+                      Dimensions.kHorizontalSpaceSmall,
+                      Text(leave.leavemode ?? '',
+                          style: context.textTheme.labelMedium?.copyWith(
+                              letterSpacing: .8, color: appColor.gray700)),
+                    ],
+                  ),
+                  Dimensions.kVerticalSpaceSmaller,
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        AppSvg.calendar,
+                        width: 16,
+                        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                      ),
+                      // Dimensions.kHorizontalSpaceSmaller,
+                      // Text('LEAVE FROM :',
+                      //     style: context.textTheme.labelMedium?.copyWith(
+                      //         fontWeight: FontWeight.bold, color: color)),
+                      Dimensions.kHorizontalSpaceSmall,
+                      Text(leave.startDate ?? '',
+                          style: context.textTheme.labelMedium
+                              ?.copyWith(fontWeight: FontWeight.bold)),
+                      Dimensions.kHorizontalSpaceSmall,
+                      SizedBox(
+                        width: 10.w,
+                        child: Divider(color: appColor.gray700),
+                      ),
+                      Dimensions.kHorizontalSpaceSmall,
+                      Text(leave.startDate ?? '',
+                          style: context.textTheme.labelMedium
+                              ?.copyWith(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  Dimensions.kVerticalSpaceSmaller,
+                  Text("\" ${leave.leaveReason ?? ''} \"",
+                      style: context.textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          letterSpacing: .8)),
+                ],
               ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Container(
-                width: context.deviceSize.width,
-                padding: Dimensions.kPaddingAllMedium,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            leave.username ?? '',
-                            style: context.textTheme.labelLarge?.copyWith(
-                                fontWeight: FontWeight.w500, letterSpacing: .5),
-                          ),
-                        ),
-                        leaveTag(
-                          label: leave.leaveStatus ?? "",
-                          color: color,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(leave.lookupMeaning ?? '',
-                            style: context.textTheme.labelMedium?.copyWith(
-                                letterSpacing: .8, color: appColor.gray700)),
-                        Dimensions.kHorizontalSpaceSmall,
-                        SizedBox(
-                          width: 10.w,
-                          child: Divider(color: appColor.gray700),
-                        ),
-                        Dimensions.kHorizontalSpaceSmall,
-                        Text(leave.leavemode ?? '',
-                            style: context.textTheme.labelMedium?.copyWith(
-                                letterSpacing: .8, color: appColor.gray700)),
-                      ],
-                    ),
-                    Dimensions.kVerticalSpaceSmaller,
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          AppSvg.calendar,
-                          width: 16,
-                          colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-                        ),
-                        Dimensions.kHorizontalSpaceSmaller,
-                        Text('LEAVE FROM :',
-                            style: context.textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.bold, color: color)),
-                        Dimensions.kHorizontalSpaceSmall,
-                        Text(leave.startDate ?? '',
-                            style: context.textTheme.labelMedium
-                                ?.copyWith(fontWeight: FontWeight.bold)),
-                        Dimensions.kHorizontalSpaceSmall,
-                        SizedBox(
-                          width: 10.w,
-                          child: Divider(color: appColor.gray700),
-                        ),
-                        Dimensions.kHorizontalSpaceSmall,
-                        Text(leave.startDate ?? '',
-                            style: context.textTheme.labelMedium
-                                ?.copyWith(fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                    Dimensions.kVerticalSpaceSmaller,
-                    Text("\" ${leave.leaveReason ?? ''} \"",
-                        style: context.textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            letterSpacing: .8)),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

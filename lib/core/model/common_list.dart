@@ -113,6 +113,14 @@ class CommonList {
       id = json['winning_prob_id'];
       name = json['winning_prob_name'];
     }
+    if (json['department_name'] != null) {
+      id = json['department_id'];
+      name = json['department_name'];
+    }
+    if (json['task_type_name'] != null) {
+      id = json['task_type_id'];
+      name = json['task_type_name'];
+    }
   }
 
   Map<String, dynamic> toJson() {

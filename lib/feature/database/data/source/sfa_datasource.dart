@@ -12,4 +12,6 @@ abstract class SfaDataSource {
       DataMapString header, int page, int parPage);
 
   Future<void> uploadGenerateTicket(DataMap body, String type);
+
+  Future<void> uploadDataBaseCamera(DataMap body);
 }

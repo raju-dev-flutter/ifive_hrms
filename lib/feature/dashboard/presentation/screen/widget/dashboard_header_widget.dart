@@ -9,10 +9,6 @@ class DashboardHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final isCheckImageEmpty =
-    //     SharedPrefs.instance.getString(AppKeys.profile) != "" &&
-    //         SharedPrefs.instance.getString(AppKeys.profile) != "null" &&
-    //         SharedPrefs.instance.getString(AppKeys.profile) != null;
     return Container(
       width: context.deviceSize.width,
       decoration: BoxDecoration(color: appColor.brand800),
@@ -53,7 +49,7 @@ class DashboardHeaderWidget extends StatelessWidget {
                                   fit: BoxFit.cover,
                                   alignment: Alignment.topCenter,
                                   image: NetworkImage(
-                                      "${ApiUrl.baseUrl}public/${profile.avatar}"))
+                                      "${ApiUrl.baseUrl}/public/${profile.avatar}"))
                               : null,
                         ),
                         child: isCheckImageEmpty

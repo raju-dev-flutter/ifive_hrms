@@ -119,6 +119,8 @@ class SfaDataSourceImpl implements SfaDataSource {
       final uriParse = Uri.parse(ApiUrl.generateTicketEndPoint);
 
       final token = SharedPrefs().getToken();
+
+      Logger().t("$uriParse : $token");
       final response = await _client.post(
         uriParse,
         headers: {
@@ -179,6 +181,35 @@ class SfaDataSourceImpl implements SfaDataSource {
       }
 
       return DatabaseDataModel.fromJson(jsonResponse);
+    } on APIException {
+      rethrow;
+    } catch (e) {
+      throw const APIException(message: "Network Error", statusCode: 505);
+    }
+  }
+
+  @override
+  Future<void> uploadDataBaseCamera(DataMap body) async {
+    try {
+      final uriParse = Uri.parse(ApiUrl.uploadDatabaseCameraEndPoint);
+
+      final token = SharedPrefs().getToken();
+      final response = await _client.post(
+        uriParse,
+        headers: {'content-type': 'application/json', 'token': token},
+        body: jsonEncode(body),
+      );
+      final jsonResponse = jsonDecode(response.body);
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw APIException(
+            message: jsonResponse["message"], statusCode: response.statusCode);
+      }
+
+      if (jsonResponse["message"] == "Invalid Token") {
+        throw APIException(
+            message: jsonResponse["message"], statusCode: response.statusCode);
+      }
     } on APIException {
       rethrow;
     } catch (e) {

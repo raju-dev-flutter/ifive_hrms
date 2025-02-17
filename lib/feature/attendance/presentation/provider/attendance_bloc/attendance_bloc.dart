@@ -1,11 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 
 import '../../../../../core/core.dart';
 import '../../../../feature.dart';
@@ -25,28 +19,6 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
         super(AttendanceInitial()) {
     on<WorkStartLocationEvent>((event, emit) async {
       emit(const AttendanceLoading());
-      Logger().i("Started Bloc");
-      // XFile? capturedImage = null;
-      //
-      // if (event.fileUpload != null) {
-      //   capturedImage = await ImageWatermark.convert(event.fileUpload!);
-      // }
-      //
-      // final capturedImage = event.fileUpload == null
-      //     ? ""
-      //     : base64.encode(File(event.fileUpload!.path).readAsBytesSync());
-      //
-      // final DataMap body = {
-      //   'battery': event.battery,
-      //   'timestamp': DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
-      //   'file_path': event.filePath,
-      //   'file_upload': capturedImage,
-      //   'geo_location': {
-      //     'latitude': event.latitude,
-      //     'longitude': event.longitude,
-      //     'geo_address': event.geoAddress,
-      //   }
-      // };
 
       final result = await _workStartLocation(
           AttendanceStartRequestParams(body: event.body));
@@ -59,9 +31,6 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
 
     on<WorkEndLocationEvent>((event, emit) async {
       emit(const AttendanceLoading());
-
-      Logger().i(
-          "Battery: ${event.battery}  mobileTime: ${event.mobileTime}  Timestamp: ${event.timestamp} Description:: ${event.taskDescription}");
 
       final result = await _workEndLocation(AttendanceEndRequestParams(
         battery: event.battery,

@@ -10,6 +10,7 @@ import '../../../feature.dart';
 
 class ODPermissionCancelScreen extends StatefulWidget {
   final Odphistory permission;
+
   const ODPermissionCancelScreen({super.key, required this.permission});
 
   @override
@@ -33,9 +34,7 @@ class _ODPermissionCancelScreenState extends State<ODPermissionCancelScreen> {
         preferredSize: Size(context.deviceSize.width, 52.h),
         child: CustomAppBar(
           onPressed: () => Navigator.pop(context),
-          title: widget.permission.status == "INITIATED"
-              ? "Od / Permission Cancel"
-              : "Od / Permission Details",
+          title: "Od / Permission Details",
         ),
       ),
       body: _buildBodyUI(),
@@ -51,8 +50,6 @@ class _ODPermissionCancelScreenState extends State<ODPermissionCancelScreen> {
             Navigator.pop(context);
             AppAlerts.displaySnackBar(
                 context, "OD | Permission Successfully Canceled", true);
-            // AppAlerts.displaySuccessAlert(context, "OD | Permission",
-            //     "OD | Permission Successfully Canceled");
           }
           if (state is PermissionCrudFailed) {
             if (state.message == "Invalid Token") {
@@ -60,12 +57,8 @@ class _ODPermissionCancelScreenState extends State<ODPermissionCancelScreen> {
                   .add(const LoggedOut());
             } else if (state.message == "Network Error") {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayErrorAlert(
-              //     context, "OD | Permission", state.message);
             } else {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayWarningAlert(
-              //     context, "OD | Permission", state.message);
             }
           }
         },

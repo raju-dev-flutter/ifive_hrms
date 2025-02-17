@@ -25,4 +25,6 @@ abstract interface class TaskDataSource {
   Future<ProjectModel> projectList();
 
   Future<DevTeamModel> teamList();
+
+  Future<ProjectTaskDropdownModel> projectTaskDropdown();
 }

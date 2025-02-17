@@ -109,10 +109,13 @@ class DashboardDataSourceImpl implements DashboardDataSource {
       final uriParse = Uri.parse(ApiUrl.appVersionEndPoints);
 
       final token = SharedPrefs().getToken();
+
+      Logger().i("URL: $uriParse , TOKEN: $token");
       final response = await _client.post(uriParse,
           headers: {'content-type': 'application/json', 'token': token});
 
       final jsonResponse = jsonDecode(response.body);
+      Logger().i(response.body);
 
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw APIException(
@@ -128,7 +131,8 @@ class DashboardDataSourceImpl implements DashboardDataSource {
   }
 
   @override
-  Future<ApprovalLeaveHistoryModel> approvalLeaveHistory(String date) async {
+  Future<ApprovalLeaveHistoryModel> approvalLeaveHistory(
+      String fromDate, String toDate) async {
     try {
       final uriParse = Uri.parse(ApiUrl.leaveApprovedHistoryEndPoint);
 
@@ -136,7 +140,8 @@ class DashboardDataSourceImpl implements DashboardDataSource {
       final response = await _client.post(uriParse, headers: {
         'content-type': 'application/json',
         'token': token,
-        "date": date
+        "fromdate": fromDate,
+        "todate": toDate
       });
 
       final jsonResponse = jsonDecode(response.body);
@@ -171,6 +176,30 @@ class DashboardDataSourceImpl implements DashboardDataSource {
       }
 
       return AppMenuModel.fromJson(jsonResponse);
+    } on APIException {
+      rethrow;
+    } catch (e) {
+      throw const APIException(message: "Network Error", statusCode: 505);
+    }
+  }
+
+  @override
+  Future<TaskLeadDataModel> taskLeadData() async {
+    try {
+      final uriParse = Uri.parse(ApiUrl.taskLeadsEndPoint);
+
+      final token = SharedPrefs().getToken();
+      final response = await _client.get(uriParse,
+          headers: {'content-type': 'application/json', 'token': token});
+
+      final jsonResponse = jsonDecode(response.body);
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw APIException(
+            message: "Network Error", statusCode: response.statusCode);
+      }
+
+      return TaskLeadDataModel.fromJson(jsonResponse);
     } on APIException {
       rethrow;
     } catch (e) {

@@ -1,4 +1,4 @@
-package com.ifive.ifive_hrms.retrofit
+package com.ifive_dev.ifive_hrms.retrofit
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

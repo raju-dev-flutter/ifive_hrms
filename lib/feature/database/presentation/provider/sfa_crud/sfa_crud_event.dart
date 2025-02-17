@@ -16,3 +16,12 @@ class GenerateTicketEvent extends SfaCrudEvent {
   @override
   List<Object> get props => [body, type];
 }
+
+class DatabaseCameraEvent extends SfaCrudEvent {
+  final DataMap body;
+
+  const DatabaseCameraEvent({required this.body});
+
+  @override
+  List<Object> get props => [body];
+}

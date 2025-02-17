@@ -183,9 +183,12 @@ class _LeaveUpdateScreenState extends State<LeaveUpdateScreen> {
                       children: [
                         Expanded(
                           child: status != "REJECT"
-                              ? DefaultActionButton(
+                              ? ActionButton(
                                   onPressed: () => changeState("REJECT"),
-                                  label: "REJECT")
+                                  color: appColor.gray100,
+                                  textColor: appColor.gray600,
+                                  label: "REJECT",
+                                )
                               : ActionButton(
                                   onPressed: () => changeState(""),
                                   color: appColor.error600,
@@ -199,9 +202,12 @@ class _LeaveUpdateScreenState extends State<LeaveUpdateScreen> {
                         Dimensions.kHorizontalSpaceSmaller,
                         Expanded(
                           child: status != "APPROVE"
-                              ? DefaultActionButton(
+                              ? ActionButton(
                                   onPressed: () => changeState("APPROVE"),
-                                  label: "APPROVE")
+                                  color: appColor.gray100,
+                                  textColor: appColor.gray600,
+                                  label: "APPROVE",
+                                )
                               : ActionButton(
                                   onPressed: () => changeState(""),
                                   color: appColor.success600,
@@ -241,20 +247,20 @@ class _LeaveUpdateScreenState extends State<LeaveUpdateScreen> {
                       maxLines: 3,
                       required: false,
                     ),
-                    Dimensions.kVerticalSpaceMedium,
-                    state is LeaveCrudLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : status == ""
-                            ? const DefaultActionButton(label: "SUBMIT")
-                            : ActionButton(
-                                onPressed: onSubmit,
-                                color: appColor.warning600,
-                                child: Text(
-                                  'SUBMIT',
-                                  style: context.textTheme.labelLarge
-                                      ?.copyWith(color: appColor.white),
-                                ),
+                    if (status.isNotEmpty) ...[
+                      Dimensions.kVerticalSpaceMedium,
+                      state is LeaveCrudLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : ActionButton(
+                              onPressed: onSubmit,
+                              color: appColor.warning600,
+                              child: Text(
+                                'SUBMIT',
+                                style: context.textTheme.labelLarge
+                                    ?.copyWith(color: appColor.white),
                               ),
+                            ),
+                    ],
                   ],
                 ),
               ),

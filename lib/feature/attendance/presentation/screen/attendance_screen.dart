@@ -22,7 +22,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final attendanceStream = sl<AttendanceStream>();
-
   String currentTime = '';
 
   @override

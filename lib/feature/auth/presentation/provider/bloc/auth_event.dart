@@ -16,6 +16,7 @@ class LoginEvent extends AuthEvent {
   final String geoAddress;
   final String battery;
   final String imei;
+
   const LoginEvent({
     required this.user,
     required this.password,

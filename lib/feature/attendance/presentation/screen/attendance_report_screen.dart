@@ -66,7 +66,7 @@ class _AttendanceReportScreenState extends State<AttendanceReportScreen> {
                 final attendanceList = state.attendanceList.overallAttendance;
                 return RefreshIndicator(
                   onRefresh: refresh,
-                  child: ListView.builder(
+                  child: ListView.separated(
                     padding:
                         const EdgeInsets.only(left: 16, right: 16, bottom: 16)
                             .w,
@@ -74,6 +74,9 @@ class _AttendanceReportScreenState extends State<AttendanceReportScreen> {
                     itemCount: attendanceList!.length,
                     itemBuilder: (_, i) {
                       return attendanceReportCardUI(attendanceList[i]);
+                    },
+                    separatorBuilder: (_, i) {
+                      return Dimensions.kVerticalSpaceSmaller;
                     },
                   ),
                 );
@@ -134,8 +137,9 @@ class _AttendanceReportScreenState extends State<AttendanceReportScreen> {
           ),
           Dimensions.kHorizontalSpaceSmaller,
           InkWell(
-            onTap: () =>
-                initialCallBack(DateFormat('dd-MM-yyyy').format(selectedDate)),
+            onTap: () {
+              initialCallBack(DateFormat('dd-MM-yyyy').format(selectedDate));
+            },
             borderRadius: Dimensions.kBorderRadiusAllSmallest,
             child: Container(
               width: 40,
@@ -173,77 +177,59 @@ class _AttendanceReportScreenState extends State<AttendanceReportScreen> {
   }
 
   Widget attendanceReportCardUI(OverallAttendance attendance) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4).w,
-      child: InkWell(
-        // onTap: () => Navigator.pushNamed(
-        //         context, AppRouterPath.attendanceEmployeeDetailScreen,
-        //         arguments:
-        //             AttendanceEmployeeDetailScreen(attendance: attendance))
-        //     .then((value) =>
-        //         initialCallBack(DateFormat('dd-MM-yyyy').format(selectedDate))),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8).w,
-            color: color(attendance.attendanceStatus).withOpacity(.1),
-            boxShadow: [
-              BoxShadow(
-                color: color(attendance.attendanceStatus).withOpacity(.05),
-                offset: const Offset(0, 3),
-                blurRadius: 6,
-              ),
-            ],
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8).w,
+        color: color(attendance.attendanceStatus).withOpacity(.1),
+        boxShadow: [
+          BoxShadow(
+            color: color(attendance.attendanceStatus).withOpacity(.05),
+            offset: const Offset(0, 3),
+            blurRadius: 6,
           ),
-          child: Column(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16).w,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      attendance.employeeName ?? '',
-                      style: context.textTheme.labelLarge?.copyWith(
-                          color: color(attendance.attendanceStatus),
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: .5),
-                    ),
-                    statusTag(
+        ],
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16).w,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  attendance.employeeName ?? '',
+                  style: context.textTheme.labelLarge?.copyWith(
                       color: color(attendance.attendanceStatus),
-                      label: attendance.attendanceStatus ?? 'Absent',
-                    ),
-                  ],
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: .5),
                 ),
-              ),
-              Divider(height: 0, thickness: .6, color: appColor.success50),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16).w,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    timeAndHourCardUI(
-                      label: 'Start Time',
-                      time: attendance.sTimestamp ?? "00:00",
-                      color: color(attendance.attendanceStatus),
-                    ),
-                    timeAndHourCardUI(
-                      label: 'End Time',
-                      time: attendance.eTimestamp ?? "00:00",
-                      color: color(attendance.attendanceStatus),
-                    ),
-                    // timeAndHourCardUI(
-                    //   label: 'Total Duration',
-                    //   time: attendance. ?? "00:00",
-                    //   color: color(attendance.active),
-                    // ),
-                  ],
+                statusTag(
+                  color: color(attendance.attendanceStatus),
+                  label: attendance.attendanceStatus ?? 'Absent',
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+          Divider(height: 0, thickness: .6, color: appColor.success50),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16).w,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                timeAndHourCardUI(
+                  label: 'Start Time',
+                  time: attendance.sTimestamp ?? "00:00",
+                  color: color(attendance.attendanceStatus),
+                ),
+                timeAndHourCardUI(
+                  label: 'End Time',
+                  time: attendance.eTimestamp ?? "00:00",
+                  color: color(attendance.attendanceStatus),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

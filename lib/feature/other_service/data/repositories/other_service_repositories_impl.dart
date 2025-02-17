@@ -9,9 +9,9 @@ class OtherServiceRepositoryImpl implements OtherServiceRepository {
   final OtherServiceDataSource _datasource;
 
   @override
-  ResultFuture<RenewalTrackerModel> renewalTracker() async {
+  ResultFuture<RenewalTrackerModel> renewalTracker(String status) async {
     try {
-      final permissionResponse = await _datasource.renewalTracker();
+      final permissionResponse = await _datasource.renewalTracker(status);
       return Right(permissionResponse);
     } on APIException catch (e) {
       return Left(APIFailure.fromException(e));

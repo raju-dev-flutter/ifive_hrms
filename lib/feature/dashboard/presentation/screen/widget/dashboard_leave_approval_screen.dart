@@ -13,10 +13,12 @@ class _DashboardLeaveApprovalScreenState
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   DateTime selectedFromDate = DateTime.now();
+  DateTime selectedToDate = DateTime.now();
 
   Future<void> initialCallBack() async {
     BlocProvider.of<ApprovalLeaveHistoryCubit>(context).approvalLeaveHistory(
-        DateFormat('yyyy-MM-dd').format(selectedFromDate));
+        DateFormat('yyyy-MM-dd').format(selectedFromDate),
+        DateFormat('yyyy-MM-dd').format(selectedToDate));
   }
 
   @override
@@ -113,6 +115,45 @@ class _DashboardLeaveApprovalScreenState
                   children: [
                     Text(
                       DateFormat('dd-MM-yyyy').format(selectedFromDate),
+                      style: context.textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: appColor.gray900,
+                      ),
+                    ),
+                    SvgPicture.asset(
+                      AppSvg.calendar,
+                      width: 14.w,
+                      colorFilter: ColorFilter.mode(
+                        appColor.gray700,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 4.w),
+          Expanded(
+            flex: 2,
+            child: InkWell(
+              onTap: () async {
+                DateTime date = await PickDateTime.date(context,
+                    selectedDate: selectedToDate, startDate: null);
+                setState(() => selectedToDate = date);
+                initialCallBack();
+              },
+              borderRadius: Dimensions.kBorderRadiusAllSmallest,
+              child: Container(
+                height: 42,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: boxDecoration(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      DateFormat('dd-MM-yyyy').format(selectedToDate),
                       style: context.textTheme.labelMedium?.copyWith(
                         fontWeight: FontWeight.w400,
                         color: appColor.gray900,

@@ -126,7 +126,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:296910658175:android:32f0559777a4a0da6dfd4a",
         "android_client_info": {
-          "package_name": "com.ifive.ifive"
+          "package_name": "com.ifive_dev.ifive_hrms"
         }
       },
       "oauth_client": [
@@ -155,7 +155,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:296910658175:android:8a3f5da95399e28d6dfd4a",
         "android_client_info": {
-          "package_name": "com.ifive.ifive_hrms"
+          "package_name": "com.ifive_dev.ifive_hrms"
         }
       },
       "oauth_client": [

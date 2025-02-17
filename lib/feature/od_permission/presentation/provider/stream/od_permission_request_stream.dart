@@ -50,29 +50,38 @@ class ODPermissionRequestStream {
   final _forwardSubject = BehaviorSubject<String>.seeded('');
   final _forwardIdSubject = BehaviorSubject<String>.seeded('');
 
-  final _balanceOdSubject = BehaviorSubject<int>.seeded(0);
+  final _balanceOdSubject = BehaviorSubject<dynamic>.seeded(0);
 
   Stream<String> get forwardSubject => _forwardSubject.stream;
-  Stream<int> get balanceOdSubject => _balanceOdSubject.stream;
+
+  Stream<dynamic> get balanceOdSubject => _balanceOdSubject.stream;
 
   Stream<List<CommonList>> get requestList => _requestList.stream;
+
   Stream<List<CommonList>> get forwardToList => _forwardToList.stream;
+
   Stream<List<CommonList>> get shiftTimeList => _shiftTimeList.stream;
 
   ValueStream<CommonList> get requestListInit => _requestListInit.stream;
+
   ValueStream<CommonList> get forwardToListInit => _forwardToListInit.stream;
+
   ValueStream<CommonList> get shiftTimeListInit => _shiftTimeListInit.stream;
 
   ValueStream<DateTime?> get date => _date.stream;
+
   ValueStream<String> get selectDate => _selectDate.stream;
 
   ValueStream<DateTime?> get fromDate => _fromDate.stream;
+
   ValueStream<DateTime?> get toDate => _toDate.stream;
 
   ValueStream<TimeOfDay?> get fromTime => _fromTime.stream;
+
   ValueStream<TimeOfDay?> get toTime => _toTime.stream;
 
   ValueStream<String> get selectFromTime => _selectFromTime.stream;
+
   ValueStream<String> get selectToTime => _selectToTime.stream;
 
   Future<void> fetchInitialCallBack() async {

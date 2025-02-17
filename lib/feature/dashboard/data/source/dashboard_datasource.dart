@@ -12,5 +12,8 @@ abstract class DashboardDataSource {
 
   Future<AppMenuModel> appMenu();
 
-  Future<ApprovalLeaveHistoryModel> approvalLeaveHistory(String date);
+  Future<ApprovalLeaveHistoryModel> approvalLeaveHistory(
+      String fromDate, String toDate);
+
+  Future<TaskLeadDataModel> taskLeadData();
 }

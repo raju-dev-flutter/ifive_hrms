@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../config/config.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onPressed;
   final String? title;
   final PreferredSizeWidget? bottom;
@@ -33,7 +33,7 @@ class CustomAppBar extends StatelessWidget {
           Text(title ?? "", style: context.textTheme.headlineSmall),
       bottom: bottom ??
           PreferredSize(
-            preferredSize: Size(context.deviceSize.width, 1),
+            preferredSize: const Size.fromHeight(1),
             child: Container(
               height: 1,
               width: context.deviceSize.width,
@@ -42,4 +42,7 @@ class CustomAppBar extends StatelessWidget {
           ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

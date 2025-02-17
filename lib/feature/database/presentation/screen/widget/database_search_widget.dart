@@ -38,10 +38,7 @@ class DatabaseSearchWidget extends StatelessWidget {
   InputDecoration inputDecoration(BuildContext context,
       {required String label, required Function() onPressed}) {
     return InputDecoration(
-      suffixIcon: InkWell(
-        onTap: onPressed,
-        child: const Icon(Icons.search),
-      ),
+      suffixIcon: InkWell(onTap: onPressed, child: const Icon(Icons.search)),
       fillColor: appColor.white,
       filled: true,
       border: OutlineInputBorder(

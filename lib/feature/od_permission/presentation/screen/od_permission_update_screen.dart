@@ -10,6 +10,7 @@ import '../../../feature.dart';
 
 class ODPermissionUpdateScreen extends StatefulWidget {
   final PermissionResponse permission;
+
   const ODPermissionUpdateScreen({super.key, required this.permission});
 
   @override
@@ -49,8 +50,6 @@ class _ODPermissionUpdateScreenState extends State<ODPermissionUpdateScreen> {
             Navigator.pop(context);
             AppAlerts.displaySnackBar(
                 context, "OD | Permission Successfully Updated", true);
-            // AppAlerts.displaySuccessAlert(context, "OD | Permission",
-            //     "OD | Permission Successfully Updated");
           }
           if (state is PermissionCrudFailed) {
             if (state.message == "Invalid Token") {
@@ -58,12 +57,8 @@ class _ODPermissionUpdateScreenState extends State<ODPermissionUpdateScreen> {
                   .add(const LoggedOut());
             } else if (state.message == "Network Error") {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayErrorAlert(
-              //     context, "OD | Permission", state.message);
             } else {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayWarningAlert(
-              //     context, "OD | Permission", state.message);
             }
           }
         },
@@ -170,9 +165,12 @@ class _ODPermissionUpdateScreenState extends State<ODPermissionUpdateScreen> {
                       children: [
                         Expanded(
                           child: status != "REJECT"
-                              ? DefaultActionButton(
+                              ? ActionButton(
                                   onPressed: () => changeState("REJECT"),
-                                  label: "REJECT")
+                                  color: appColor.gray100,
+                                  textColor: appColor.gray600,
+                                  label: "REJECT",
+                                )
                               : ActionButton(
                                   onPressed: () => changeState(""),
                                   color: appColor.error600,
@@ -186,9 +184,12 @@ class _ODPermissionUpdateScreenState extends State<ODPermissionUpdateScreen> {
                         Dimensions.kHorizontalSpaceSmaller,
                         Expanded(
                           child: status != "APPROVED"
-                              ? DefaultActionButton(
+                              ? ActionButton(
                                   onPressed: () => changeState("APPROVED"),
-                                  label: "APPROVED")
+                                  color: appColor.gray100,
+                                  textColor: appColor.gray600,
+                                  label: "APPROVED",
+                                )
                               : ActionButton(
                                   onPressed: () => changeState(""),
                                   color: appColor.success600,
@@ -208,20 +209,20 @@ class _ODPermissionUpdateScreenState extends State<ODPermissionUpdateScreen> {
                       maxLines: 3,
                       required: false,
                     ),
-                    Dimensions.kVerticalSpaceMedium,
-                    state is PermissionCrudLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : status == ""
-                            ? const DefaultActionButton(label: "SUBMIT")
-                            : ActionButton(
-                                onPressed: onSubmit,
-                                color: appColor.warning600,
-                                child: Text(
-                                  'SUBMIT',
-                                  style: context.textTheme.labelLarge
-                                      ?.copyWith(color: appColor.white),
-                                ),
+                    if (status.isNotEmpty) ...[
+                      Dimensions.kVerticalSpaceMedium,
+                      state is PermissionCrudLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : ActionButton(
+                              onPressed: onSubmit,
+                              color: appColor.warning600,
+                              child: Text(
+                                'SUBMIT',
+                                style: context.textTheme.labelLarge
+                                    ?.copyWith(color: appColor.white),
                               ),
+                            ),
+                    ],
                   ],
                 ),
               ),

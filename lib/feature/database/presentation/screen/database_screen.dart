@@ -37,7 +37,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: BlocListener<AttendanceStatusCubit, AttendanceStatusState>(
         listener: (context, state) {
           if (state is AttendanceStatusFailed) {
@@ -61,13 +61,16 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
               ),
             ),
             TabBar(
-              padding: const EdgeInsets.only(top: 6).w,
+              padding: const EdgeInsets.only(top: 6, left: 0, right: 0).w,
               labelStyle: context.textTheme.labelLarge
                   ?.copyWith(fontWeight: FontWeight.w600),
               unselectedLabelStyle: context.textTheme.labelLarge,
               labelColor: appColor.blue600,
               unselectedLabelColor: appColor.gray500,
+              isScrollable: true,
+              tabAlignment: TabAlignment.start,
               tabs: const [
+                Tab(icon: Text('All Database')),
                 Tab(icon: Text('New Call')),
                 Tab(icon: Text('DCR')),
                 Tab(icon: Text('Lead')),
@@ -77,6 +80,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
             const Expanded(
               child: TabBarView(
                 children: [
+                  CommonDatabaseScreen(),
                   NewCallDatabaseScreen(),
                   DcrDatabaseScreen(),
                   LeadDatabaseScreen(),

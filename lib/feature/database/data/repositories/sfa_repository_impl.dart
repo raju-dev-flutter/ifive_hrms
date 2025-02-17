@@ -69,4 +69,15 @@ class SfaRepositoryImpl implements SfaRepository {
       return Left(APIFailure.fromException(e));
     }
   }
+
+  @override
+  ResultVoid uploadDataBaseCamera(DataMap body) async {
+    try {
+      final response = await _datasource.uploadDataBaseCamera(body);
+      return Right(response);
+    } on APIException catch (e) {
+      Logger().e(e.message);
+      return Left(APIFailure.fromException(e));
+    }
+  }
 }

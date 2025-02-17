@@ -23,8 +23,6 @@ class AuthenticationRepository {
     SharedPrefs.instance.setBool(AppKeys.permission, permission);
   }
 
-  // Future<void> persistedToken(String token) async {}
-
   Future<void> deleteToken() async {
     SharedPrefs.instance.remove(AppKeys.loginToken);
   }

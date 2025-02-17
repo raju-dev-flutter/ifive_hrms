@@ -1,9 +1,5 @@
 class AppRouterPath {
-  // static const String splash = "splash_screen";
-  // static const String login = "login_screen";
-  // static const String root = "root_screen";
-  //
-  // static const String dashboard = "dashboard_screen";
+  static const String noRoute = "no_route";
 
   static const String attendance = "attendance_screen";
   static const String attendanceReport = "attendance_report_screen";
@@ -12,6 +8,7 @@ class AppRouterPath {
       "attendance_employee_detail_screen";
   static const String dashboardLeaveApprovalScreen =
       "dashboard_leave_approval_screen";
+  static const String leadTaskScreen = "lead_task_screen";
 
   static const String foodAttendance = "food_attendance_screen";
   static const String foodAttendanceReport = "food_attendance_report_screen";
@@ -92,6 +89,7 @@ class AppRouterPath {
   static const String assetManagementScreen = "assetManagementScreen";
 
   static const String generateTicketScreen = "generate_ticket_screen";
+  static const String databaseUpdateScreen = "database_update_screen";
   static const String newCallDatabaseUpdateScreen =
       "new_call_database_update_screen";
   static const String dcrDatabaseUpdateScreen = "dcr_database_update_screen";
@@ -103,4 +101,23 @@ class AppRouterPath {
   static const String expensesRequestScreen = "expenses_request_screen";
   static const String expensesUpdateScreen = "expenses_update_screen";
   static const String expensesDetailsScreen = "expenses_details_screen";
+
+  static const String chatContactScreen = "chat_contact_screen";
+  static const String chatMessageScreen = "chat_message_screen";
+
+  static const String galleryScreen = "gallery_screen";
+
+  static const String databaseCameraScreen = "database_camera_screen";
+
+  static const String projectTaskRequestScreen = "project_task_request_screen";
+  static const String projectTaskApprovalScreen = "task_approval_screen";
+  static const String projectTaskApprovalFormScreen =
+      "task_approval_form_screen";
+  static const String projectTaskUpdateScreen = "task_update_screen";
+  static const String projectTaskUpdateFormScreen = "task_update_form_screen";
+
+  static const String tourPlanRequestScreen = "tour_plan_request_screen";
+  static const String tourPlanApprovalScreen = "tour_plan_approval_screen";
+  static const String tourPlanApprovalFormScreen =
+      "tour_plan_approval_form_screen";
 }

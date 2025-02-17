@@ -47,21 +47,10 @@ class _MisspunchRequestScreenState extends State<MisspunchRequestScreen>
     return SingleChildScrollView(
       child: BlocConsumer<MisspunchCrudBloc, MisspunchCrudState>(
         listener: (context, state) {
-          // if (state is MisspunchCrudSuccess) {
-          //   Navigator.pop(context);
-          //   AppAlerts.displaySnackBar(
-          //       context, "Misspunch Successfully Created", true);
-          // }
-          // if (state is MisspunchCrudFailed) {
-          //   AppAlerts.displaySnackBar(context, "Network Error", false);
-          // }
-
           if (state is MisspunchCrudSuccess) {
             Navigator.pop(context);
             AppAlerts.displaySnackBar(
                 context, "Misspunch Successfully Applied", true);
-            // AppAlerts.displaySuccessAlert(
-            //     context, "Misspunch", "Misspunch Successfully applied");
           }
           if (state is MisspunchCrudFailed) {
             if (state.message == "Invalid Token") {
@@ -69,11 +58,8 @@ class _MisspunchRequestScreenState extends State<MisspunchRequestScreen>
                   .add(const LoggedOut());
             } else if (state.message == "Network Error") {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayErrorAlert(context, "Misspunch", state.message);
             } else {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayWarningAlert(
-              //     context, "Misspunch", state.message);
             }
           }
         },
@@ -84,7 +70,7 @@ class _MisspunchRequestScreenState extends State<MisspunchRequestScreen>
             child: Form(
               key: _formKey,
               child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomStreamDropDownWidget(
                     label: "Request For",
@@ -130,112 +116,29 @@ class _MisspunchRequestScreenState extends State<MisspunchRequestScreen>
                         );
                       }),
                   Dimensions.kVerticalSpaceSmaller,
-                  CustomDateTimeTextFormField(
-                    label: 'Date',
-                    required: true,
-                    controller: TextEditingController(
-                        text: missPunch.selectDate.valueOrNull ?? ''),
-                    validator: (val) {
-                      if (!isCheckTextFieldIsEmpty(val!)) {
-                        return "required *";
-                      }
-                      return null;
-                    },
-                    onPressed: () async {
-                      DateTime date = await PickDateTime.date(context,
-                          selectedDate: missPunch.date.valueOrNull,
-                          startDate: null);
-                      missPunch.selectedDate(date);
-                      setState(() {});
-                    },
-                  ),
-                  /*StreamBuilder<CommonList>(
-                      stream: missPunch.requestListInit,
+                  StreamBuilder<String>(
+                      stream: missPunch.selectDate,
                       builder: (context, snapshot) {
-                        final isCheck =
-                            snapshot.data?.name != "In Punch Missing" &&
-                                snapshot.data?.name != "Out Punch Missing";
-                        if (isCheck) {
-                          return SizedBox(
-                            width: context.deviceSize.width,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: CustomDateTimeTextFormField(
-                                    label: 'From Date',
-                                    required: true,
-                                    controller: TextEditingController(
-                                        text: missPunch
-                                                .selectFromDate.valueOrNull ??
-                                            ''),
-                                    validator: (val) {
-                                      if (!isCheckTextFieldIsEmpty(val!)) {
-                                        return "required *";
-                                      }
-                                      return null;
-                                    },
-                                    onPressed: () async {
-                                      DateTime date = await PickDateTime.date(
-                                          context,
-                                          selectedDate:
-                                              missPunch.fromDate.valueOrNull,
-                                          startDate: null);
-                                      missPunch.selectedFromDate(date);
-                                      setState(() {});
-                                    },
-                                  ),
-                                ),
-                                Dimensions.kHorizontalSpaceSmaller,
-                                Expanded(
-                                  child: CustomDateTimeTextFormField(
-                                    label: 'To Date',
-                                    required: true,
-                                    controller: TextEditingController(
-                                        text: missPunch
-                                                .selectToDate.valueOrNull ??
-                                            ''),
-                                    validator: (val) {
-                                      if (!isCheckTextFieldIsEmpty(val!)) {
-                                        return "required *";
-                                      }
-                                      return null;
-                                    },
-                                    onPressed: () async {
-                                      DateTime date = await PickDateTime.date(
-                                          context,
-                                          selectedDate:
-                                              missPunch.toDate.valueOrNull,
-                                          startDate: null);
-                                      missPunch.selectedToDate(date);
-                                      setState(() {});
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          return CustomDateTimeTextFormField(
-                            label: 'Date',
-                            required: true,
-                            controller: TextEditingController(
-                                text: missPunch.selectDate.valueOrNull ?? ''),
-                            validator: (val) {
-                              if (!isCheckTextFieldIsEmpty(val!)) {
-                                return "required *";
-                              }
-                              return null;
-                            },
-                            onPressed: () async {
-                              DateTime date = await PickDateTime.date(context,
-                                  selectedDate: missPunch.date.valueOrNull,
-                                  startDate: null);
-                              missPunch.selectedDate(date);
-                              setState(() {});
-                            },
-                          );
-                        }
-                      }),*/
+                        return CustomDateTimeTextFormField(
+                          label: 'Date',
+                          required: true,
+                          controller:
+                              TextEditingController(text: snapshot.data ?? ''),
+                          validator: (val) {
+                            if (!isCheckTextFieldIsEmpty(val!)) {
+                              return "required *";
+                            }
+                            return null;
+                          },
+                          onPressed: () async {
+                            DateTime date = await PickDateTime.date(context,
+                                selectedDate: missPunch.date.valueOrNull,
+                                startDate: null);
+                            missPunch.selectedDate(date);
+                            setState(() {});
+                          },
+                        );
+                      }),
                   Dimensions.kVerticalSpaceSmaller,
                   StreamBuilder<CommonList>(
                       stream: missPunch.requestListInit,

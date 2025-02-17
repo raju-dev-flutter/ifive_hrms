@@ -1,8 +1,9 @@
-package com.ifive.ifive_hrms.service
+package com.ifive_dev.ifive_hrms.service
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.ifive_dev.ifive_hrms.service.LocationForegroundService
 
 class BootReceiver : BroadcastReceiver() {
 
@@ -12,7 +13,7 @@ class BootReceiver : BroadcastReceiver() {
             // ALARM SERVICE 
             val notificationScheduler = NotificationScheduler(context)
             notificationScheduler.scheduleDailyNotification()
-            
+
             // LOCATION SERVICE
             val serviceIntent = Intent(context, LocationForegroundService::class.java)
             context.startService(serviceIntent)

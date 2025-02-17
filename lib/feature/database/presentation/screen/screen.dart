@@ -1,4 +1,6 @@
+export 'database_camera_screen.dart';
 export 'database_screen.dart';
+export 'database_update_screen.dart';
 export 'dcr_database_update_screen.dart';
 export 'generate_ticket_screen.dart';
 export 'lead_database_update_screen.dart';

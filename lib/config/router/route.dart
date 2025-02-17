@@ -6,7 +6,7 @@ import '../config.dart';
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      /* ========= Profile Route ============= */
+      ///* ========= Profile Route ========= *\\\
       case AppRouterPath.profileEditScreen:
         final arg = settings.arguments as ProfileEditScreen;
         return MaterialPageRoute(
@@ -59,7 +59,7 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => const ProfileUpdateVisaImmigrationScreen());
 
-      /* ========= Attendance Route ============= */
+      ///* ========= Attendance Route ========= *\\\
       case AppRouterPath.attendance:
         return MaterialPageRoute(builder: (_) => const AttendanceScreen());
 
@@ -73,7 +73,7 @@ class AppRouter {
             builder: (_) =>
                 AttendanceEmployeeDetailScreen(attendance: arg.attendance));
 
-      /* ========= Food Attendance Route ============= */
+      ///* ========= Food Attendance Route ========= *\\\
       case AppRouterPath.foodAttendance:
         return MaterialPageRoute(builder: (_) => const FoodAttendanceScreen());
 
@@ -81,7 +81,7 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => const FoodAttendanceReportScreen());
 
-      /* ========= Leave Route ============= */
+      ///* ========= Leave Route ========= *\\\
       case AppRouterPath.leaveRequest:
         return MaterialPageRoute(builder: (_) => const LeaveRequestScreen());
 
@@ -104,7 +104,7 @@ class AppRouter {
       case AppRouterPath.leaveApproval:
         return MaterialPageRoute(builder: (_) => const LeaveApprovalScreen());
 
-      /* ========= Misspunch Route ============= */
+      ///* ========= Misspunch Route ========= *\\\
       case AppRouterPath.misspunchRequest:
         return MaterialPageRoute(
             builder: (_) => const MisspunchRequestScreen());
@@ -122,7 +122,7 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => MisspunchUpdateScreen(missPunch: arg.missPunch));
 
-      /* ========= OD Permission Route ============= */
+      ///* ========= OD Permission Route ========= *\\\
       case AppRouterPath.oDPermissionRequestScreen:
         return MaterialPageRoute(
             builder: (_) => const ODPermissionRequestScreen());
@@ -142,7 +142,7 @@ class AppRouter {
             builder: (_) =>
                 ODPermissionCancelScreen(permission: arg.permission));
 
-      /* ========= Payroll Route ============= */
+      ///* ========= Payroll Route ========= *\\\
 
       case AppRouterPath.payrollScreen:
         return MaterialPageRoute(builder: (_) => const PayrollScreen());
@@ -152,10 +152,15 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => PayrollDetailsScreen(paySlipId: arg.paySlipId));
 
-      /* ========= SFA Route ============= */
+      ///* ========= SFA Route ========= *\\\
 
       case AppRouterPath.generateTicketScreen:
         return MaterialPageRoute(builder: (_) => const GenerateTicketScreen());
+
+      case AppRouterPath.databaseUpdateScreen:
+        final arg = settings.arguments as DatabaseUpdateScreen;
+        return MaterialPageRoute(
+            builder: (_) => DatabaseUpdateScreen(database: arg.database));
 
       case AppRouterPath.newCallDatabaseUpdateScreen:
         final arg = settings.arguments as NewCallDatabaseUpdateScreen;
@@ -179,7 +184,7 @@ class AppRouter {
             builder: (_) =>
                 PipelineDatabaseUpdateScreen(database: arg.database));
 
-      /* ========= Expenses Route ============= */
+      ///* ========= Expenses Route ========= *\\\
 
       case AppRouterPath.expensesScreen:
         return MaterialPageRoute(builder: (_) => const ExpensesScreen());
@@ -197,7 +202,31 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => ExpensesDetailsScreen(expenses: arg.expenses));
 
-      /* ========= Task Route ============= */
+      ///* ========= Project Task Route ========= *\\\
+
+      case AppRouterPath.projectTaskRequestScreen:
+        return MaterialPageRoute(
+            builder: (_) => const ProjectTaskRequestScreen());
+
+      case AppRouterPath.projectTaskApprovalScreen:
+        return MaterialPageRoute(
+            builder: (_) => const ProjectTaskApprovalScreen());
+
+      case AppRouterPath.projectTaskApprovalFormScreen:
+        final arg = settings.arguments as ProjectTaskApprovalFormScreen;
+        return MaterialPageRoute(
+            builder: (_) => ProjectTaskApprovalFormScreen(task: arg.task));
+
+      case AppRouterPath.projectTaskUpdateScreen:
+        return MaterialPageRoute(
+            builder: (_) => const ProjectTaskUpdateScreen());
+
+      case AppRouterPath.projectTaskUpdateFormScreen:
+        final arg = settings.arguments as ProjectTaskUpdateFormScreen;
+        return MaterialPageRoute(
+            builder: (_) => ProjectTaskUpdateFormScreen(task: arg.task));
+
+      ///* ========= Task Route ========= *\\\
 
       case AppRouterPath.taskCreatedScreen:
         return MaterialPageRoute(builder: (_) => const TaskCreatedScreen());
@@ -260,37 +289,74 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => const CreateSupportTaskScreen());
 
-      /* ========= Change Password Route ============= */
+      ///* ========= Change Password Route ========= *\\\
 
       case AppRouterPath.changePasswordScreen:
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
 
-      /* ========= Appreciation Route ============= */
+      ///* ========= Appreciation Route ========= *\\\
 
       case AppRouterPath.appreciationScreen:
         return MaterialPageRoute(builder: (_) => const AppreciationScreen());
 
-      /* ========= Renewal Tracking Route ============= */
+      ///* ========= gallery Route ========= *\\\
+
+      case AppRouterPath.galleryScreen:
+        return MaterialPageRoute(builder: (_) => const GalleryScreen());
+
+      ///* ========= Renewal Tracking Route ========= *\\\
 
       case AppRouterPath.renewalTrackingScreen:
         return MaterialPageRoute(builder: (_) => const RenewalTrackingScreen());
 
-      /* ========= Dashboard Leave Approval Route ============= */
+      ///* ========= Dashboard Leave Approval Route ========= *\\\
 
       case AppRouterPath.dashboardLeaveApprovalScreen:
         return MaterialPageRoute(
             builder: (_) => const DashboardLeaveApprovalScreen());
 
-      /* ========= Asset Management Route ============= */
+      case AppRouterPath.leadTaskScreen:
+        return MaterialPageRoute(builder: (_) => const LeadTaskScreen());
+
+      ///* ========= Asset Management Route ========= *\\\
 
       case AppRouterPath.assetManagementScreen:
         return MaterialPageRoute(builder: (_) => const AssetManagementScreen());
 
-      /* ========= No Route view ============= */
+      ///* ========= Database Camera Route ========= *\\\
+
+      case AppRouterPath.databaseCameraScreen:
+        return MaterialPageRoute(builder: (_) => const DatabaseCameraScreen());
+
+      ///* ========= Tour Plan Route ========= *\\\
+
+      case AppRouterPath.tourPlanRequestScreen:
+        return MaterialPageRoute(builder: (_) => const TourPlanRequestScreen());
+
+      case AppRouterPath.tourPlanApprovalScreen:
+        return MaterialPageRoute(
+            builder: (_) => const TourPlanApprovalScreen());
+
+      case AppRouterPath.tourPlanApprovalFormScreen:
+        return MaterialPageRoute(
+            builder: (_) => const TourPlanApprovalFormScreen());
+
+      ///* ========= Chat Route ========= *\\\
+
+      case AppRouterPath.chatContactScreen:
+        return MaterialPageRoute(builder: (_) => const ChatContactScreen());
+
+      case AppRouterPath.chatMessageScreen:
+        final arg = settings.arguments as ChatMessageScreen;
+        return MaterialPageRoute(
+            builder: (_) => ChatMessageScreen(contact: arg.contact));
+
+      ///* ========= No Route view ========= *\\\
+
+      case AppRouterPath.noRoute:
+        return MaterialPageRoute(builder: (_) => const UnknownScreen());
       default:
-        return MaterialPageRoute(builder: (_) {
-          return const Scaffold(body: Center(child: Text('No route defined')));
-        });
+        return MaterialPageRoute(builder: (_) => const UnknownScreen());
     }
   }
 }

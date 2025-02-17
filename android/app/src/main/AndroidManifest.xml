@@ -1,14 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.ifive.ifive_hrms">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- INTERNET PERMISSIONS -->
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- AD_ID PERMISSIONS -->
-    <uses-permission
-        android:name="com.google.android.gms.permission.AD_ID permission"
-        tools:node="remove" />
 
     <!-- STORAGE PERMISSIONS -->
     <uses-permission
@@ -100,13 +94,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
 
-
-            <!-- ADD THIS INTENT FILTER -->
-            <intent-filter>
-                <action
-                    android:name="com.android_package_installer.content.SESSION_API_PACKAGE_INSTALLED"
-                    android:exported="false" />
-            </intent-filter>
 
         </activity>
 

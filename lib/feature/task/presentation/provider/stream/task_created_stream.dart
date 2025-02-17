@@ -26,7 +26,7 @@ class TaskCreatedStream {
   Stream<List<CommonList>> get filterUserList => _filterUserList.stream;
 
   Future<void> fetchInitialCallBack() async {
-    statusController = TextEditingController(text: "PENDING");
+    statusController = TextEditingController(text: "Initiated");
     final response = await _employeeListUseCase();
     response.fold((_) => {}, (_) {
       if (_.employeeList!.isNotEmpty) {

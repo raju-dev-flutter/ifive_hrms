@@ -44,9 +44,10 @@ class _IFiveHrmsAppState extends State<IFiveHrmsApp> {
           navigatorKey: NavigatorService.navigatorKey,
           debugShowCheckedModeBanner: false,
           theme: GeneratorTheme.lightTheme,
-          supportedLocales: const [Locale('en', '')],
+          supportedLocales: const [Locale('en')],
           localizationsDelegates: const [
             AppLocalizationDelegate(),
+            // MonthYearPickerLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,

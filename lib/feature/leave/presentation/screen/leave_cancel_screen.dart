@@ -10,6 +10,7 @@ import '../../../feature.dart';
 
 class LeaveCancelScreen extends StatefulWidget {
   final Leavehistory leave;
+
   const LeaveCancelScreen({super.key, required this.leave});
 
   @override
@@ -48,8 +49,6 @@ class _LeaveCancelScreenState extends State<LeaveCancelScreen> {
             Navigator.pop(context);
             AppAlerts.displaySnackBar(
                 context, "Leave Successfully canceled", true);
-            // AppAlerts.displaySuccessAlert(
-            //     context, "Leave", "Leave successfully canceled");
           }
           if (state is LeaveCrudFailed) {
             if (state.message == "Invalid Token") {
@@ -57,10 +56,8 @@ class _LeaveCancelScreenState extends State<LeaveCancelScreen> {
                   .add(const LoggedOut());
             } else if (state.message == "Network Error") {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayErrorAlert(context, "Leave", state.message);
             } else {
               AppAlerts.displaySnackBar(context, state.message, false);
-              // AppAlerts.displayWarningAlert(context, "Leave", state.message);
             }
           }
         },
@@ -234,26 +231,6 @@ class _LeaveCancelScreenState extends State<LeaveCancelScreen> {
                           ],
                         ),
                       ),
-              // if (widget.leave.leaveStatus == "REJECT")
-              //   widget.leave.approvalReason == null ||
-              //       widget.leave.approvalReason == ''
-              //       ? const SizedBox()
-              //       : leaveContainerCard(
-              //     child: Column(
-              //       children: [
-              //         Row(
-              //           children: [
-              //             Expanded(
-              //               child: leaveDetailCard(
-              //                 label: 'Rejected Reason',
-              //                 value: widget.leave.approvalReason ?? '',
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ],
-              //     ),
-              //   ),
               if (widget.leave.leaveStatus == "CANCELLED")
                 widget.leave.cancelComments == null ||
                         widget.leave.cancelComments == ''

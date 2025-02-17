@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../feature.dart';
+
 class NotificationTaskScreen extends StatefulWidget {
   const NotificationTaskScreen({super.key});
 
@@ -10,6 +12,6 @@ class NotificationTaskScreen extends StatefulWidget {
 class _NotificationTaskScreenState extends State<NotificationTaskScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return UnknownScreen();
   }
 }

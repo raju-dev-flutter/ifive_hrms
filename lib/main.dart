@@ -20,41 +20,37 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> main() async {
-  runZonedGuarded(
-    () async {
-      WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-      await Firebase.initializeApp();
-      FirebaseMessaging.onBackgroundMessage(
-          _firebaseMessagingBackgroundHandler);
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-      await SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  await ApiUrl.initializeBaseUrl();
 
-      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent,
-        statusBarColor: Colors.transparent,
-      ));
+  await SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent,
+    statusBarColor: Colors.transparent,
+  ));
 
-      await init();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-      Bloc.observer = AppBlocObserver();
+  await init();
 
-      Future.wait([SharedPrefs.init()]);
+  Bloc.observer = AppBlocObserver();
 
-      runApp(
-        MultiRepositoryProvider(
-          providers: repositoryProvider(),
-          child: MultiBlocProvider(
-            providers: blocProvider(),
-            child: const IFiveHrmsApp(),
-          ),
-        ),
-      );
-    },
-    (error, stack) {},
+  Future.wait([SharedPrefs.init()]);
+
+  runApp(
+    MultiRepositoryProvider(
+      providers: repositoryProvider(),
+      child: MultiBlocProvider(
+        providers: blocProvider(),
+        child: const IFiveHrmsApp(),
+      ),
+    ),
   );
 }
 
@@ -62,52 +58,72 @@ repositoryProvider() {
   return [
     /// Authentication and Auth Repositories
     RepositoryProvider<AuthenticationRepository>(
-        create: (context) => sl<AuthenticationRepository>()),
+        create: (ctx) => sl<AuthenticationRepository>()),
     RepositoryProvider<AuthRepository>(
-        create: (context) => sl<AuthRepositoryImpl>()),
+        create: (ctx) => sl<AuthRepositoryImpl>()),
 
     /// Attendance Repositories
     RepositoryProvider<AttendanceRepository>(
-        create: (context) => sl<AttendanceRepositoryImpl>()),
+        create: (ctx) => sl<AttendanceRepositoryImpl>()),
 
     /// Appreciation Repositories
     RepositoryProvider<AppreciationRepository>(
-        create: (context) => sl<AppreciationRepositoryImpl>()),
+        create: (ctx) => sl<AppreciationRepositoryImpl>()),
 
     /// Food Repositories
     RepositoryProvider<FoodRepository>(
-        create: (context) => sl<FoodRepositoryImpl>()),
+        create: (ctx) => sl<FoodRepositoryImpl>()),
 
     /// Account Repositories
     RepositoryProvider<AccountRepository>(
-        create: (context) => sl<AccountRepositoryImpl>()),
+        create: (ctx) => sl<AccountRepositoryImpl>()),
 
     /// Misspunch Repositories
     RepositoryProvider<MisspunchRepository>(
-        create: (context) => sl<MisspunchRepositoryImpl>()),
+        create: (ctx) => sl<MisspunchRepositoryImpl>()),
 
     /// Leave Repositories
     RepositoryProvider<LeaveRepository>(
-        create: (context) => sl<LeaveRepositoryImpl>()),
+        create: (ctx) => sl<LeaveRepositoryImpl>()),
 
     /// Payroll Repositories
     RepositoryProvider<PayrollRepository>(
-        create: (context) => sl<PayrollRepositoryImpl>()),
+        create: (ctx) => sl<PayrollRepositoryImpl>()),
 
     /// ODPermission Repositories
     RepositoryProvider<ODPermissionRepository>(
-        create: (context) => sl<ODPermissionRepositoryImpl>()),
+        create: (ctx) => sl<ODPermissionRepositoryImpl>()),
 
     /// Other Service Repositories
     RepositoryProvider<OtherServiceRepository>(
-        create: (context) => sl<OtherServiceRepositoryImpl>()),
+        create: (ctx) => sl<OtherServiceRepositoryImpl>()),
 
     /// Expenses Repositories
     RepositoryProvider<ExpensesRepository>(
-        create: (context) => sl<ExpensesRepositoryImpl>()),
+        create: (ctx) => sl<ExpensesRepositoryImpl>()),
+
+    /// Task Repositories
+    RepositoryProvider<TaskRepository>(
+        create: (ctx) => sl<TaskRepositoryImpl>()),
+
+    /// ProjectTask Repositories
+    RepositoryProvider<ProjectTaskRepository>(
+        create: (ctx) => sl<ProjectTaskRepositoryImpl>()),
 
     /// Sfa Repositories
-    RepositoryProvider<SfaRepository>(create: (context) => sl<SfaRepository>()),
+    RepositoryProvider<SfaRepository>(create: (ctx) => sl<SfaRepositoryImpl>()),
+
+    /// Chat Repositories
+    RepositoryProvider<ChatRepository>(
+        create: (ctx) => sl<ChatRepositoryImpl>()),
+
+    /// Backup Repositories
+    RepositoryProvider<BackupRepository>(
+        create: (ctx) => sl<BackupRepositoryImpl>()),
+
+    /// TourPlan Repositories
+    RepositoryProvider<TourPlanRepository>(
+        create: (ctx) => sl<TourPlanRepositoryImpl>()),
   ];
 }
 
@@ -115,97 +131,107 @@ blocProvider() {
   return [
     /// Authentication and Auth
     BlocProvider<AuthenticationBloc>(
-        create: (context) => sl<AuthenticationBloc>()..add(const AppStarted())),
-    BlocProvider<AuthBloc>(create: (context) => sl<AuthBloc>()),
+        create: (ctx) => sl<AuthenticationBloc>()..add(const AppStarted())),
+    BlocProvider<AuthBloc>(create: (ctx) => sl<AuthBloc>()),
 
     /// Dashboard and Root
-    BlocProvider<PermissionCubit>(create: (context) => sl<PermissionCubit>()),
-    BlocProvider<NavigationCubit>(create: (context) => sl<NavigationCubit>()),
+    BlocProvider<PermissionCubit>(create: (ctx) => sl<PermissionCubit>()),
+    BlocProvider<NavigationCubit>(create: (ctx) => sl<NavigationCubit>()),
     BlocProvider<DashboardCountCubit>(
-        create: (context) => sl<DashboardCountCubit>()),
+        create: (ctx) => sl<DashboardCountCubit>()),
     BlocProvider<DashboardTabBarCubit>(
-        create: (context) => sl<DashboardTabBarCubit>()),
+        create: (ctx) => sl<DashboardTabBarCubit>()),
+    BlocProvider<TaskLeadCubit>(create: (ctx) => sl<TaskLeadCubit>()),
     BlocProvider<AttendanceStatusCubit>(
-        create: (context) => sl<AttendanceStatusCubit>()),
-    BlocProvider<AppreciationCubit>(
-        create: (context) => sl<AppreciationCubit>()),
-    BlocProvider<GPRSCheckerCubit>(create: (context) => sl<GPRSCheckerCubit>()),
+        create: (ctx) => sl<AttendanceStatusCubit>()),
+    BlocProvider<AppreciationCubit>(create: (ctx) => sl<AppreciationCubit>()),
+    BlocProvider<GPRSCheckerCubit>(create: (ctx) => sl<GPRSCheckerCubit>()),
     BlocProvider<AppVersionCheckerCubit>(
-        create: (context) => sl<AppVersionCheckerCubit>()),
+        create: (ctx) => sl<AppVersionCheckerCubit>()),
     BlocProvider<AppreciationCrudBloc>(
-        create: (context) => sl<AppreciationCrudBloc>()),
+        create: (ctx) => sl<AppreciationCrudBloc>()),
     BlocProvider<RenewalTrackerCubit>(
-        create: (context) => sl<RenewalTrackerCubit>()),
+        create: (ctx) => sl<RenewalTrackerCubit>()),
     BlocProvider<ApprovalLeaveHistoryCubit>(
-        create: (context) => sl<ApprovalLeaveHistoryCubit>()),
+        create: (ctx) => sl<ApprovalLeaveHistoryCubit>()),
 
     /// Attendance
-    BlocProvider<AttendanceBloc>(create: (context) => sl<AttendanceBloc>()),
+    BlocProvider<AttendanceBloc>(create: (ctx) => sl<AttendanceBloc>()),
     BlocProvider<AttendanceReportCubit>(
-        create: (context) => sl<AttendanceReportCubit>()),
+        create: (ctx) => sl<AttendanceReportCubit>()),
 
     /// Food
-    BlocProvider<FoodAttendanceBloc>(
-        create: (context) => sl<FoodAttendanceBloc>()),
+    BlocProvider<FoodAttendanceBloc>(create: (ctx) => sl<FoodAttendanceBloc>()),
     BlocProvider<FoodAttendanceStatusCubit>(
-        create: (context) => sl<FoodAttendanceStatusCubit>()),
+        create: (ctx) => sl<FoodAttendanceStatusCubit>()),
     BlocProvider<FoodAttendanceReportCubit>(
-        create: (context) => sl<FoodAttendanceReportCubit>()),
+        create: (ctx) => sl<FoodAttendanceReportCubit>()),
 
     /// Leave
-    BlocProvider<LeaveCrudBloc>(create: (context) => sl<LeaveCrudBloc>()),
-    BlocProvider<LeaveHistoryCubit>(
-        create: (context) => sl<LeaveHistoryCubit>()),
-    BlocProvider<LeaveApprovedCubit>(
-        create: (context) => sl<LeaveApprovedCubit>()),
+    BlocProvider<LeaveCrudBloc>(create: (ctx) => sl<LeaveCrudBloc>()),
+    BlocProvider<LeaveHistoryCubit>(create: (ctx) => sl<LeaveHistoryCubit>()),
+    BlocProvider<LeaveApprovedCubit>(create: (ctx) => sl<LeaveApprovedCubit>()),
 
     /// Account
-    BlocProvider<AccountCrudBloc>(create: (context) => sl<AccountCrudBloc>()),
+    BlocProvider<AccountCrudBloc>(create: (ctx) => sl<AccountCrudBloc>()),
     BlocProvider<AccountDetailsCubit>(
-        create: (context) => sl<AccountDetailsCubit>()),
+        create: (ctx) => sl<AccountDetailsCubit>()),
 
     /// ODPermission
-    BlocProvider<PermissionCrudBloc>(
-        create: (context) => sl<PermissionCrudBloc>()),
+    BlocProvider<PermissionCrudBloc>(create: (ctx) => sl<PermissionCrudBloc>()),
     BlocProvider<PermissionHistoryCubit>(
-        create: (context) => sl<PermissionHistoryCubit>()),
+        create: (ctx) => sl<PermissionHistoryCubit>()),
     BlocProvider<PermissionApprovalCubit>(
-        create: (context) => sl<PermissionApprovalCubit>()),
+        create: (ctx) => sl<PermissionApprovalCubit>()),
 
     /// Misspunch
-    BlocProvider<MisspunchCrudBloc>(
-        create: (context) => sl<MisspunchCrudBloc>()),
+    BlocProvider<MisspunchCrudBloc>(create: (ctx) => sl<MisspunchCrudBloc>()),
     BlocProvider<MisspunchApprovedCubit>(
-        create: (context) => sl<MisspunchApprovedCubit>()),
+        create: (ctx) => sl<MisspunchApprovedCubit>()),
     BlocProvider<MisspunchHistoryCubit>(
-        create: (context) => sl<MisspunchHistoryCubit>()),
+        create: (ctx) => sl<MisspunchHistoryCubit>()),
 
     /// PaySlip
-    BlocProvider<PaySlipCubit>(create: (context) => sl<PaySlipCubit>()),
+    BlocProvider<PaySlipCubit>(create: (ctx) => sl<PaySlipCubit>()),
     BlocProvider<PaySlipDocumentCubit>(
-        create: (context) => sl<PaySlipDocumentCubit>()),
+        create: (ctx) => sl<PaySlipDocumentCubit>()),
 
     /// Task
-    BlocProvider<TaskBarCubit>(create: (context) => sl<TaskBarCubit>()),
-    BlocProvider<TodayTaskCubit>(create: (context) => sl<TodayTaskCubit>()),
+    BlocProvider<TaskBarCubit>(create: (ctx) => sl<TaskBarCubit>()),
+    BlocProvider<TodayTaskCubit>(create: (ctx) => sl<TodayTaskCubit>()),
     BlocProvider<StatusBasedTaskCubit>(
-        create: (context) => sl<StatusBasedTaskCubit>()),
-    BlocProvider<TaskReportCubit>(create: (context) => sl<TaskReportCubit>()),
-    BlocProvider<TaskCrudBloc>(create: (context) => sl<TaskCrudBloc>()),
+        create: (ctx) => sl<StatusBasedTaskCubit>()),
+    BlocProvider<TaskReportCubit>(create: (ctx) => sl<TaskReportCubit>()),
+    BlocProvider<TaskCrudBloc>(create: (ctx) => sl<TaskCrudBloc>()),
+
+    /// Project Task
+    BlocProvider<ProjectTaskCrudBloc>(
+        create: (ctx) => sl<ProjectTaskCrudBloc>()),
+    BlocProvider<CommonProjectTaskBloc>(
+        create: (ctx) => sl<CommonProjectTaskBloc>()),
 
     /// Expenses
-    BlocProvider<ExpensesCrudBloc>(create: (context) => sl<ExpensesCrudBloc>()),
+    BlocProvider<ExpensesCrudBloc>(create: (ctx) => sl<ExpensesCrudBloc>()),
     BlocProvider<StatusBasedExpensesCubit>(
-        create: (context) => sl<StatusBasedExpensesCubit>()),
+        create: (ctx) => sl<StatusBasedExpensesCubit>()),
 
     /// Sfa
-    BlocProvider<SfaCrudBloc>(create: (context) => sl<SfaCrudBloc>()),
+    BlocProvider<SfaCrudBloc>(create: (ctx) => sl<SfaCrudBloc>()),
     BlocProvider<NewCallDatabaseBloc>(
-        create: (context) => sl<NewCallDatabaseBloc>()),
-    BlocProvider<DcrDatabaseBloc>(create: (context) => sl<DcrDatabaseBloc>()),
-    BlocProvider<LeadDatabaseBloc>(create: (context) => sl<LeadDatabaseBloc>()),
+        create: (ctx) => sl<NewCallDatabaseBloc>()),
+    BlocProvider<DcrDatabaseBloc>(create: (ctx) => sl<DcrDatabaseBloc>()),
+    BlocProvider<LeadDatabaseBloc>(create: (ctx) => sl<LeadDatabaseBloc>()),
+    BlocProvider<CommonDatabaseBloc>(create: (ctx) => sl<CommonDatabaseBloc>()),
     BlocProvider<PipelineDatabaseBloc>(
-        create: (context) => sl<PipelineDatabaseBloc>()),
+        create: (ctx) => sl<PipelineDatabaseBloc>()),
+
+    /// Chat
+    BlocProvider<ChatContactCubit>(create: (ctx) => sl<ChatContactCubit>()),
+    BlocProvider<MessageContentCubit>(
+        create: (ctx) => sl<MessageContentCubit>()),
+    BlocProvider<ChatCrudBloc>(create: (ctx) => sl<ChatCrudBloc>()),
+
+    /// TourPlan
   ];
 }
 

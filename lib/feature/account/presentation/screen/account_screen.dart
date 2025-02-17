@@ -109,7 +109,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                         fit: BoxFit.cover,
                                         alignment: Alignment.topCenter,
                                         image: NetworkImage(
-                                            "${ApiUrl.baseUrl}public/${profile.avatar}"))
+                                            "${ApiUrl.baseUrl}/public/${profile.avatar}"))
                                     : null,
                               ),
                               child: isCheckImageEmpty
@@ -297,19 +297,6 @@ class _AccountScreenState extends State<AccountScreen> {
                             ?.copyWith(color: appColor.gray700),
                       ),
                       SizedBox(height: 4.h),
-                      // Divider(color: appColor.brand900.withOpacity(.5)),
-                      // SizedBox(height: 4.h),
-                      // Container(
-                      //   width: 160.w,
-                      //   height: 16.h,
-                      //   color: appColor.gray600.withOpacity(.5),
-                      // ),
-                      // SizedBox(height: 1.h),
-                      // Text(
-                      //   "Date of birth",
-                      //   style: context.textTheme.labelSmall
-                      //       ?.copyWith(color: appColor.gray700),
-                      // ),
                     ],
                   ),
                 ),
@@ -361,19 +348,6 @@ class _AccountScreenState extends State<AccountScreen> {
                     SizedBox(height: 4.h),
                     Divider(color: appColor.brand900.withOpacity(.1)),
                     SizedBox(height: 4.h),
-                    // Text(
-                    //   "Exhilar Innovative Solutions Private Limited",
-                    //   style: context.textTheme.labelLarge,
-                    // ),
-                    // SizedBox(height: 1.h),
-                    // Text(
-                    //   "Company",
-                    //   style: context.textTheme.labelSmall
-                    //       ?.copyWith(color: appColor.gray700),
-                    // ),
-                    // SizedBox(height: 4.h),
-                    // Divider(color: appColor.brand900.withOpacity(.1)),
-                    // SizedBox(height: 4.h),
                     Text(
                       "+91 ${profile.workTelephoneNumber}",
                       style: context.textTheme.labelLarge,
@@ -384,19 +358,6 @@ class _AccountScreenState extends State<AccountScreen> {
                       style: context.textTheme.labelSmall
                           ?.copyWith(color: appColor.gray700),
                     ),
-                    // SizedBox(height: 4.h),
-                    // Divider(color: appColor.brand900.withOpacity(.1)),
-                    // SizedBox(height: 4.h),
-                    // Text(
-                    //   profile.dateOfBirth ?? "None",
-                    //   style: context.textTheme.labelLarge,
-                    // ),
-                    // SizedBox(height: 1.h),
-                    // Text(
-                    //   "Date of birth",
-                    //   style: context.textTheme.labelSmall
-                    //       ?.copyWith(color: appColor.gray700),
-                    // ),
                   ],
                 ),
               ),

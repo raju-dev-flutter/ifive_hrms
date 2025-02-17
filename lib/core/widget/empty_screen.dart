@@ -7,6 +7,7 @@ import '../core.dart';
 
 class EmptyScreen extends StatelessWidget {
   final VoidCallback? onPressed;
+
   const EmptyScreen({super.key, this.onPressed});
 
   @override

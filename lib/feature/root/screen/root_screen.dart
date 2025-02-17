@@ -43,8 +43,9 @@ class _RootScreenState extends State<RootScreen> {
 
   Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
-    setState(() => _packageInfo = info);
-
+    setState(() {
+      _packageInfo = info;
+    });
     BlocProvider.of<AppVersionCheckerCubit>(context, listen: false)
         .appVersion();
   }
@@ -99,6 +100,21 @@ class _RootScreenState extends State<RootScreen> {
             return Container();
           }),
         ),
+        floatingActionButton: BlocBuilder<NavigationCubit, NavigationState>(
+            builder: (context, state) {
+          if (state.navbarItem == NavbarItem.database) {
+            return FloatingActionButton(
+              onPressed: () => Navigator.pushNamed(
+                  context, AppRouterPath.databaseCameraScreen),
+              child: const Icon(Icons.camera),
+            );
+          }
+          return FloatingActionButton(
+            onPressed: () =>
+                Navigator.pushNamed(context, AppRouterPath.chatContactScreen),
+            child: const Icon(Icons.chat_rounded),
+          );
+        }),
         bottomNavigationBar: BlocBuilder<NavigationCubit, NavigationState>(
           builder: (context, state) {
             return Container(
@@ -282,13 +298,25 @@ class AppUpdater extends StatefulWidget {
 }
 
 class _AppUpdaterState extends State<AppUpdater> {
+  double? progress = 0;
+  int? status = 0;
+
+  UpgradeMethod? upgradeMethod;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // RUpgrade.setDebug(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: appColor.white,
       alignment: Alignment.center,
       title: Text(
-        "Update iFive Hrms?",
+        "${AppKeys.companyName}?",
         style: context.textTheme.bodyMedium
             ?.copyWith(fontWeight: FontWeight.w500, color: appColor.gray700),
       ),
@@ -297,11 +325,15 @@ class _AppUpdaterState extends State<AppUpdater> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Dimensions.kVerticalSpaceSmaller,
-
-          Text(
-            'iFive Hrms recommends that you update to the latest version. '
-            'You can keep using this app while downloading the update.',
-            style: context.textTheme.labelLarge,
+          RichText(
+            text: TextSpan(
+              style: context.textTheme.labelLarge,
+              children: const [
+                TextSpan(
+                    text:
+                        '${AppKeys.companyName} recommends that you update to the latest version. You can keep using this app while downloading the update.'),
+              ],
+            ),
           ),
           Dimensions.kVerticalSpaceSmall,
           RichText(
@@ -333,7 +365,7 @@ class _AppUpdaterState extends State<AppUpdater> {
           ),
           Dimensions.kVerticalSpaceSmall,
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
                 onPressed: packageInstaller,
@@ -352,6 +384,7 @@ class _AppUpdaterState extends State<AppUpdater> {
 
   void packageInstaller() async {
     try {
+      Navigator.pop(context);
       String url = "";
       if (Platform.isAndroid) {
         String packageName = widget.packageInfo.packageName;

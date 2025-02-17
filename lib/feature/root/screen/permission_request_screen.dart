@@ -7,8 +7,21 @@ import '../../../config/config.dart';
 import '../../../core/core.dart';
 import '../root.dart';
 
-class PermissionRequestScreen extends StatelessWidget {
+class PermissionRequestScreen extends StatefulWidget {
   const PermissionRequestScreen({super.key});
+
+  @override
+  State<PermissionRequestScreen> createState() =>
+      _PermissionRequestScreenState();
+}
+
+class _PermissionRequestScreenState extends State<PermissionRequestScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Trigger permission check when screen initializes
+    context.read<PermissionCubit>().checkIfPermissionNeeded();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +38,6 @@ class PermissionRequestScreen extends StatelessWidget {
           return (current is AllPermissionsGranted);
         },
         builder: (context, state) {
-          // var authenticationBloc =
-          //     BlocProvider.of<AuthenticationBloc>(context, listen: false);
-          var permissionCubit = context.watch<PermissionCubit>();
-          permissionCubit.checkIfPermissionNeeded();
           if (state is AllPermissionsGranted || state is WaitingForPermission) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -74,13 +83,12 @@ class PermissionRequestScreen extends StatelessWidget {
                   InkWell(
                     onTap: () async {
                       if (state.permissionRepository.isGranted == true) {
-                        // BlocProvider.of<AuthenticationBloc>(context,
-                        //         listen: false)
-                        //     .add(const AppPermission(permission: true));
-                        // debugPrint(
-                        //     "=============| Permission : ${state.permissionRepository.isGranted.toString()} |=============");
+                        debugPrint(
+                            "=============| Permission : ${state.permissionRepository.isGranted.toString()} |=============");
                       } else {
-                        return await permissionCubit.onRequestAllPermission();
+                        await context
+                            .read<PermissionCubit>()
+                            .onRequestAllPermission();
                       }
                     },
                     borderRadius: Dimensions.kBorderRadiusAllLarger,

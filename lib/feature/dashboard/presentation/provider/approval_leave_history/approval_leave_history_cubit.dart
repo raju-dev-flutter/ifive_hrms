@@ -1,5 +1,5 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dashboard.dart';
 
@@ -13,9 +13,10 @@ class ApprovalLeaveHistoryCubit extends Cubit<ApprovalLeaveHistoryState> {
 
   final ApprovalLeaveHistoryUseCase _$ApprovalLeaveHistoryUseCase;
 
-  void approvalLeaveHistory(String date) async {
+  void approvalLeaveHistory(String fromDate, String toDate) async {
     emit(const ApprovalLeaveHistoryLoading());
-    final response = await _$ApprovalLeaveHistoryUseCase(date);
+    final response = await _$ApprovalLeaveHistoryUseCase(
+        LeaveApprovalParams(fromDate, toDate));
     response.fold(
       (_) => emit(ApprovalLeaveHistoryFailed(message: _.message)),
       (_) => emit(ApprovalLeaveHistoryLoaded(approvalLeaveHistory: _)),

@@ -1,5 +1,5 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../feature.dart';
 
@@ -12,9 +12,9 @@ class RenewalTrackerCubit extends Cubit<RenewalTrackerState> {
 
   final RenewalTrackerUseCase _$RenewalTrackerUseCase;
 
-  void renewalTracking() async {
+  void renewalTracking({required String status}) async {
     emit(const RenewalTrackerLoading());
-    final response = await _$RenewalTrackerUseCase();
+    final response = await _$RenewalTrackerUseCase(status);
     response.fold(
       (_) => emit(RenewalTrackerFailure(_.message)),
       (__) => emit(RenewalTrackerLoaded(__)),

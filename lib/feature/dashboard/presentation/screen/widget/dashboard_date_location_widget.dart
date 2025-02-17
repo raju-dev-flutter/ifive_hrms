@@ -51,7 +51,7 @@ class _DashboardDateLocationWidgetState
       setState(() {
         SharedPrefs().setGeoAddress(position.latitude, position.longitude,
             '${place[0].thoroughfare}, ${place[0].subLocality}, ${place[0].locality}.');
-        // address = '${place[0].subLocality}, ${place[0].locality}';
+
         address =
             '${place[0].thoroughfare}, ${place[0].subLocality}, ${place[0].locality}.';
       });

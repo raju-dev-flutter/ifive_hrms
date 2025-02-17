@@ -1,4 +1,4 @@
-package com.ifive.ifive_hrms.service
+package com.ifive_dev.ifive_hrms.service
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -10,13 +10,15 @@ import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.ifive.ifive_hrms.MainActivity
-import com.ifive.ifive_hrms.R
+import com.ifive_dev.ifive_hrms.MainActivity
+import com.ifive_dev.ifive_hrms.R
 
 class AlarmReceiver : BroadcastReceiver() {
+    
     override fun onReceive(context: Context, intent: Intent) {
         showNotification(context)
     }
+    
     private fun showNotification(context: Context) {
         val notificationManager =
             context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -24,12 +26,14 @@ class AlarmReceiver : BroadcastReceiver() {
         // CREATE A NOTIFICATION CHANNEL (FOR ANDROID 8.0 AND ABOVE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                CHANNEL_ID,NOTIFICATION_CHANNEL_NAME,
+                CHANNEL_ID, NOTIFICATION_CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
+            
             notificationManager.createNotificationChannel(channel)
         }
         val intent = Intent(context, MainActivity::class.java)
+        
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent = PendingIntent.getActivity(context, NOTIFICATION_ID, intent,
             PendingIntent.FLAG_IMMUTABLE)

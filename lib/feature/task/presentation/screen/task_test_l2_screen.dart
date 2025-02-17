@@ -134,14 +134,10 @@ class _TaskTestL2ScreenState extends State<TaskTestL2Screen>
                         badge(
                             color: appColor.warning500,
                             label: (task.priority ?? "").toUpperCase()),
-
                         Dimensions.kHorizontalSpaceSmaller,
                         badge(
                             color: appColor.brand600,
                             label: (task.projectName ?? "").toUpperCase()),
-                        // badge(
-                        //     color: appColor.blue600,
-                        //     label: (task.status ?? "").toUpperCase()),
                         Dimensions.kSpacer,
                         if (task.taskType != null && task.taskType == "Reword")
                           badge(
@@ -168,11 +164,10 @@ class _TaskTestL2ScreenState extends State<TaskTestL2Screen>
                                 style: context.textTheme.labelLarge
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              if (task.description != null &&
-                                  task.description != '') ...[
+                              if (task.menu != null && task.menu != '') ...[
                                 Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.description ?? '',
+                                  task.menu ?? '',
                                   overflow: TextOverflow.ellipsis,
                                   style: context.textTheme.labelMedium
                                       ?.copyWith(color: appColor.gray500),
@@ -209,33 +204,6 @@ class _TaskTestL2ScreenState extends State<TaskTestL2Screen>
                         ),
                       ],
                     ),
-                    // Dimensions.kVerticalSpaceSmaller,
-                    // RichText(
-                    //   text: TextSpan(
-                    //     text: "${task.percentage ?? 0}% ",
-                    //     style: context.textTheme.labelLarge?.copyWith(
-                    //         fontWeight: FontWeight.bold,
-                    //         color: appColor.gray900.withOpacity(.8)),
-                    //     children: [
-                    //       TextSpan(
-                    //         text: "Completed",
-                    //         style: context.textTheme.labelLarge
-                    //             ?.copyWith(color: appColor.gray600),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    // Dimensions.kVerticalSpaceSmallest,
-                    // LinearProgressIndicator(
-                    //   semanticsLabel: "Task Completed Status",
-                    //   semanticsValue: "${task.percentage ?? 0} %",
-                    //   value: (task.percentage ?? 0).toDouble() / 100,
-                    //   backgroundColor: appColor.gray200,
-                    //   valueColor:
-                    //       AlwaysStoppedAnimation<Color>(appColor.success600),
-                    //   minHeight: 10.h,
-                    //   borderRadius: Dimensions.kBorderRadiusAllSmall,
-                    // ),
                   ],
                 ),
               ),
@@ -290,26 +258,6 @@ class _TaskTestL2ScreenState extends State<TaskTestL2Screen>
                       height: 40,
                       label: "UPDATE",
                     )
-                    // BlocBuilder<TaskCrudBloc, TaskCrudState>(
-                    //   builder: (context, state) {
-                    //     if (state is TaskCrudLoading) {
-                    //       return ActionButton(
-                    //         onPressed: () {},
-                    //         width: 120,
-                    //         height: 40,
-                    //         color: appColor.white,
-                    //         child: CircularProgressIndicator(
-                    //             color: appColor.blue600),
-                    //       );
-                    //     }
-                    //     return ActionButton(
-                    //       onPressed: () => onUpdateModel(task),
-                    //       width: 120,
-                    //       height: 40,
-                    //       label: "UPDATE",
-                    //     );
-                    //   },
-                    // )
                   ],
                 ),
               )
@@ -487,10 +435,6 @@ class _TaskTestL2ScreenState extends State<TaskTestL2Screen>
     return label;
   }
 
-  // String timeFormat(String time) {
-  //   final dateTime = DateTime.parse(time);
-  //   return '${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
-  // }
   String timeFormat(String time) {
     final splitTime = time.split(' ').last.split('.').first.split(':');
     return "${splitTime[0]}:${splitTime[1]}";
@@ -593,7 +537,7 @@ class _TaskTestL2UpdateScreenState extends State<TaskTestL2UpdateScreen>
         preferredSize: Size(context.deviceSize.width, 52.h),
         child: CustomAppBar(
           onPressed: () => Navigator.pop(context),
-          title: "Testing L2 Task Update",
+          title: "Testing L2 Task Details",
         ),
       ),
       body: BlocListener<TaskCrudBloc, TaskCrudState>(
@@ -642,16 +586,23 @@ class _TaskTestL2UpdateScreenState extends State<TaskTestL2UpdateScreen>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                badge(
+                                    color: appColor.brand600,
+                                    label:
+                                        (task.projectName ?? "").toUpperCase()),
+                                Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.projectName ?? ' ',
+                                  task.task ?? ' ',
                                   style: context.textTheme.bodySmall
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 Dimensions.kVerticalSpaceSmallest,
-                                Text(
-                                  task.task ?? ' ',
-                                  style: context.textTheme.labelLarge,
-                                ),
+                                if (isEmpty(task.menu))
+                                  Text(
+                                    "---- ${task.menu ?? ' '}",
+                                    style: context.textTheme.labelLarge
+                                        ?.copyWith(color: appColor.brand600),
+                                  ),
                               ],
                             ),
                           ),
@@ -660,8 +611,8 @@ class _TaskTestL2UpdateScreenState extends State<TaskTestL2UpdateScreen>
                     ),
                   ],
                 ),
+                Dimensions.kVerticalSpaceSmall,
                 if (isEmpty(task.description)) ...[
-                  Dimensions.kVerticalSpaceSmall,
                   Text(
                     "Task Description:",
                     overflow: TextOverflow.ellipsis,
@@ -724,7 +675,6 @@ class _TaskTestL2UpdateScreenState extends State<TaskTestL2UpdateScreen>
             ),
           ),
         ),
-
         if (isEmpty(task.taskGivenByName) ||
             isEmpty(task.assignToName) ||
             isEmpty(task.supportName) ||
@@ -787,40 +737,6 @@ class _TaskTestL2UpdateScreenState extends State<TaskTestL2UpdateScreen>
               ),
             ),
           ),
-        // if (task.taskTimeHistory!.isNotEmpty)
-        //   Padding(
-        //     padding: const EdgeInsets.fromLTRB(16, 8, 16, 8).w,
-        //     child: Container(
-        //       padding: Dimensions.kPaddingAllMedium,
-        //       width: context.deviceSize.width,
-        //       decoration: boxDecoration(),
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Text(
-        //             "Task Time History",
-        //             overflow: TextOverflow.ellipsis,
-        //             maxLines: 2,
-        //             style: context.textTheme.labelLarge,
-        //           ),
-        //           Dimensions.kVerticalSpaceSmaller,
-        //           Wrap(
-        //             crossAxisAlignment: WrapCrossAlignment.start,
-        //             runAlignment: WrapAlignment.start,
-        //             spacing: 2,
-        //             runSpacing: 2,
-        //             children: [
-        //               for (var i = 0; i < tLength(task.taskTimeHistory!); i++)
-        //                 badge(
-        //                   color: appColor.blue600,
-        //                   label: getTimeHistory(task.taskTimeHistory![i]),
-        //                 ),
-        //             ],
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 16).w,
           child: Container(

@@ -13,7 +13,7 @@ class CreateSupportTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         backgroundColor: appColor.gray50,
         appBar: PreferredSize(
@@ -32,7 +32,8 @@ class CreateSupportTaskScreen extends StatelessWidget {
                 dragStartBehavior: DragStartBehavior.start,
                 tabs: const [
                   Tab(child: Text('SELF')),
-                  Tab(child: Text('ASSIGN'))
+                  Tab(child: Text('ASSIGN')),
+                  Tab(child: Text('OTHER')),
                 ],
               ),
             ),
@@ -50,7 +51,7 @@ class CreateSupportTaskScreen extends StatelessWidget {
             }
           },
           child: const TabBarView(
-            children: [SelfTaskFormUI(), AssignTaskFormUI()],
+            children: [SelfTaskFormUI(), AssignTaskFormUI(), OtherTaskFormUI()],
           ),
         ),
       ),
@@ -615,6 +616,195 @@ class _AssignTaskFormUIState extends State<AssignTaskFormUI>
                   onPressed: () => {
                     if (_formKey.currentState!.validate())
                       {supportTaskStream.onAssignTaskSubmit(context)}
+                  },
+                  label: 'SUBMIT',
+                );
+              },
+            ),
+            Dimensions.kVerticalSpaceSmall,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class OtherTaskFormUI extends StatefulWidget {
+  const OtherTaskFormUI({super.key});
+
+  @override
+  State<OtherTaskFormUI> createState() => _OtherTaskFormUIState();
+}
+
+class _OtherTaskFormUIState extends State<OtherTaskFormUI>
+    with InputValidationMixin {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final otherTaskStream = sl<OtherTaskStream>();
+
+  @override
+  void initState() {
+    super.initState();
+    otherTaskStream.fetchInitialCallBack();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: Dimensions.kPaddingAllMedium,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            CustomTextFormField(
+              label: "Task",
+              controller: otherTaskStream.taskController,
+              required: true,
+              keyboardType: TextInputType.text,
+              validator: (val) {
+                if (!isCheckTextFieldIsEmpty(val!)) return "required *";
+                return null;
+              },
+            ),
+            Dimensions.kVerticalSpaceSmaller,
+            CustomStreamDropDownWidget(
+              label: "Assign To",
+              required: true,
+              streamList: otherTaskStream.assignList,
+              valueListInit: otherTaskStream.assignListInit,
+              onChanged: (params) => otherTaskStream.assignTo(params),
+              validator: (val) {
+                if (!isCheckTextFieldIsEmpty(val!)) return "required *";
+                return null;
+              },
+            ),
+            Dimensions.kVerticalSpaceSmaller,
+            Row(
+              children: [
+                Expanded(
+                  child: CustomDateTimeTextFormField(
+                    label: 'Start Date',
+                    required: true,
+                    style: context.textTheme.labelMedium,
+                    controller: TextEditingController(
+                      text: otherTaskStream.selectStartTime.valueOrNull ?? '',
+                    ),
+                    validator: (val) {
+                      if (!isCheckTextFieldIsEmpty(val!)) return "required *";
+                      return null;
+                    },
+                    onPressed: () async {
+                      DateTime date = await PickDateTime.date(context,
+                          selectedDate: null, startDate: null);
+                      TimeOfDay time = await PickDateTime.time(context);
+                      otherTaskStream.selectedStartTime(context, date, time);
+                      setState(() {});
+                    },
+                  ),
+                ),
+                Dimensions.kHorizontalSpaceSmall,
+                Expanded(
+                  child: CustomDateTimeTextFormField(
+                    label: 'End Date',
+                    required: true,
+                    style: context.textTheme.labelMedium,
+                    controller: TextEditingController(
+                      text: otherTaskStream.selectEndTime.valueOrNull ?? '',
+                    ),
+                    validator: (val) {
+                      if (!isCheckTextFieldIsEmpty(val!)) return "required *";
+                      return null;
+                    },
+                    onPressed: () async {
+                      DateTime date = await PickDateTime.date(context,
+                          selectedDate: null, startDate: null);
+                      TimeOfDay time = await PickDateTime.time(context);
+                      otherTaskStream.selectedToTime(context, date, time);
+                      setState(() {});
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Dimensions.kVerticalSpaceSmaller,
+            CustomStreamDropDownWidget(
+              label: "Lead Name",
+              required: true,
+              streamList: otherTaskStream.leadList,
+              valueListInit: otherTaskStream.leadListInit,
+              onChanged: (params) => otherTaskStream.lead(params),
+              validator: (val) {
+                if (!isCheckTextFieldIsEmpty(val!)) return "required *";
+                return null;
+              },
+            ),
+            Dimensions.kVerticalSpaceSmaller,
+            ...?otherTaskStream.taskTypeList.valueOrNull?.map((e) => Row(
+                  children: [
+                    StreamBuilder<String>(
+                        stream: otherTaskStream.taskTypeInit,
+                        builder: (context, snapshot) {
+                          final value =
+                              snapshot.data == e["key"] ? true : false;
+                          return Checkbox(
+                            value: value,
+                            onChanged: (val) {
+                              otherTaskStream.taskType(e["key"]);
+                              setState(() {});
+                            },
+                            splashRadius: 1,
+                          );
+                        }),
+                    Text(
+                      e["name"],
+                      style: context.textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.w400, color: appColor.gray500),
+                    ),
+                  ],
+                )),
+            Dimensions.kVerticalSpaceSmaller,
+            StreamBuilder<String>(
+                stream: otherTaskStream.taskTypeInit,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData || snapshot.data != "weekly") {
+                    return Container();
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10).h,
+                    child: CustomStreamDropDownWidget(
+                      label: "Select Task Day",
+                      required: true,
+                      streamList: otherTaskStream.leadList,
+                      valueListInit: otherTaskStream.leadListInit,
+                      onChanged: (params) => otherTaskStream.lead(params),
+                      validator: (val) {
+                        if (!isCheckTextFieldIsEmpty(val!)) return "required *";
+                        return null;
+                      },
+                    ),
+                  );
+                }),
+            CustomTextFormField(
+              label: "Description",
+              controller: otherTaskStream.descriptionController,
+              required: true,
+              maxLines: 4,
+              keyboardType: TextInputType.text,
+              validator: (val) {
+                if (!isCheckTextFieldIsEmpty(val!)) return "required *";
+                return null;
+              },
+            ),
+            Dimensions.kVerticalSpaceLarger,
+            BlocBuilder<TaskCrudBloc, TaskCrudState>(
+              builder: (context, state) {
+                if (state is TaskCrudLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return ActionButton(
+                  onPressed: () => {
+                    if (_formKey.currentState!.validate())
+                      {otherTaskStream.onSubmit(context)}
                   },
                   label: 'SUBMIT',
                 );

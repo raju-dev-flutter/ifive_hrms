@@ -80,36 +80,6 @@ class DatabaseCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            // if (database.keyNumber != null && database.keyNumber != "") ...[
-            //   Dimensions.kVerticalSpaceSmaller,
-            //   GestureDetector(
-            //     // onTap: () {
-            //     //   // UrlLauncher().makePhoneCall(
-            //     //   //     context: context, phoneNumber: database.phonenum ?? "");
-            //     // },
-            //     child: Row(
-            //       children: [
-            //         SvgPicture.asset(
-            //           AppSvg.phone,
-            //           width: 18,
-            //           colorFilter: ColorFilter.mode(
-            //             appColor.blue600,
-            //             BlendMode.srcIn,
-            //           ),
-            //         ),
-            //         Dimensions.kHorizontalSpaceSmall,
-            //         Expanded(
-            //           child: Text(
-            //             database.keyNumber ?? "",
-            //             maxLines: 2,
-            //             overflow: TextOverflow.ellipsis,
-            //             style: context.textTheme.labelLarge,
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ],
             Dimensions.kVerticalSpaceSmall,
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,

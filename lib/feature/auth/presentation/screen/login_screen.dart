@@ -50,7 +50,6 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
 
           if (state is LoginFailed) {
             AppAlerts.displayWarningAlert(context, "Login", state.message);
-            // AppAlerts.displaySnackBar(context, state.message, false);
           }
         },
         builder: (context, state) {
@@ -392,6 +391,10 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
             battery: battery.toString(),
             imei: "0",
           ));
+    } else {
+      // show a message that form validation failed
+      AppAlerts.displaySnackBar(
+          context, "Please enter your user details", false);
     }
   }
 }

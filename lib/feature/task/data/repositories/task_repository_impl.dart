@@ -128,4 +128,14 @@ class TaskRepositoryImpl implements TaskRepository {
       return Left(APIFailure.fromException(e));
     }
   }
+
+  @override
+  ResultFuture<ProjectTaskDropdownModel> projectTaskDropdown() async {
+    try {
+      final response = await _datasource.projectTaskDropdown();
+      return Right(response);
+    } on APIException catch (e) {
+      return Left(APIFailure.fromException(e));
+    }
+  }
 }

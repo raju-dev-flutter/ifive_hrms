@@ -113,6 +113,7 @@ class _ExpensesApprovalScreenState extends State<ExpensesApprovalScreen> {
       onTap: () => Navigator.pushNamed(
           context, AppRouterPath.expensesUpdateScreen,
           arguments: ExpensesUpdateScreen(expenses: expenses)),
+      borderRadius: BorderRadius.circular(8).w,
       child: Container(
         padding: Dimensions.kPaddingAllMedium,
         decoration: BoxDecoration(

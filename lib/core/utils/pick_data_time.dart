@@ -64,6 +64,13 @@ class PickDateTime {
     return formattedTime;
   }
 
+  static String stringFormat12Time(String timestamp) {
+    DateTime dateTime = DateTime.parse(timestamp);
+    String formattedTime = DateFormat('hh:mm a').format(dateTime);
+
+    return formattedTime;
+  }
+
   bool checkAvailableTime(TimeOfDay time) {
     TimeOfDay openingTime = const TimeOfDay(hour: 00, minute: 00);
     TimeOfDay closingTime = const TimeOfDay(hour: 10, minute: 01);
@@ -147,16 +154,6 @@ class PickDateTime {
   static String calculateAge(DateTime? dob) {
     DateTime today = DateTime.now();
     if (dob != null) {
-      // int age = today.year - dob.year;
-      // int months = today.month - dob.month;
-      // int days = today.day - dob.day;
-      //
-      // if (months < 0 || (months == 0 && days < 0)) {
-      //   age--;
-      // }
-      //
-      // int ageInDays = today.difference(dob).inDays;
-      // int ageInMonths = (ageInDays / 30).floor();
       Duration difference = today.difference(dob);
       int age = (difference.inDays / 365).floor();
       return '$age';

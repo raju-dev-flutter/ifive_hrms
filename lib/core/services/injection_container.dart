@@ -15,6 +15,7 @@ Future<void> init() async {
     ..registerFactory(
         () => PermissionCubit(currentPermission: Permission.unknown))
     ..registerFactory(() => DashboardTabBarCubit())
+    ..registerFactory(() => TaskLeadCubit(taskLeadUseCase: sl()))
     ..registerFactory(() => AppVersionCheckerCubit($AppVersionUseCase: sl()))
     ..registerFactory(() => DashboardCountCubit($DashboardCountUseCase: sl()))
     ..registerFactory(
@@ -67,11 +68,13 @@ Future<void> init() async {
     ..registerFactory(() => TaskReportCubit(taskReportUseCase: sl()))
     ..registerFactory(() => TaskBarCubit())
     ..registerFactory(() => ExpensesCrudBloc(expensesSaveUseCase: sl()))
-    ..registerFactory(() => SfaCrudBloc(generateTicketUseCase: sl()))
+    ..registerFactory(() => SfaCrudBloc(
+        generateTicketUseCase: sl(), uploadDatabaseCameraUseCase: sl()))
     ..registerFactory(() => NewCallDatabaseBloc(getTicketUseCase: sl()))
     ..registerFactory(() => DcrDatabaseBloc(getTicketUseCase: sl()))
     ..registerFactory(() => LeadDatabaseBloc(getTicketUseCase: sl()))
     ..registerFactory(() => PipelineDatabaseBloc(getTicketUseCase: sl()))
+    ..registerFactory(() => CommonDatabaseBloc(getTicketUseCase: sl()))
     ..registerFactory(
         () => StatusBasedExpensesCubit(statusBasedExpensesDataUseCase: sl()))
     ..registerFactory(() => TaskCrudBloc(
@@ -81,6 +84,12 @@ Future<void> init() async {
         testL1TaskTaskUpdateUseCase: sl(),
         testL2TaskTaskUpdateUseCase: sl(),
         supportTaskUseCase: sl()))
+    ..registerFactory(() => ChatContactCubit(chatContactUseCase: sl()))
+    ..registerFactory(() => ChatCrudBloc(saveMessageUseCase: sl()))
+    ..registerFactory(() => MessageContentCubit(messageContentUseCase: sl()))
+    ..registerFactory(() =>
+        ProjectTaskCrudBloc(taskUpdateUseCase: sl(), taskSaveUseCase: sl()))
+    ..registerFactory(() => CommonProjectTaskBloc(fetchTaskUseCase: sl()))
 
     ///
 
@@ -105,6 +114,10 @@ Future<void> init() async {
         industryBasedVerticalDropdownUseCase: sl(),
         verticalBasedSubVerticalDropdownUseCase: sl()))
     ..registerFactory(() => LeadDatabaseUpdateStream(
+        ticketDropdownUseCase: sl(),
+        industryBasedVerticalDropdownUseCase: sl(),
+        verticalBasedSubVerticalDropdownUseCase: sl()))
+    ..registerFactory(() => DatabaseUpdateStream(
         ticketDropdownUseCase: sl(),
         industryBasedVerticalDropdownUseCase: sl(),
         verticalBasedSubVerticalDropdownUseCase: sl()))
@@ -148,12 +161,22 @@ Future<void> init() async {
     ..registerFactory(() => TaskTestL2Stream(teamUseCase: sl()))
     ..registerFactory(() => SupportTaskStream(
         employeeListUseCase: sl(), teamUseCase: sl(), projectUseCase: sl()))
+    ..registerFactory(() => OtherTaskStream(employeeListUseCase: sl()))
     ..registerFactory(() => ExpensesSaveStream(expensesTypeUseCase: sl()))
+    ..registerFactory(() => DatabaseCameraStream())
+    ..registerFactory(
+        () => ProjectTaskApprovalStream(taskDeptLeadUseCase: sl()))
+    ..registerFactory(() => ProjectTaskUpdateStream(taskDeptLeadUseCase: sl()))
+    ..registerFactory(
+        () => ProjectTaskRequestStream(projectTaskDropdownUseCase: sl()))
+    ..registerFactory(() => TourPlanRequestStream())
+    ..registerFactory(() => TourPlanApprovalStream())
 
     /// UseCases
     ..registerLazySingleton(() => Login(sl()))
     ..registerLazySingleton(() => ChangePassword(sl()))
     ..registerLazySingleton(() => DashboardCountUseCase(sl()))
+    ..registerLazySingleton(() => TaskLeadUseCase(sl()))
     ..registerLazySingleton(() => ApprovalLeaveHistoryUseCase(sl()))
     ..registerLazySingleton(() => EmployeeUserListUserCase(sl()))
     ..registerLazySingleton(() => AppVersionUseCase(sl()))
@@ -188,6 +211,15 @@ Future<void> init() async {
     ..registerLazySingleton(() => LeaveCancel(sl()))
     ..registerLazySingleton(() => LeaveHistory(sl()))
     ..registerLazySingleton(() => LeaveUpdate(sl()))
+    ..registerLazySingleton(() => LeaveApprovedUseCase(sl()))
+    ..registerLazySingleton(() => PermissionSubmit(sl()))
+    ..registerLazySingleton(() => PermissionHistory(sl()))
+    ..registerLazySingleton(() => ShiftTimeUseCase(sl()))
+    ..registerLazySingleton(() => ODBalanceUseCase(sl()))
+    ..registerLazySingleton(() => RequestToUseCase(sl()))
+    ..registerLazySingleton(() => PermissionUpdate(sl()))
+    ..registerLazySingleton(() => PermissionApproval(sl()))
+    ..registerLazySingleton(() => PermissionCancel(sl()))
     ..registerLazySingleton(() => ProfileDetail(sl()))
     ..registerLazySingleton(() => ProfileUpload(sl()))
     ..registerLazySingleton(() => ProfileEdit(sl()))
@@ -208,15 +240,6 @@ Future<void> init() async {
     ..registerLazySingleton(() => CountryUseCase(sl()))
     ..registerLazySingleton(() => StateUseCase(sl()))
     ..registerLazySingleton(() => CityUseCase(sl()))
-    ..registerLazySingleton(() => LeaveApprovedUseCase(sl()))
-    ..registerLazySingleton(() => PermissionSubmit(sl()))
-    ..registerLazySingleton(() => PermissionHistory(sl()))
-    ..registerLazySingleton(() => ShiftTimeUseCase(sl()))
-    ..registerLazySingleton(() => ODBalanceUseCase(sl()))
-    ..registerLazySingleton(() => RequestToUseCase(sl()))
-    ..registerLazySingleton(() => PermissionUpdate(sl()))
-    ..registerLazySingleton(() => PermissionApproval(sl()))
-    ..registerLazySingleton(() => PermissionCancel(sl()))
     ..registerLazySingleton(() => PaySlipUseCase(sl()))
     ..registerLazySingleton(() => PaySlipDocumentUseCase(sl()))
     ..registerLazySingleton(() => TodayTaskUseCase(sl()))
@@ -243,6 +266,15 @@ Future<void> init() async {
     ..registerLazySingleton(() => VerticalBasedSubVerticalDropdownUseCase(sl()))
     ..registerLazySingleton(() => IndustryBasedVerticalDropdownUseCase(sl()))
     ..registerLazySingleton(() => GetTicketUseCase(sl()))
+    ..registerLazySingleton(() => ChatContactUseCase(sl()))
+    ..registerLazySingleton(() => SaveMessageUseCase(sl()))
+    ..registerLazySingleton(() => MessageContentUseCase(sl()))
+    ..registerLazySingleton(() => UploadDatabaseCameraUseCase(sl()))
+    ..registerLazySingleton(() => FetchTaskUseCase(sl()))
+    ..registerLazySingleton(() => TaskDeptLeadUseCase(sl()))
+    ..registerLazySingleton(() => TaskUpdateUseCase(sl()))
+    ..registerLazySingleton(() => ProjectTaskDropdownUseCase(sl()))
+    ..registerLazySingleton(() => TaskSaveUseCase(sl()))
 
     /// Repositories
     ..registerLazySingleton<AuthenticationRepository>(
@@ -259,6 +291,8 @@ Future<void> init() async {
         () => MisspunchRepositoryImpl(sl()))
     ..registerLazySingleton<LeaveRepository>(() => LeaveRepositoryImpl(sl()))
     ..registerLazySingleton<TaskRepository>(() => TaskRepositoryImpl(sl()))
+    ..registerLazySingleton<ProjectTaskRepository>(
+        () => ProjectTaskRepositoryImpl(sl()))
     ..registerLazySingleton<PayrollRepository>(
         () => PayrollRepositoryImpl(sl()))
     ..registerLazySingleton<AccountRepository>(
@@ -274,6 +308,10 @@ Future<void> init() async {
     ..registerLazySingleton<ExpensesRepository>(
         () => ExpensesRepositoryImpl(sl()))
     ..registerLazySingleton<SfaRepository>(() => SfaRepositoryImpl(sl()))
+    ..registerLazySingleton<ChatRepository>(() => ChatRepositoryImpl(sl()))
+    ..registerLazySingleton<BackupRepository>(() => BackupRepositoryImpl(sl()))
+    ..registerLazySingleton<TourPlanRepository>(
+        () => TourPlanRepositoryImpl(sl()))
 
     /// DataSource
     ..registerLazySingleton<AuthDataSource>(() => AuthDataSourceImpl(sl()))
@@ -288,6 +326,8 @@ Future<void> init() async {
         () => MisspunchDataSourceImpl(sl()))
     ..registerLazySingleton<LeaveDataSource>(() => LeaveDataSourceImpl(sl()))
     ..registerLazySingleton<TaskDataSource>(() => TaskDataSourceImpl(sl()))
+    ..registerLazySingleton<ProjectTaskDataSource>(
+        () => ProjectTaskDataSourceImpl(sl()))
     ..registerLazySingleton<PayrollDataSource>(
         () => PayrollDataSourceImpl(sl()))
     ..registerLazySingleton<AccountDataSource>(
@@ -303,6 +343,10 @@ Future<void> init() async {
     ..registerLazySingleton<ExpensesDataSource>(
         () => ExpensesDataSourceImpl(sl()))
     ..registerLazySingleton<SfaDataSource>(() => SfaDataSourceImpl(sl()))
+    ..registerLazySingleton<ChatDataSource>(() => ChatDataSourceImpl(sl()))
+    ..registerLazySingleton<BackupDataSource>(() => BackupDataSourceImpl(sl()))
+    ..registerLazySingleton<TourPlanDataSource>(
+        () => TourPlanDataSourceImpl(sl()))
 
     /// External Dependencies
     ..registerLazySingleton(http.Client.new);

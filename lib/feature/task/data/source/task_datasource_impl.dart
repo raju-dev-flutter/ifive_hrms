@@ -310,4 +310,27 @@ class TaskDataSourceImpl implements TaskDataSource {
       throw const APIException(message: "Network Error", statusCode: 505);
     }
   }
+
+  @override
+  Future<ProjectTaskDropdownModel> projectTaskDropdown() async {
+    try {
+      final urlParse = Uri.parse(ApiUrl.projectTaskDropdownEndPoint);
+      final token = SharedPrefs().getToken();
+      final response = await _client.get(
+        urlParse,
+        headers: {'content-type': 'application/json', 'token': token},
+      );
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw APIException(
+            message: "Network Error", statusCode: response.statusCode);
+      }
+      final jsonResponse = jsonDecode(response.body);
+
+      return ProjectTaskDropdownModel.fromJson(jsonResponse);
+    } on APIException {
+      rethrow;
+    } catch (e) {
+      throw const APIException(message: "Network Error", statusCode: 505);
+    }
+  }
 }

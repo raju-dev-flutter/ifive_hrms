@@ -30,20 +30,11 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
 
   void initialCallBack() {
     BlocProvider.of<LeaveHistoryCubit>(context).getLeaveHistory();
-    // BlocProvider.of<LeaveApprovedCubit>(context).getLeaveApproved(
-    //     DateFormat('yyyy-MM-dd').format(selectedFromDate),
-    //     DateFormat('yyyy-MM-dd').format(selectedToDate));
   }
 
   Future<void> refreshHistoryCallBack() async {
     BlocProvider.of<LeaveHistoryCubit>(context).getLeaveHistory();
   }
-
-  // Future<void> refreshApprovedCallBack() async {
-  //   BlocProvider.of<LeaveApprovedCubit>(context).getLeaveApproved(
-  //       DateFormat('yyyy-MM-dd').format(selectedFromDate),
-  //       DateFormat('yyyy-MM-dd').format(selectedToDate));
-  // }
 
   Color getColor(String label) {
     switch (label) {
@@ -75,54 +66,6 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
       body: _buildBodyUI(),
     );
   }
-  //
-  // @override
-  // Widget build(BuildContext context) {
-  //   return
-  //       // DefaultTabController(
-  //       // length: 2,
-  //       // child:
-  //       Scaffold(
-  //     key: _scaffoldKey,
-  //     backgroundColor: appColor.gray100,
-  //     appBar: PreferredSize(
-  //       preferredSize: Size(context.deviceSize.width, 90.h),
-  //       child: CustomAppBar(
-  //         onPressed: () => Navigator.pop(context),
-  //         title: "Leave",
-  //         actions: [
-  //           IconButton(
-  //             onPressed: () =>
-  //                 Navigator.pushNamed(context, AppRouterPath.leaveRequest)
-  //                     .then((value) => initialCallBack()),
-  //             icon: Icon(Icons.add, color: appColor.gray900),
-  //           ),
-  //         ],
-  //         // bottom: TabBar(
-  //         //   indicatorPadding: const EdgeInsets.all(0).w,
-  //         //   labelPadding: const EdgeInsets.all(0).w,
-  //         //   unselectedLabelColor: appColor.gray700,
-  //         //   unselectedLabelStyle: context.textTheme.labelLarge
-  //         //       ?.copyWith(fontWeight: FontWeight.bold),
-  //         //   labelStyle: context.textTheme.labelLarge
-  //         //       ?.copyWith(fontWeight: FontWeight.bold),
-  //         //   isScrollable: false,
-  //         //   onTap: (val) {
-  //         //     if (val == 0) refreshApprovedCallBack();
-  //         //     if (val == 1) refreshHistoryCallBack();
-  //         //   },
-  //         //   tabs: const [Tab(text: 'APPROVAL'), Tab(text: 'HISTORY')],
-  //         // ),
-  //       ),
-  //     ),
-  //     body: _buildBodyUI(),
-  //     // ),
-  //   );
-  // }
-
-  // Widget _buildBodyUI() {
-  //   return _leaveHistoryUI();
-  // }
 
   Widget _buildBodyUI() {
     return BlocConsumer<LeaveHistoryCubit, LeaveHistoryState>(
@@ -134,8 +77,6 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
           }
           if (state.message == "Network Error") {
             AppAlerts.displaySnackBar(context, state.message, false);
-            // AppAlerts.displayErrorAlert(
-            //     context, "Leave History", state.message);
           }
         }
       },
@@ -173,68 +114,6 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
       },
     );
   }
-
-  // Widget _leaveApprovedUI() {
-  //   return Column(
-  //     children: [
-  //       filterCardUI(),
-  //       BlocConsumer<LeaveApprovedCubit, LeaveApprovedState>(
-  //         listener: (context, state) {
-  //           if (state is LeaveApprovedFailed) {
-  //             if (state.message == "Invalid Token") {
-  //               BlocProvider.of<AuthenticationBloc>(context, listen: false)
-  //                   .add(const LoggedOut());
-  //             }
-  //             if (state.message == "Network Error") {
-  //               AppAlerts.displaySnackBar(context, state.message, false);
-  //               // AppAlerts.displayErrorAlert(
-  //               //     context, "Leave Approval", state.message);
-  //             }
-  //           }
-  //         },
-  //         builder: (context, state) {
-  //           if (state is LeaveApprovedLoading) {
-  //             return Expanded(
-  //               child: ListView.builder(
-  //                 padding:
-  //                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12)
-  //                         .w,
-  //                 itemCount: 5,
-  //                 itemBuilder: (_, i) {
-  //                   return const LeaveShimmerLoading();
-  //                 },
-  //               ),
-  //             );
-  //           }
-  //           if (state is LeaveApprovedLoaded) {
-  //             if (state.approved.leavelist!.isEmpty) {
-  //               return Expanded(child: Lottie.asset(AppLottie.empty));
-  //             }
-  //             return Expanded(
-  //               child: RefreshIndicator(
-  //                 onRefresh: refreshApprovedCallBack,
-  //                 child: ListView.builder(
-  //                   padding:
-  //                       const EdgeInsets.symmetric(horizontal: 16, vertical: 12)
-  //                           .w,
-  //                   itemCount: state.approved.leavelist?.length,
-  //                   itemBuilder: (_, i) {
-  //                     return leaveApprovedCardUI(
-  //                         state.approved.leavelist![i],
-  //                         getColor(
-  //                             state.approved.leavelist![i].leaveStatus ?? ""));
-  //                   },
-  //                 ),
-  //               ),
-  //             );
-  //           }
-  //           if (state is LeaveHistoryFailed) {}
-  //           return Container();
-  //         },
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Widget leaveHistoryCardUI(Leavehistory leave, Color color) {
     return Padding(
@@ -342,116 +221,6 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
     );
   }
 
-  // Widget filterCardUI() {
-  //   return Container(
-  //     padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 2).w,
-  //     child: Row(
-  //       children: [
-  //         Expanded(
-  //           flex: 2,
-  //           child: InkWell(
-  //             onTap: () async {
-  //               DateTime date = await PickDateTime.date(context,
-  //                   selectedDate: selectedFromDate, startDate: null);
-  //               setState(() => selectedFromDate = date);
-  //               refreshApprovedCallBack();
-  //             },
-  //             borderRadius: Dimensions.kBorderRadiusAllSmallest,
-  //             child: Container(
-  //               height: 42,
-  //               alignment: Alignment.center,
-  //               padding: const EdgeInsets.symmetric(horizontal: 12),
-  //               decoration: boxDecoration(),
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   Text(
-  //                     DateFormat('dd-MM-yyyy').format(selectedFromDate),
-  //                     style: context.textTheme.labelMedium?.copyWith(
-  //                       fontWeight: FontWeight.w400,
-  //                       color: appColor.gray900,
-  //                     ),
-  //                   ),
-  //                   SvgPicture.asset(
-  //                     AppSvg.calendar,
-  //                     width: 14.w,
-  //                     colorFilter: ColorFilter.mode(
-  //                       appColor.gray700,
-  //                       BlendMode.srcIn,
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //         SizedBox(width: 4.w),
-  //         Expanded(
-  //           flex: 2,
-  //           child: InkWell(
-  //             onTap: () async {
-  //               DateTime date = await PickDateTime.date(context,
-  //                   selectedDate: selectedToDate, startDate: null);
-  //               setState(() => selectedToDate = date);
-  //               refreshApprovedCallBack();
-  //             },
-  //             borderRadius: Dimensions.kBorderRadiusAllSmallest,
-  //             child: Container(
-  //               height: 42,
-  //               alignment: Alignment.center,
-  //               padding: const EdgeInsets.symmetric(horizontal: 12),
-  //               decoration: boxDecoration(),
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   Text(
-  //                     DateFormat('dd-MM-yyyy').format(selectedToDate),
-  //                     style: context.textTheme.labelMedium?.copyWith(
-  //                       fontWeight: FontWeight.w400,
-  //                       color: appColor.gray900,
-  //                       // fontSize: 8,
-  //                     ),
-  //                   ),
-  //                   SvgPicture.asset(
-  //                     AppSvg.calendar,
-  //                     width: 14.w,
-  //                     colorFilter: ColorFilter.mode(
-  //                       appColor.gray700,
-  //                       BlendMode.srcIn,
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //         SizedBox(width: 4.w),
-  //         InkWell(
-  //           onTap: refreshApprovedCallBack,
-  //           borderRadius: Dimensions.kBorderRadiusAllSmallest,
-  //           child: Container(
-  //             width: 38,
-  //             height: 38,
-  //             alignment: Alignment.center,
-  //             decoration: BoxDecoration(
-  //               color: appColor.brand900,
-  //               borderRadius: Dimensions.kBorderRadiusAllSmallest,
-  //             ),
-  //             child: SvgPicture.asset(
-  //               AppSvg.search,
-  //               width: 14,
-  //               colorFilter: ColorFilter.mode(
-  //                 appColor.white,
-  //                 BlendMode.srcIn,
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget leaveApprovedCardUI(Leavelist leave, Color color) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4).w,
@@ -459,6 +228,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
         onTap: () => Navigator.pushNamed(context, AppRouterPath.leaveUpdate,
                 arguments: LeaveUpdateScreen(leave: leave))
             .then((value) => initialCallBack()),
+        borderRadius: BorderRadius.circular(8).w,
         child: Container(
           decoration: BoxDecoration(
             color: appColor.gray50,

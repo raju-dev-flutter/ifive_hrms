@@ -53,20 +53,20 @@ class _GenerateTicketScreenState extends State<GenerateTicketScreen>
                   }),
             ],
           ),
-          bottom: PreferredSize(
-            preferredSize: Size(context.deviceSize.width, 5.h),
-            child: StreamBuilder<int>(
-                stream: generateTicket.pagePosition,
-                builder: (context, snapshot) {
-                  final count = snapshot.hasData ? snapshot.data ?? 0 : 0;
-                  return LinearProgressIndicator(
-                    minHeight: 5.h,
-                    value: count / 5,
-                    backgroundColor: appColor.blue100,
-                    color: appColor.blue600,
-                  );
-                }),
-          ),
+          // bottom: PreferredSize(
+          //   preferredSize: Size(context.deviceSize.width, 5.h),
+          //   child: StreamBuilder<int>(
+          //       stream: generateTicket.pagePosition,
+          //       builder: (context, snapshot) {
+          //         final count = snapshot.hasData ? snapshot.data ?? 0 : 0;
+          //         return LinearProgressIndicator(
+          //           minHeight: 5.h,
+          //           value: count / 5,
+          //           backgroundColor: appColor.blue100,
+          //           color: appColor.blue600,
+          //         );
+          //       }),
+          // ),
         ),
       ),
       body: BlocListener<SfaCrudBloc, SfaCrudState>(
@@ -89,24 +89,43 @@ class _GenerateTicketScreenState extends State<GenerateTicketScreen>
                 stream: generateTicket.pagePosition,
                 builder: (context, snapshot) {
                   final position = snapshot.hasData ? snapshot.data ?? 0 : 0;
-                  return Column(children: _buildBody(position));
+                  return Column(
+                    children: [
+                      Column(children: _buildBody(position)),
+                      Dimensions.kVerticalSpaceMedium,
+                      StreamBuilder<int>(
+                          stream: generateTicket.pagePosition,
+                          builder: (_, snapshot) {
+                            final count =
+                                snapshot.hasData ? snapshot.data ?? 0 : 0;
+                            return TicketBottomActionButton(
+                              position: count,
+                              lastPosition: 6,
+                              onPressedBack: onBack,
+                              onPressedNext: onNext,
+                              onPressedSubmit: onSubmit,
+                            );
+                          }),
+                      Dimensions.kVerticalSpaceLargest,
+                    ],
+                  );
                 },
               ),
             ),
           ),
         ),
       ),
-      bottomNavigationBar: StreamBuilder<int>(
-          stream: generateTicket.pagePosition,
-          builder: (_, snapshot) {
-            final count = snapshot.hasData ? snapshot.data ?? 0 : 0;
-            return TicketBottomActionButton(
-              position: count,
-              onPressedBack: onBack,
-              onPressedNext: onNext,
-              onPressedSubmit: onSubmit,
-            );
-          }),
+      // bottomNavigationBar: StreamBuilder<int>(
+      //     stream: generateTicket.pagePosition,
+      //     builder: (_, snapshot) {
+      //       final count = snapshot.hasData ? snapshot.data ?? 0 : 0;
+      //       return TicketBottomActionButton(
+      //         position: count,
+      //         onPressedBack: onBack,
+      //         onPressedNext: onNext,
+      //         onPressedSubmit: onSubmit,
+      //       );
+      //     }),
     );
   }
 
@@ -362,6 +381,47 @@ class _GenerateTicketScreenState extends State<GenerateTicketScreen>
     ];
   }
 
+  List<Widget> _buildFieldActivityDetailUI() {
+    return [
+      CustomTextFormField(
+        label: "Name",
+        controller: generateTicket.fNameController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Mobile Number",
+        controller: generateTicket.fNumberController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Design & Dept",
+        controller: generateTicket.fDesignDeptController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "E-Mail Id",
+        controller: generateTicket.fEmailController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Whatsapp Number",
+        controller: generateTicket.fWhatsappNumberController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Remarks",
+        maxLines: 4,
+        controller: generateTicket.fRemarksController,
+        required: false,
+      ),
+    ];
+  }
+
   List<Widget> _buildOtherContactPersonDetailUI() {
     return [
       CustomTextFormField(
@@ -433,6 +493,8 @@ class _GenerateTicketScreenState extends State<GenerateTicketScreen>
       case 4:
         return _buildDecisionMakerDetailUI();
       case 5:
+        return _buildFieldActivityDetailUI();
+      case 6:
         return _buildOtherContactPersonDetailUI();
     }
     return <Widget>[];

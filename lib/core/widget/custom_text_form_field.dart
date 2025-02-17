@@ -7,10 +7,11 @@ import '../../../../../core/core.dart';
 import '../../config/config.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  final String label;
+  final String? label;
   final String? hint;
   final TextEditingController controller;
   final bool required;
+  final Color? borderColor;
   final TextInputType? keyboardType;
   final bool? readOnly;
   final List<TextInputFormatter>? inputFormatters;
@@ -20,7 +21,8 @@ class CustomTextFormField extends StatelessWidget {
 
   const CustomTextFormField(
       {super.key,
-      required this.label,
+      this.label,
+      this.borderColor,
       required this.controller,
       required this.required,
       this.inputFormatters,
@@ -36,96 +38,7 @@ class CustomTextFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RichText(
-          text: TextSpan(
-            text: "$label ",
-            style: context.textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.w400, color: appColor.gray500),
-            children: [
-              TextSpan(
-                text: required == true ? "*" : "",
-                style: context.textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w400, color: appColor.error600),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 4.h),
-        TextFormField(
-          controller: controller,
-          keyboardType: keyboardType ?? TextInputType.text,
-          enableSuggestions: true,
-          obscureText: false,
-          readOnly: readOnly ?? false,
-          inputFormatters: inputFormatters,
-          enableInteractiveSelection: true,
-          style: context.textTheme.bodySmall,
-          validator: validator,
-          onChanged: onChanged,
-          maxLines: maxLines,
-          // textAlign: TextAlign.start,
-          // textAlignVertical: TextAlignVertical.top,
-          decoration: inputDecoration(context, hint ?? ''),
-        ),
-      ],
-    );
-  }
-
-  InputDecoration inputDecoration(BuildContext context, String label) {
-    return InputDecoration(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(6).w,
-        borderSide: BorderSide(color: appColor.gray400),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(6).w,
-        borderSide: BorderSide(color: appColor.gray400),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(6).w,
-        borderSide: BorderSide(color: appColor.blue500),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(6).w,
-        borderSide: BorderSide(color: appColor.error600),
-      ),
-      labelText: label.toUpperCase(),
-      labelStyle:
-          context.textTheme.labelMedium?.copyWith(color: appColor.gray400),
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 10, vertical: 12).w,
-      errorStyle:
-          context.textTheme.labelMedium?.copyWith(color: appColor.error600),
-    );
-  }
-}
-
-class CustomDateTimeTextFormField extends StatelessWidget {
-  final String label;
-  final String? hint;
-  final String? icon;
-  final TextEditingController controller;
-  final bool required;
-  final String? Function(String?)? validator;
-  final Function() onPressed;
-
-  const CustomDateTimeTextFormField(
-      {super.key,
-      required this.label,
-      required this.controller,
-      required this.required,
-      this.validator,
-      required this.onPressed,
-      this.hint,
-      this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        if (label != null) ...[
           RichText(
             text: TextSpan(
               text: "$label ",
@@ -141,6 +54,102 @@ class CustomDateTimeTextFormField extends StatelessWidget {
             ),
           ),
           SizedBox(height: 4.h),
+        ],
+        TextFormField(
+          controller: controller,
+          keyboardType: keyboardType ?? TextInputType.text,
+          enableSuggestions: true,
+          obscureText: false,
+          readOnly: readOnly ?? false,
+          inputFormatters: inputFormatters,
+          enableInteractiveSelection: true,
+          style: context.textTheme.bodySmall,
+          validator: validator,
+          onChanged: onChanged,
+          maxLines: maxLines,
+          // textAlign: TextAlign.start,
+          // textAlignVertical: TextAlignVertical.top,
+          decoration: inputDecoration(context, hint ?? '', borderColor),
+        ),
+      ],
+    );
+  }
+
+  InputDecoration inputDecoration(
+      BuildContext context, String label, Color? borderColor) {
+    return InputDecoration(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(6).w,
+        borderSide: BorderSide(color: borderColor ?? appColor.gray400),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(6).w,
+        borderSide: BorderSide(color: borderColor ?? appColor.gray400),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(6).w,
+        borderSide: BorderSide(color: borderColor ?? appColor.blue500),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(6).w,
+        borderSide: BorderSide(color: borderColor ?? appColor.error600),
+      ),
+      labelText: label.toUpperCase(),
+      labelStyle:
+          context.textTheme.labelMedium?.copyWith(color: appColor.gray400),
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 10, vertical: 12).w,
+      errorStyle: context.textTheme.labelMedium
+          ?.copyWith(color: borderColor ?? appColor.error600),
+    );
+  }
+}
+
+class CustomDateTimeTextFormField extends StatelessWidget {
+  final String label;
+  final String? hint;
+  final String? icon;
+  final TextEditingController controller;
+  final bool required;
+  final TextStyle? style;
+  final String? Function(String?)? validator;
+  final Function() onPressed;
+
+  const CustomDateTimeTextFormField(
+      {super.key,
+      required this.label,
+      required this.controller,
+      required this.required,
+      this.validator,
+      required this.onPressed,
+      this.hint,
+      this.icon,
+      this.style});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (label.isNotEmpty) ...[
+            RichText(
+              text: TextSpan(
+                text: "$label ",
+                style: context.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w400, color: appColor.gray500),
+                children: [
+                  TextSpan(
+                    text: required == true ? "*" : "",
+                    style: context.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w400, color: appColor.error600),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 4.h),
+          ],
           InkWell(
             onTap: onPressed,
             borderRadius: BorderRadius.circular(6).w,
@@ -148,7 +157,7 @@ class CustomDateTimeTextFormField extends StatelessWidget {
               child: TextFormField(
                 controller: controller,
                 readOnly: true,
-                style: context.textTheme.bodySmall,
+                style: style ?? context.textTheme.bodySmall,
                 validator: validator,
                 decoration: InputDecoration(
                   suffixIcon: InkWell(

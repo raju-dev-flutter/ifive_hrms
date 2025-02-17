@@ -12,12 +12,15 @@ class OtherServiceDataSourceImpl implements OtherServiceDataSource {
   final http.Client _client;
 
   @override
-  Future<RenewalTrackerModel> renewalTracker() async {
+  Future<RenewalTrackerModel> renewalTracker(String status) async {
     try {
       final urlParse = Uri.parse(ApiUrl.renewalTrackingEndPoints);
       final token = SharedPrefs().getToken();
-      final response = await _client.get(urlParse,
-          headers: {'content-type': 'application/json', 'token': token});
+      final response = await _client.get(urlParse, headers: {
+        'content-type': 'application/json',
+        'token': token,
+        'status': status
+      });
       Logger().d(response.body);
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw APIException(

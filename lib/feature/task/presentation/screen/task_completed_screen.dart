@@ -88,11 +88,13 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4).w,
       child: InkWell(
-        onTap: () => Navigator.pushNamed(
-          context,
-          AppRouterPath.taskCompletedDetailScreen,
-          arguments: TaskCompletedDetailScreen(task: task),
-        ).then((value) => initialCallBack()),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            AppRouterPath.taskCompletedDetailScreen,
+            arguments: TaskCompletedDetailScreen(task: task),
+          ).then((value) => initialCallBack());
+        },
         borderRadius: Dimensions.kBorderRadiusAllSmaller,
         child: Container(
           padding: Dimensions.kPaddingAllMedium,
@@ -108,14 +110,10 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
                   badge(
                       color: appColor.warning500,
                       label: (task.priority ?? "").toUpperCase()),
-
                   Dimensions.kHorizontalSpaceSmaller,
                   badge(
                       color: appColor.brand600,
                       label: (task.projectName ?? "").toUpperCase()),
-                  // badge(
-                  //     color: appColor.blue600,
-                  //     label: (task.status ?? "").toUpperCase()),
                   Dimensions.kSpacer,
                   if (task.taskType != null && task.taskType == "Reword")
                     badge(
@@ -142,12 +140,10 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
                           style: context.textTheme.labelLarge
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
-                        if (task.description != null &&
-                            task.description != '') ...[
+                        if (task.menu != null && task.menu != '') ...[
                           Dimensions.kVerticalSpaceSmallest,
                           Text(
-                            task.description ?? '',
-                            maxLines: 2,
+                            task.menu ?? '',
                             overflow: TextOverflow.ellipsis,
                             style: context.textTheme.labelMedium
                                 ?.copyWith(color: appColor.gray500),
@@ -184,31 +180,6 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
                   ),
                 ],
               ),
-              // Dimensions.kVerticalSpaceSmaller,
-              // RichText(
-              //   text: TextSpan(
-              //     text: "${task.percentage ?? 0}% ",
-              //     style: context.textTheme.labelLarge?.copyWith(
-              //         fontWeight: FontWeight.bold, color: appColor.gray800),
-              //     children: [
-              //       TextSpan(
-              //         text: "Completed",
-              //         style: context.textTheme.labelLarge
-              //             ?.copyWith(color: appColor.gray600),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // Dimensions.kVerticalSpaceSmallest,
-              // LinearProgressIndicator(
-              //   semanticsLabel: "Task Completed Status",
-              //   semanticsValue: "${task.percentage ?? 0} %",
-              //   value: (task.percentage ?? 0).toDouble() / 100,
-              //   backgroundColor: appColor.gray200,
-              //   valueColor: AlwaysStoppedAnimation<Color>(appColor.success600),
-              //   minHeight: 10.h,
-              //   borderRadius: Dimensions.kBorderRadiusAllSmall,
-              // ),
             ],
           ),
         ),
@@ -219,7 +190,7 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
   InputDecoration inputDecoration(
       {required String label, required Function() onPressed}) {
     return InputDecoration(
-      suffixIcon: InkWell(
+      suffixIcon: GestureDetector(
         onTap: onPressed,
         child: Icon(Icons.search, color: appColor.gray400),
       ),
@@ -289,7 +260,7 @@ class _TaskCompletedDetailScreenState extends State<TaskCompletedDetailScreen> {
         preferredSize: Size(context.deviceSize.width, 52.h),
         child: CustomAppBar(
           onPressed: () => Navigator.pop(context),
-          title: "Task Completed Details",
+          title: "Completed Task Details",
         ),
       ),
       body: SingleChildScrollView(child: _buildBodyUI()),
@@ -325,16 +296,23 @@ class _TaskCompletedDetailScreenState extends State<TaskCompletedDetailScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                badge(
+                                    color: appColor.brand600,
+                                    label:
+                                        (task.projectName ?? "").toUpperCase()),
+                                Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.projectName ?? ' ',
+                                  task.task ?? ' ',
                                   style: context.textTheme.bodySmall
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 Dimensions.kVerticalSpaceSmallest,
-                                Text(
-                                  task.task ?? ' ',
-                                  style: context.textTheme.labelLarge,
-                                ),
+                                if (isEmpty(task.menu))
+                                  Text(
+                                    "---- ${task.menu ?? ' '}",
+                                    style: context.textTheme.labelLarge
+                                        ?.copyWith(color: appColor.brand600),
+                                  ),
                               ],
                             ),
                           ),
@@ -343,8 +321,8 @@ class _TaskCompletedDetailScreenState extends State<TaskCompletedDetailScreen> {
                     ),
                   ],
                 ),
+                Dimensions.kVerticalSpaceSmall,
                 if (isEmpty(task.description)) ...[
-                  Dimensions.kVerticalSpaceSmall,
                   Text(
                     "Task Description:",
                     overflow: TextOverflow.ellipsis,
@@ -494,7 +472,6 @@ class _TaskCompletedDetailScreenState extends State<TaskCompletedDetailScreen> {
                         final time = task.taskTimeHistory![i];
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 0).w,
-                          // child: timeHistory(task.taskTimeHistory![i]),
                           child: Column(
                             children: [
                               Row(

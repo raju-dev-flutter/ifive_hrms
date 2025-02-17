@@ -93,24 +93,43 @@ class _PipelineDatabaseUpdateScreenState
                 stream: pipelineDatabase.pagePosition,
                 builder: (context, snapshot) {
                   final position = snapshot.hasData ? snapshot.data ?? 0 : 0;
-                  return Column(children: _buildBody(position));
+                  return Column(
+                    children: [
+                      Column(children: _buildBody(position)),
+                      Dimensions.kVerticalSpaceMedium,
+                      StreamBuilder<int>(
+                          stream: pipelineDatabase.pagePosition,
+                          builder: (_, snapshot) {
+                            final count =
+                                snapshot.hasData ? snapshot.data ?? 0 : 0;
+                            return TicketBottomActionButton(
+                              position: count,
+                              lastPosition: 7,
+                              onPressedBack: onBack,
+                              onPressedNext: onNext,
+                              onPressedSubmit: onSubmit,
+                            );
+                          }),
+                      Dimensions.kVerticalSpaceLargest,
+                    ],
+                  );
                 },
               ),
             ),
           ),
         ),
       ),
-      bottomNavigationBar: StreamBuilder<int>(
-          stream: pipelineDatabase.pagePosition,
-          builder: (_, snapshot) {
-            final count = snapshot.hasData ? snapshot.data ?? 0 : 0;
-            return TicketBottomActionButton(
-              position: count,
-              onPressedBack: onBack,
-              onPressedNext: onNext,
-              onPressedSubmit: onSubmit,
-            );
-          }),
+      // bottomNavigationBar: StreamBuilder<int>(
+      //     stream: pipelineDatabase.pagePosition,
+      //     builder: (_, snapshot) {
+      //       final count = snapshot.hasData ? snapshot.data ?? 0 : 0;
+      //       return TicketBottomActionButton(
+      //         position: count,
+      //         onPressedBack: onBack,
+      //         onPressedNext: onNext,
+      //         onPressedSubmit: onSubmit,
+      //       );
+      //     }),
     );
   }
 
@@ -539,6 +558,47 @@ class _PipelineDatabaseUpdateScreenState
     ];
   }
 
+  List<Widget> _buildFieldActivityDetailUI() {
+    return [
+      CustomTextFormField(
+        label: "Name",
+        controller: pipelineDatabase.fNameController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Mobile Number",
+        controller: pipelineDatabase.fNumberController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Design & Dept",
+        controller: pipelineDatabase.fDesignDeptController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "E-Mail Id",
+        controller: pipelineDatabase.fEmailController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Whatsapp Number",
+        controller: pipelineDatabase.fWhatsappNumberController,
+        required: false,
+      ),
+      Dimensions.kVerticalSpaceSmaller,
+      CustomTextFormField(
+        label: "Remarks",
+        maxLines: 4,
+        controller: pipelineDatabase.fRemarksController,
+        required: false,
+      ),
+    ];
+  }
+
   List<Widget> _buildOtherContactPersonDetailUI() {
     return [
       CustomTextFormField(
@@ -612,6 +672,8 @@ class _PipelineDatabaseUpdateScreenState
       case 5:
         return _buildDecisionMakerDetailUI();
       case 6:
+        return _buildFieldActivityDetailUI();
+      case 7:
         return _buildOtherContactPersonDetailUI();
     }
     return <Widget>[];

@@ -80,12 +80,14 @@ class _NewCallDatabaseScreenState extends State<NewCallDatabaseScreen> {
                         return const Center(child: CircularProgressIndicator());
                       }
                       return DatabaseCardWidget(
-                        onPressed: () => Navigator.pushNamed(
-                          context,
-                          AppRouterPath.newCallDatabaseUpdateScreen,
-                          arguments: NewCallDatabaseUpdateScreen(
-                              database: state.database[i]),
-                        ).then((value) => refreshCallBack()),
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRouterPath.newCallDatabaseUpdateScreen,
+                            arguments: NewCallDatabaseUpdateScreen(
+                                database: state.database[i]),
+                          ).then((value) => refreshCallBack());
+                        },
                         database: state.database[i],
                       );
                     },

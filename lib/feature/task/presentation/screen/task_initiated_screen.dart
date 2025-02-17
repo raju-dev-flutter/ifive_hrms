@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../config/config.dart';
 import '../../../../core/core.dart';
@@ -110,14 +111,15 @@ class _TaskInitiatedScreenState extends State<TaskInitiatedScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4).w,
       child: InkWell(
-        onTap: () => Navigator.pushNamed(
-          context,
-          AppRouterPath.taskInitiatedUpdateScreen,
-          arguments: TaskInitiatedUpdateScreen(task: task),
-        ).then((value) => initialCallBack()),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            AppRouterPath.taskInitiatedUpdateScreen,
+            arguments: TaskInitiatedUpdateScreen(task: task),
+          ).then((value) => initialCallBack());
+        },
         borderRadius: Dimensions.kBorderRadiusAllSmaller,
         child: Container(
-          // padding: Dimensions.kPaddingAllMedium,
           decoration: BoxDecoration(
             color: appColor.white,
             borderRadius: Dimensions.kBorderRadiusAllSmaller,
@@ -134,14 +136,10 @@ class _TaskInitiatedScreenState extends State<TaskInitiatedScreen> {
                         badge(
                             color: appColor.warning500,
                             label: (task.priority ?? "").toUpperCase()),
-
                         Dimensions.kHorizontalSpaceSmaller,
                         badge(
                             color: appColor.brand600,
                             label: (task.projectName ?? "").toUpperCase()),
-                        // badge(
-                        //     color: appColor.blue600,
-                        //     label: (task.status ?? "").toUpperCase()),
                         Dimensions.kSpacer,
                         if (task.taskType != null && task.taskType == "Reword")
                           badge(
@@ -168,12 +166,10 @@ class _TaskInitiatedScreenState extends State<TaskInitiatedScreen> {
                                 style: context.textTheme.labelLarge
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              if (task.description != null &&
-                                  task.description != '') ...[
+                              if (task.menu != null && task.menu != '') ...[
                                 Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.description ?? '',
-                                  maxLines: 2,
+                                  task.menu ?? '',
                                   overflow: TextOverflow.ellipsis,
                                   style: context.textTheme.labelMedium
                                       ?.copyWith(color: appColor.gray500),
@@ -230,7 +226,7 @@ class _TaskInitiatedScreenState extends State<TaskInitiatedScreen> {
                       builder: (context, state) {
                         if (state is TaskCrudLoading) {
                           return ActionButton(
-                            onPressed: () {},
+                            onPressed: () => Logger().i("Assign"),
                             width: 120,
                             height: 40,
                             color: appColor.white,
@@ -418,7 +414,7 @@ class _TaskInitiatedUpdateScreenState extends State<TaskInitiatedUpdateScreen> {
         preferredSize: Size(context.deviceSize.width, 52.h),
         child: CustomAppBar(
           onPressed: () => Navigator.pop(context),
-          title: "Initiated Task Update",
+          title: "Initiated Task Details",
         ),
       ),
       body: BlocListener<TaskCrudBloc, TaskCrudState>(
@@ -466,16 +462,23 @@ class _TaskInitiatedUpdateScreenState extends State<TaskInitiatedUpdateScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                badge(
+                                    color: appColor.brand600,
+                                    label:
+                                        (task.projectName ?? "").toUpperCase()),
+                                Dimensions.kVerticalSpaceSmallest,
                                 Text(
-                                  task.projectName ?? ' ',
+                                  task.task ?? ' ',
                                   style: context.textTheme.bodySmall
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 Dimensions.kVerticalSpaceSmallest,
-                                Text(
-                                  task.task ?? ' ',
-                                  style: context.textTheme.labelLarge,
-                                ),
+                                if (isEmpty(task.menu))
+                                  Text(
+                                    "---- ${task.menu ?? ' '}",
+                                    style: context.textTheme.labelLarge
+                                        ?.copyWith(color: appColor.brand600),
+                                  ),
                               ],
                             ),
                           ),
@@ -484,8 +487,8 @@ class _TaskInitiatedUpdateScreenState extends State<TaskInitiatedUpdateScreen> {
                     ),
                   ],
                 ),
+                Dimensions.kVerticalSpaceSmall,
                 if (isEmpty(task.description)) ...[
-                  Dimensions.kVerticalSpaceSmall,
                   Text(
                     "Task Description:",
                     overflow: TextOverflow.ellipsis,
@@ -548,40 +551,6 @@ class _TaskInitiatedUpdateScreenState extends State<TaskInitiatedUpdateScreen> {
             ),
           ),
         ),
-        // if (task.taskTimeHistory!.isNotEmpty)
-        //   Padding(
-        //     padding: const EdgeInsets.fromLTRB(16, 8, 16, 8).w,
-        //     child: Container(
-        //       padding: Dimensions.kPaddingAllMedium,
-        //       width: context.deviceSize.width,
-        //       decoration: boxDecoration(),
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Text(
-        //             "Task Time History",
-        //             overflow: TextOverflow.ellipsis,
-        //             maxLines: 2,
-        //             style: context.textTheme.labelLarge,
-        //           ),
-        //           Dimensions.kVerticalSpaceSmaller,
-        //           Wrap(
-        //             crossAxisAlignment: WrapCrossAlignment.start,
-        //             runAlignment: WrapAlignment.start,
-        //             spacing: 2,
-        //             runSpacing: 2,
-        //             children: [
-        //               for (var i = 0; i < tLength(task.taskTimeHistory!); i++)
-        //                 badge(
-        //                   color: appColor.blue600,
-        //                   label: getTimeHistory(task.taskTimeHistory![i]),
-        //                 ),
-        //             ],
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
         if (isEmpty(task.taskGivenByName) ||
             isEmpty(task.assignToName) ||
             isEmpty(task.supportName) ||

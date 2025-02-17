@@ -25,4 +25,6 @@ abstract interface class TaskRepository {
   ResultFuture<DevTeamModel> teamList();
 
   ResultFuture<ProjectModel> projectList();
+
+  ResultFuture<ProjectTaskDropdownModel> projectTaskDropdown();
 }

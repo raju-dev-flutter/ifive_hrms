@@ -30,9 +30,8 @@ class MisspunchDataSourceImpl implements MisspunchDataSource {
         throw APIException(
             message: jsonResponse["message"], statusCode: response.statusCode);
       }
-      final MisspunchListModel misspunchList =
-          MisspunchListModel.fromJson(jsonResponse);
-      return misspunchList;
+
+      return MisspunchListModel.fromJson(jsonResponse);
     } on APIException {
       rethrow;
     } catch (e) {
@@ -49,7 +48,6 @@ class MisspunchDataSourceImpl implements MisspunchDataSource {
           body: jsonEncode(body),
           headers: {'content-type': 'application/json', 'token': token});
 
-      Logger().i(response.body.toString());
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw APIException(
             message: "Network Error", statusCode: response.statusCode);
@@ -85,18 +83,19 @@ class MisspunchDataSourceImpl implements MisspunchDataSource {
         throw APIException(
             message: "Network Error", statusCode: response.statusCode);
       }
+
       final jsonResponse = jsonDecode(response.body);
 
       if (jsonResponse["message"] == "Invalid Token") {
         throw APIException(
             message: jsonResponse["message"], statusCode: response.statusCode);
       }
-      final MisspunchForwardListModel misspunchForwardList =
-          MisspunchForwardListModel.fromJson(jsonResponse);
-      return misspunchForwardList;
+
+      return MisspunchForwardListModel.fromJson(jsonResponse);
     } on APIException {
       rethrow;
     } catch (e) {
+      Logger().e(e);
       throw const APIException(message: "Network Error", statusCode: 505);
     }
   }
@@ -107,7 +106,6 @@ class MisspunchDataSourceImpl implements MisspunchDataSource {
     try {
       final body = {'from_date': fromDate, 'to_date': toDate};
 
-      Logger().t("Body: $body");
       final token = SharedPrefs().getToken();
       final response = await _client.post(
         Uri.parse(ApiUrl.misspunchHistoryEndPoint),
@@ -115,29 +113,27 @@ class MisspunchDataSourceImpl implements MisspunchDataSource {
         body: jsonEncode(body),
       );
 
+      final jsonResponse = jsonDecode(response.body);
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw APIException(
-            message: "Network Error", statusCode: response.statusCode);
+            message: jsonResponse["message"], statusCode: response.statusCode);
       }
-      final jsonResponse = jsonDecode(response.body);
       if (jsonResponse["message"] == "Invalid Token") {
         throw APIException(
             message: jsonResponse["message"], statusCode: response.statusCode);
       }
-      final MisspunchHistoryModel misspunchHistory =
-          MisspunchHistoryModel.fromJson(jsonResponse);
-      return misspunchHistory;
+
+      return MisspunchHistoryModel.fromJson(jsonResponse);
     } on APIException {
       rethrow;
     } catch (e) {
-      throw const APIException(message: "Network Error", statusCode: 505);
+      throw const APIException(message: "Server Error", statusCode: 505);
     }
   }
 
   @override
   Future<void> misspunchCancel(DataMap body) async {
     try {
-      Logger().t("Body: $body");
       final token = SharedPrefs().getToken();
       final response = await _client.post(
         Uri.parse(ApiUrl.misspunchCancelEndPoint),
@@ -145,11 +141,11 @@ class MisspunchDataSourceImpl implements MisspunchDataSource {
         body: jsonEncode(body),
       );
 
+      final jsonResponse = jsonDecode(response.body);
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw APIException(
-            message: "Network Error", statusCode: response.statusCode);
+            message: jsonResponse["message"], statusCode: response.statusCode);
       }
-      final jsonResponse = jsonDecode(response.body);
       if (jsonResponse["message"] == "Invalid Token") {
         throw APIException(
             message: jsonResponse["message"], statusCode: response.statusCode);
@@ -157,8 +153,7 @@ class MisspunchDataSourceImpl implements MisspunchDataSource {
     } on APIException {
       rethrow;
     } catch (e) {
-      Logger().e(e.toString());
-      throw const APIException(message: "Network Error", statusCode: 505);
+      throw const APIException(message: "Server Error", statusCode: 505);
     }
   }
 
@@ -184,20 +179,17 @@ class MisspunchDataSourceImpl implements MisspunchDataSource {
         throw APIException(
             message: jsonResponse["message"], statusCode: response.statusCode);
       }
-      final MisspunchApprovedModel misspunchApproved =
-          MisspunchApprovedModel.fromJson(jsonResponse);
-      return misspunchApproved;
+      return MisspunchApprovedModel.fromJson(jsonResponse);
     } on APIException {
       rethrow;
     } catch (e) {
-      throw const APIException(message: "Network Error", statusCode: 505);
+      throw const APIException(message: "Server Error", statusCode: 505);
     }
   }
 
   @override
   Future<void> misspunchUpdate(DataMap body) async {
     try {
-      Logger().t("Body: $body");
       final token = SharedPrefs().getToken();
       final response = await _client.post(
         Uri.parse(ApiUrl.misspunchUpdateEndPoint),
@@ -205,11 +197,11 @@ class MisspunchDataSourceImpl implements MisspunchDataSource {
         body: jsonEncode(body),
       );
 
+      final jsonResponse = jsonDecode(response.body);
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw APIException(
-            message: "Network Error", statusCode: response.statusCode);
+            message: jsonResponse["message"], statusCode: response.statusCode);
       }
-      final jsonResponse = jsonDecode(response.body);
       if (jsonResponse["message"] == "Invalid Token") {
         throw APIException(
             message: jsonResponse["message"], statusCode: response.statusCode);
@@ -217,8 +209,7 @@ class MisspunchDataSourceImpl implements MisspunchDataSource {
     } on APIException {
       rethrow;
     } catch (e) {
-      Logger().e(e.toString());
-      throw const APIException(message: "Network Error", statusCode: 505);
+      throw const APIException(message: "Server Error", statusCode: 505);
     }
   }
 }

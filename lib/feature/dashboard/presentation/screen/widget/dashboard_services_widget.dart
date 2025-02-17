@@ -40,6 +40,9 @@ class DashboardLeaveWidget extends StatelessWidget {
       case "Leave History":
         Navigator.pushNamed(_, AppRouterPath.leaveHistory);
         break;
+      default:
+        Navigator.pushNamed(_, AppRouterPath.noRoute);
+        break;
     }
   }
 
@@ -142,6 +145,31 @@ class DashboardServiceWidget extends StatelessWidget {
       label: 'Expenses',
       color: Color(0xFFD44F37),
     ),
+    IconGroupModel(
+      icon: AppSvg.task,
+      label: 'Add Task',
+      color: Color(0xFF4F46E5),
+    ),
+    IconGroupModel(
+      icon: AppSvg.task,
+      label: 'Task',
+      color: Color(0xFF4F46E5),
+    ),
+    IconGroupModel(
+      icon: AppSvg.task,
+      label: 'Task Approval',
+      color: Color(0xFFD44F37),
+    ),
+    IconGroupModel(
+      icon: AppSvg.task,
+      label: 'Tour Plan',
+      color: Color(0xFFD44F37),
+    ),
+    IconGroupModel(
+      icon: AppSvg.task,
+      label: 'Tour Plan Approval',
+      color: Color(0xFFD44F37),
+    ),
   ];
 
   @override
@@ -235,6 +263,27 @@ class DashboardServiceWidget extends StatelessWidget {
         break;
       case "Assets":
         Navigator.pushNamed(_, AppRouterPath.assetManagementScreen);
+        break;
+      case "Add Task":
+        Navigator.pushNamed(_, AppRouterPath.projectTaskRequestScreen);
+        break;
+      case "Task":
+        Navigator.pushNamed(_, AppRouterPath.projectTaskUpdateScreen);
+        break;
+      case "Task Approval":
+        Navigator.pushNamed(_, AppRouterPath.projectTaskApprovalScreen);
+        break;
+
+      case "Tour Plan":
+        Navigator.pushNamed(_, AppRouterPath.tourPlanRequestScreen);
+        break;
+
+      case "Tour Plan Approval":
+        Navigator.pushNamed(_, AppRouterPath.tourPlanApprovalScreen);
+        break;
+
+      default:
+        Navigator.pushNamed(_, AppRouterPath.noRoute);
         break;
     }
   }

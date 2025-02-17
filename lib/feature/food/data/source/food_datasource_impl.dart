@@ -16,30 +16,22 @@ class FoodDataSourceImpl implements FoodDataSource {
     try {
       final urlParse = Uri.parse(ApiUrl.foodAttendanceReportEndPoint);
       final token = SharedPrefs().getToken();
-      final response = await _client.post(urlParse,
-          // body: jsonEncode({"checkdate": date}),
-          headers: {
-            'content-type': 'application/json',
-            'token': token,
-            "checkdate": date
-          });
+      final response = await _client.post(urlParse, headers: {
+        'content-type': 'application/json',
+        'token': token,
+        "checkdate": date
+      });
 
+      final jsonResponse = jsonDecode(response.body);
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw APIException(
-            message: response.body, statusCode: response.statusCode);
+            message: jsonResponse["message"], statusCode: response.statusCode);
       }
-      final jsonResponse = jsonDecode(response.body);
       if (jsonResponse["message"] == "Please End Attendance") {
         throw APIException(
-          message: jsonDecode(response.body)["message"].toString(),
-          statusCode: response.statusCode,
-        );
+            message: jsonResponse["message"], statusCode: response.statusCode);
       } else {
-        Logger().i(jsonResponse.toString());
-        final FoodAttendanceListModel foodAttendanceList =
-            FoodAttendanceListModel.fromJson(jsonResponse);
-
-        return foodAttendanceList;
+        return FoodAttendanceListModel.fromJson(jsonResponse);
       }
     } on APIException {
       rethrow;
@@ -57,23 +49,14 @@ class FoodDataSourceImpl implements FoodDataSource {
           headers: {'content-type': 'application/json', 'token': token});
 
       Logger().e(response.body.toString());
+
+      final jsonResponse = jsonDecode(response.body);
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw APIException(
-            message: response.body, statusCode: response.statusCode);
+            message: jsonResponse["message"], statusCode: response.statusCode);
       }
-      final jsonResponse = jsonDecode(response.body);
-      if (jsonResponse == null) {
-        throw APIException(
-          message: jsonDecode(response.body)["message"].toString(),
-          statusCode: response.statusCode,
-        );
-      } else {
-        Logger().e(jsonResponse.toString());
-        final FoodAttendanceResponseModel foodAttendanceResponse =
-            FoodAttendanceResponseModel.fromMap(jsonResponse);
 
-        return foodAttendanceResponse;
-      }
+      return FoodAttendanceResponseModel.fromMap(jsonResponse);
     } on APIException {
       rethrow;
     } catch (e) {
@@ -92,24 +75,15 @@ class FoodDataSourceImpl implements FoodDataSource {
         "status": status
       });
 
+      final jsonResponse = jsonDecode(response.body);
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw APIException(
-            message: response.body, statusCode: response.statusCode);
+            message: jsonResponse["message"], statusCode: response.statusCode);
       }
-      final jsonResponse = jsonDecode(response.body);
       if (jsonResponse["message"] == "Please End Attendance") {
         throw APIException(
-          message: jsonDecode(response.body)["message"].toString(),
-          statusCode: response.statusCode,
-        );
+            message: jsonResponse["message"], statusCode: response.statusCode);
       }
-      // else {
-      //   Logger().i(jsonResponse.toString());
-      //   final FoodAttendanceResponseModel foodAttendanceResponse =
-      //       FoodAttendanceResponseModel.fromJson(jsonResponse);
-      //
-      //   return foodAttendanceResponse;
-      // }
     } on APIException {
       rethrow;
     } catch (e) {

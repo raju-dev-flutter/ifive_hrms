@@ -1,5 +1,7 @@
 class AppKeys {
   /// User Details App Key
+  static const String companyName = 'IFIVE HRMS';
+
   static const String methodChannel = 'com.ifive.ifive_hrms/service';
   static const String eventChannel = 'com.ifive.ifive_hrms/event';
 

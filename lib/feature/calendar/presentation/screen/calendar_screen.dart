@@ -15,6 +15,7 @@ import '../provider/stream/calendar_stream.dart';
 
 class CalendarScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
+
   const CalendarScreen({super.key, required this.scaffold});
 
   @override
@@ -34,7 +35,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     _calendarController = CalendarController();
-    _dataSource = _getCalendarDataSource();
+    _dataSource = _AppointmentDataSource(appointments);
     super.initState();
     initialCallBack();
   }
@@ -45,24 +46,40 @@ class _CalendarScreenState extends State<CalendarScreen> {
         .getAttendanceStatus(token);
   }
 
-  _AppointmentDataSource _getCalendarDataSource() {
-    // initialCallBack();
-    appointments.clear();
-    calendarStream
-        .fetchInitialCallBack(DateFormat('yyyy-MM-dd').format(fromDate),
-            DateFormat('yyyy-MM-dd').format(toDate))
-        .then((responses) {
-      for (var response in responses) {
-        setState(() {});
-        setState(() => appointments.add(response));
-        // Logger().i("Res: ${response.subject}");
-      }
-      // Logger().i("Res Length: ${appointments.length}");
-      return _AppointmentDataSource(appointments);
-    });
-    setState(() {});
-    return _AppointmentDataSource(appointments);
+  Future<void> _fetchAppointments() async {
+    try {
+      final responses = await calendarStream.fetchInitialCallBack(
+        DateFormat('yyyy-MM-dd').format(fromDate),
+        DateFormat('yyyy-MM-dd').format(toDate),
+      );
+      setState(() {
+        appointments = responses;
+        _dataSource = _AppointmentDataSource(appointments);
+      });
+      Logger().i("Fetched ${appointments.length} appointments");
+    } catch (error) {
+      Logger().e("Error fetching appointments: $error");
+    }
   }
+
+  // _AppointmentDataSource _getCalendarDataSource() {
+  //   // initialCallBack();
+  //   appointments.clear();
+  //   calendarStream
+  //       .fetchInitialCallBack(DateFormat('yyyy-MM-dd').format(fromDate),
+  //           DateFormat('yyyy-MM-dd').format(toDate))
+  //       .then((responses) {
+  //     for (var response in responses) {
+  //       setState(() {});
+  //       setState(() => appointments.add(response));
+  //       // Logger().i("Res: ${response.subject}");
+  //     }
+  //     // Logger().i("Res Length: ${appointments.length}");
+  //     return _AppointmentDataSource(appointments);
+  //   });
+  //   setState(() {});
+  //   return _AppointmentDataSource(appointments);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -102,9 +119,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           details.appointments != null) {
                         final dynamic occurrenceAppointment =
                             details.appointments![0];
-                        final Appointment? patternAppointment =
-                            _dataSource.getPatternAppointment(
-                                occurrenceAppointment, '') as Appointment?;
+
+                        _dataSource.getPatternAppointment(
+                            occurrenceAppointment, '') as Appointment?;
                       }
                     },
                     headerStyle: const CalendarHeaderStyle(
@@ -119,11 +136,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     onViewChanged: (ViewChangedDetails details) {
                       List<DateTime> dates = details.visibleDates;
                       String calendarTimeZone = '';
-                      List<Object> appointment =
-                          _dataSource.getVisibleAppointments(
-                              dates[0],
-                              calendarTimeZone,
-                              dates[(details.visibleDates.length) - 1]);
+                      _dataSource.getVisibleAppointments(
+                          dates[0],
+                          calendarTimeZone,
+                          dates[(details.visibleDates.length) - 1]);
                     },
                     monthViewSettings: const MonthViewSettings(
                         showAgenda: true, monthCellStyle: MonthCellStyle()),
@@ -198,7 +214,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 DateTime date = await PickDateTime.date(context,
                     selectedDate: fromDate, startDate: null);
                 setState(() => fromDate = date);
-                _getCalendarDataSource();
+                await _fetchAppointments();
               },
               borderRadius: Dimensions.kBorderRadiusAllSmallest,
               child: Container(
@@ -235,7 +251,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 DateTime date = await PickDateTime.date(context,
                     selectedDate: toDate, startDate: null);
                 setState(() => toDate = date);
-                _getCalendarDataSource();
+                await _fetchAppointments();
               },
               borderRadius: Dimensions.kBorderRadiusAllSmallest,
               child: Container(
@@ -265,25 +281,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
             ),
           ),
-          // SizedBox(width: 4.w),
-          // InkWell(
-          //   onTap: _getCalendarDataSource,
-          //   borderRadius: Dimensions.kBorderRadiusAllSmallest,
-          //   child: Container(
-          //     width: 38,
-          //     height: 38,
-          //     alignment: Alignment.center,
-          //     decoration: BoxDecoration(
-          //       color: appColor.gray300,
-          //       borderRadius: Dimensions.kBorderRadiusAllSmallest,
-          //     ),
-          //     child: SvgPicture.asset(
-          //       AppSvg.search,
-          //       width: 14,
-          //       colorFilter: ColorFilter.mode(appColor.white, BlendMode.srcIn),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

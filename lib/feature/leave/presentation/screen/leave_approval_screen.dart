@@ -249,6 +249,7 @@ class _LeaveApprovalScreenState extends State<LeaveApprovalScreen> {
         onTap: () => Navigator.pushNamed(context, AppRouterPath.leaveUpdate,
                 arguments: LeaveUpdateScreen(leave: leave))
             .then((value) => initialCallBack()),
+        borderRadius: BorderRadius.circular(8).w,
         child: Container(
           decoration: BoxDecoration(
             color: appColor.white,

@@ -40,7 +40,7 @@ class DcrDatabaseBloc extends Bloc<DcrDatabaseEvent, DcrDatabaseState> {
         (state as DcrDatabaseLoaded).hasReachedMax) {
       return;
     }
-    // try {
+
     final header = {'type': 'dcr', 'search': event.search};
     if (state is DcrDatabaseInitial) {
       emit(DcrDatabaseLoading());
@@ -71,8 +71,5 @@ class DcrDatabaseBloc extends Bloc<DcrDatabaseEvent, DcrDatabaseState> {
                 hasReachedMax: false));
       });
     }
-    // } catch (_) {
-    //   emit(const DcrDatabaseFailed('Failed to fetch leads'));
-    // }
   }
 }

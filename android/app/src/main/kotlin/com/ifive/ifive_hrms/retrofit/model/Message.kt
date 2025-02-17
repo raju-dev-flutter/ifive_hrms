@@ -1,4 +1,4 @@
-package com.ifive.ifive_hrms.retrofit.model
+package com.ifive_dev.ifive_hrms.retrofit.model
 
 import com.google.gson.annotations.SerializedName
 
