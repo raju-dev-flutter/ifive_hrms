@@ -3,7 +3,7 @@ description: "Optimize work efficiency with all-in-one app for Attendance/Leave,
 
 publish_to: 'none'
 
-version: 1.2.2+12
+version: 1.2.3+13
 #version: 1.3.3+1
 
 environment:

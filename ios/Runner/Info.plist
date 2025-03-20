@@ -88,8 +88,7 @@
     <!-- Background Modes -->
     <key>UIBackgroundModes</key>
     <array>
-        <string>fetch</string>
-        <string>location</string>
+    	<string>remote-notification</string>
     </array> 
     <!-- Firebase Configuration -->
     <key>FirebaseAppDelegateProxyEnabled</key>

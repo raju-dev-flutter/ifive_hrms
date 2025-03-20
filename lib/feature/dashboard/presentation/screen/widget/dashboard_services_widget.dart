@@ -160,16 +160,16 @@ class DashboardServiceWidget extends StatelessWidget {
       label: 'Task Approval',
       color: Color(0xFFD44F37),
     ),
-    IconGroupModel(
-      icon: AppSvg.task,
-      label: 'Tour Plan',
-      color: Color(0xFFD44F37),
-    ),
-    IconGroupModel(
-      icon: AppSvg.task,
-      label: 'Tour Plan Approval',
-      color: Color(0xFFD44F37),
-    ),
+    // IconGroupModel(
+    //   icon: AppSvg.task,
+    //   label: 'Tour Plan',
+    //   color: Color(0xFFD44F37),
+    // ),
+    // IconGroupModel(
+    //   icon: AppSvg.task,
+    //   label: 'Tour Plan Approval',
+    //   color: Color(0xFFD44F37),
+    // ),
   ];
 
   @override

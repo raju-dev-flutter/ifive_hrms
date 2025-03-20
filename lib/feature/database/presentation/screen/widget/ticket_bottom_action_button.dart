@@ -25,10 +25,8 @@ class TicketBottomActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isFirstPage = position == 0 ? true : false;
     final isLastPage = position == lastPosition ? true : false;
-    return Container(
+    return SizedBox(
       height: 70.h,
-      // color: appColor.white,
-      // padding: const EdgeInsets.symmetric(horizontal: 16).w,
       child: BlocBuilder<SfaCrudBloc, SfaCrudState>(
         builder: (context, state) {
           if (state is SfaCrudLoading) {
